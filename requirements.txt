@@ -1,0 +1,7 @@
+sklearn
+numpy
+matplotlib
+sentence_transformers
+selenium
+tqdm
+umap-learn
