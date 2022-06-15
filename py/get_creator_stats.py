@@ -5,17 +5,17 @@ Project: YouTube statistics visualization
 License for 3rd party use: Anyone can use this lol I don't mind
 """
 
-import thumbnail_statistics as ts
+import thumbnail_repr_stats as ts
 import numpy as np
 import json
 import os
 
 # TODO add some more functions to get other statistics from the json files?
 
-def get_thumbnail_stats(creator):
+def get_thumbnail_repr_stats(creator):
     """
     Function to retrieve the thumbnail latent representation statistics for a specific YouTuber.
-    If the data does not yet exist, this function calls generate_statistics() to generate the latent's
+    If the data does not yet exist, this function calls generate_repr_stats() to generate the latent's
     statistics.
 
     args:
@@ -26,11 +26,11 @@ def get_thumbnail_stats(creator):
         - latent_std: The standard deviation of all dimensions of the latent thumbnail
                       vectors from the above mentioned mean, summed together.
     """
-    thumbnail_stats_file = "../data/thumbnail_stats.json"
+    thumbnail_stats_file = os.path.join("..", "data", "thumbnail-repr-stats.json")
 
     # Check if the thumbnail statistics data already exists
     if not os.path.exists(thumbnail_stats_file):
-        ts.generate_statistics(thumbnail_stats_file)
+        ts.generate_repr_stats(thumbnail_stats_file)
 
     with open(thumbnail_stats_file) as f:
         creator_dict = json.load(f)
@@ -48,5 +48,5 @@ def get_thumbnail_stats(creator):
 
 if __name__ == '__main__':
     # Just some testing code
-    mean_pewds, std_pewds = get_thumbnail_stats("pewdiepie")
+    mean_pewds, std_pewds = get_thumbnail_repr_stats("pewdiepie")
     print(f"Pewdiepie's video latent standard deviation: {std_pewds}")

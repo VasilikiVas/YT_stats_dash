@@ -6,6 +6,7 @@ License for 3rd party use: Anyone can use this lol I don't mind
 """
 
 from transformers import ViTForImageClassification, ViTFeatureExtractor
+from util.constants import Topic
 from tqdm import tqdm
 from PIL import Image
 import torch
@@ -40,7 +41,7 @@ class ImageLatentRepresentationModel(ViTForImageClassification):
         return latent_vec
 
 
-def load_model(device):
+def load_model(device, install=True):
     """
     Loads in a pre-trained ViT model for latent image representation
 
@@ -50,9 +51,10 @@ def load_model(device):
         - model: pre-trained ViT model
         - feature_extractor: pre-trained feature extractor for processing images
     """
-    print("Installing ViT architecture... This may take a couple of minutes.")
-    os.system("pip install -q git+https://github.com/huggingface/transformers.git")
-    print("Finished installing.")
+    if install:
+        print("Installing ViT architecture... This may take a couple of minutes.")
+        os.system("pip install -q git+https://github.com/huggingface/transformers.git")
+        print("Finished installing.")
 
     print("Loading pretrained ViT model...")
     model = ImageLatentRepresentationModel.from_pretrained('google/vit-base-patch16-224')
@@ -82,50 +84,58 @@ def get_latent_vectors(model, ft_extr, raw_imgs, device):
     return latent_vecs
 
 
-def generate_statistics(out_file):
+def generate_repr_stats(out_file, category: Topic):
     """
-    Function to generate all thumbnail statistics.
+    Function to generate all thumbnail latent representation statistics.
 
     args:
-        - out_file: path to the file where the thumbnail statistics should be saved (JSON)
+        - out_file: path to the file where the statistics should be saved (JSON)
     """
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    # device = torch.device('cpu')
     print(f"Using device: {device}\n")
 
     # Define thumbnail path
-    thumbnail_path = "../data/thumbnails/"
+    thumbnail_dir = os.path.join("..", "data", "thumbnails")
 
-    with open("../data/videos_info.json") as f:
-        print("Loading creator data")
+    with open(os.path.join("..", "data", f"videos-info_{category.name}.json"), "r") as f:
+        print("Loading creator's videos")
         creator_info = json.load(f)
-    print("Finished loading creator data\n")
+    print("Finished loading creator's videos\n")
 
-    model, feature_extractor = load_model(device)
-    creators_stats = {}
+    model, feature_extractor = load_model(device, install=False)
 
-    print("Calculating thumbnail statistics for all creators\n")
+    if os.path.isfile(out_file):
+        with open(out_file, "r") as f:
+            creators_stats = json.load(f)
+    else:
+        creators_stats = {}
+
+    print("Calculating thumbnail latent representation stats for all creators\n")
     for creator in tqdm(list(creator_info.keys())):
+        if creator in creators_stats:
+            continue
+
         stats_dic = {}
-        all_thumbnails = [Image.open(thumbnail_path + vid_dict['id'] + "_high.jpg") 
+        all_thumbnails = [Image.open(os.path.join(thumbnail_dir, vid_dict['id'] + "_high.jpg")) 
                             for vid_dict in creator_info[creator]]
 
         latents = get_latent_vectors(model, feature_extractor, all_thumbnails, device)
 
         # Save the relevant statistics
         # stats_dic['all_latents'] = latents.detach().numpy().tolist()
-        stats_dic['mean_latent'] = torch.mean(latents, dim=0).detach().numpy().tolist()
-        stats_dic['stdev'] = torch.sum(torch.std(latents, dim=0)).detach().numpy().tolist()
+        stats_dic['mean_latent'] = torch.mean(latents, dim=0).detach().cpu().numpy().tolist()
+        stats_dic['stdev'] = torch.sum(torch.std(latents, dim=0)).detach().cpu().numpy().tolist()
 
         creators_stats[creator] = stats_dic
 
-    print("Finished calculating statistics\n")
-    print(f"Writing thumbnail statistics to file {out_file}")
+        with open(out_file, 'w') as f:
+            json.dump(creators_stats, f)
 
-    with open(out_file, 'w') as f:
-        json.dump(creators_stats, f)
+    print("Finished calculating statistics\n")
 
 
 if __name__ == '__main__':
-    out_file = "../data/thumbnail_stats.json"
-    generate_statistics(out_file)
+    out_file = os.path.join("..", "data", "thumbnail-repr-stats.json")
+    generate_repr_stats(out_file, Topic.gaming)
