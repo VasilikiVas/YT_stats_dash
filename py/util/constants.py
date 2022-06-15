@@ -4,6 +4,7 @@ from enum import Enum
 
 class Topic(Enum):
     gaming = "gaming"
+    education = "education"
     science = "science-technology"
     animals = "pets-animals"
     # sports = "sports"
@@ -11,8 +12,12 @@ class Topic(Enum):
     # music = "music"
     # news = "news-politics"
     blogs = "people-blogs"
+    comedy = "comedy"
+    entertainment = "entertainment"
+    howto = "howto-style"
 
 CHANNEL_LIST_URL    = "https://dz.youtubers.me/{geography}/{topic}/top-1000-youtube-channels/en"
+CHANNEL_STATS_URL   = "https://dz.youtubers.me/{name}/youtuber-stats/en"
 CHANNEL_URL         = "https://dz.youtubers.me/{name}/youtube?lang=en"
 THUMBNAIL_URL       = "http://img.youtube.com/vi/{id}/maxresdefault.jpg" # 1280x720
 ALT_THUMBNAIL_URL   = "https://i.ytimg.com/vi/{id}/{res}default.jpg"
