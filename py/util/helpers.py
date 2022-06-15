@@ -15,7 +15,7 @@ import logging
 import functools
 import datetime as dt
 
-def startWebdriver(chrome=True) -> webdriver.Chrome:
+def startWebdriver(chrome=True, headless=True) -> webdriver.Chrome:
     """Starts the selenium webdriver and adds options"""
 
     if chrome:
@@ -27,7 +27,8 @@ def startWebdriver(chrome=True) -> webdriver.Chrome:
         chrome_options.add_argument("--start-maximized")
         chrome_options.add_argument("disable-infobars")
         chrome_options.add_argument('--disable-browser-side-navigation')
-        chrome_options.add_argument('--headless')
+        if headless:
+            chrome_options.add_argument('--headless')
 
         return webdriver.Chrome(CHROMEDRIVER_PATH, options=chrome_options)
     else:
