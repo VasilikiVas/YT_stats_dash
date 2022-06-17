@@ -119,7 +119,7 @@ def generate_repr_stats(out_file, category: Topic):
 
         stats_dic = {}
         all_thumbnails = [Image.open(os.path.join(thumbnail_dir, vid_dict['id'] + "_high.jpg")) 
-                            for vid_dict in creator_info[creator]]
+                            for vid_dict in creator_info[creator] if os.path.isfile(os.path.join(thumbnail_dir, vid_dict['id'] + "_high.jpg"))]
 
         latents = get_latent_vectors(model, feature_extractor, all_thumbnails, device)
 
