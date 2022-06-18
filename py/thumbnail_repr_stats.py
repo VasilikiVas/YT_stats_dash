@@ -84,12 +84,13 @@ def get_latent_vectors(model, ft_extr, raw_imgs, device):
     return latent_vecs
 
 
-def generate_repr_stats(out_file, category: Topic):
+def generate_repr_stats(out_dir, category: Topic):
     """
     Function to generate all thumbnail latent representation statistics.
 
     args:
-        - out_file: path to the file where the statistics should be saved (JSON)
+        - out_dir: directory where the statistics should be saved
+        - category: the type of content videos
     """
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -98,6 +99,11 @@ def generate_repr_stats(out_file, category: Topic):
 
     # Define thumbnail path
     thumbnail_dir = os.path.join("..", "data", "thumbnails")
+    
+    # Save the thumbnail stats per category
+    if not os.path.isdir(os.path.join(out_dir, category.name)):
+        os.mkdir(os.path.join(out_dir, category.name))
+    out_dir = os.path.join(out_dir, category.name)
 
     with open(os.path.join("..", "data", f"videos-info_{category.name}.json"), "r") as f:
         print("Loading creator's videos")
@@ -106,36 +112,35 @@ def generate_repr_stats(out_file, category: Topic):
 
     model, feature_extractor = load_model(device, install=False)
 
-    if os.path.isfile(out_file):
-        with open(out_file, "r") as f:
-            creators_stats = json.load(f)
-    else:
-        creators_stats = {}
-
     print("Calculating thumbnail latent representation stats for all creators\n")
     for creator in tqdm(list(creator_info.keys())):
-        if creator in creators_stats:
+        if os.path.isfile(os.path.join(out_dir, creator + "_stats.json")):
             continue
-
+        
         stats_dic = {}
+
         all_thumbnails = [Image.open(os.path.join(thumbnail_dir, vid_dict['id'] + "_high.jpg")) 
                             for vid_dict in creator_info[creator] if os.path.isfile(os.path.join(thumbnail_dir, vid_dict['id'] + "_high.jpg"))]
 
-        latents = get_latent_vectors(model, feature_extractor, all_thumbnails, device)
+        print(f'Number of thumbnails: {len(all_thumbnails)}')
+        if all_thumbnails:
+            latents = get_latent_vectors(model, feature_extractor, all_thumbnails, device)
+            latents_save = latents.detach().numpy().tolist()
+        else:
+            # If there aren't any thumbnails available save None
+            latents_save = None
 
         # Save the relevant statistics
-        # stats_dic['all_latents'] = latents.detach().numpy().tolist()
-        stats_dic['mean_latent'] = torch.mean(latents, dim=0).detach().cpu().numpy().tolist()
-        stats_dic['stdev'] = torch.sum(torch.std(latents, dim=0)).detach().cpu().numpy().tolist()
+        stats_dic['all_latents'] = latents_save
+        # stats_dic['mean_latent'] = torch.mean(latents, dim=0).detach().cpu().numpy().tolist()
+        # stats_dic['stdev'] = torch.sum(torch.std(latents, dim=0)).detach().cpu().numpy().tolist()
 
-        creators_stats[creator] = stats_dic
-
-        with open(out_file, 'w') as f:
-            json.dump(creators_stats, f)
+        with open(os.path.join(out_dir, creator + "_stats.json"), 'w') as f:
+            json.dump(stats_dic, f)
 
     print("Finished calculating statistics\n")
 
 
 if __name__ == '__main__':
-    out_file = os.path.join("..", "data", "thumbnail-repr-stats.json")
-    generate_repr_stats(out_file, Topic.gaming)
+    out_dir = os.path.join("..", "data", "thumbnail_latents")
+    generate_repr_stats(out_dir, Topic.gaming)
