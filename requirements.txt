@@ -5,3 +5,5 @@ sentence_transformers
 selenium
 tqdm
 umap-learn
+spacy-langdetect
+spacy
