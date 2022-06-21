@@ -11,6 +11,7 @@ from tqdm import tqdm
 from PIL import Image
 import torch
 import json
+import sys
 import os
 
 class ImageLatentRepresentationModel(ViTForImageClassification):
@@ -78,6 +79,7 @@ def get_latent_vectors(model, ft_extr, raw_imgs, device):
     # Encode the images using the feature extractor
     encodings = ft_extr(images=raw_imgs, return_tensors="pt")
     pixel_values = encodings['pixel_values'].to(device)
+    print(f"Size of images in memory: {pixel_values.element_size()*pixel_values.nelement()} bytes")
     # Get the latent representation by passing it through the network
     latent_vecs = model(pixel_values)
 
@@ -111,6 +113,10 @@ def generate_repr_stats(out_dir, category: Topic):
     print("Finished loading creator's videos\n")
 
     model, feature_extractor = load_model(device, install=False)
+    # Print model size
+    mem_params = sum([param.nelement()*param.element_size() for param in model.parameters()])
+    mem_bufs = sum([buf.nelement()*buf.element_size() for buf in model.buffers()])
+    print(f"Memory used by model: {mem_params + mem_bufs} bytes")
 
     print("Calculating thumbnail latent representation stats for all creators\n")
     for creator in tqdm(list(creator_info.keys())):
