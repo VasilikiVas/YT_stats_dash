@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+</head>
+<body>
+    <link rel="stylesheet" type="text/css" href="css/category_view.css">
+    <img id="logo" src="img/logo.png"\>
+    <select id="category_select" name="category_select">
+        <option value="animals">Animals</option>
+        <option value="autos">Autos</option>
+        <option value="blogs">Blogs</option>
+        <option value="comedy">Comedy</option>
+        <option value="education">Education</option>
+        <option value="entertainment">Entertainment</option>
+        <option value="gaming">Gaming</option>
+        <option value="howto">How-to</option>
+        <option value="science">Science</option>
+    </select>
+</body>
+</html>
+{% endblock %}
