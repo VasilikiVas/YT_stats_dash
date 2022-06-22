@@ -22,6 +22,9 @@ CHANNEL_URL         = "https://dz.youtubers.me/{name}/youtube?lang=en"
 THUMBNAIL_URL       = "http://img.youtube.com/vi/{id}/maxresdefault.jpg" # 1280x720
 ALT_THUMBNAIL_URL   = "https://i.ytimg.com/vi/{id}/{res}default.jpg"
 
+THUMBNAIL_WIDTH = 480
+THUMBNAIL_HEIGHT = 360
+
 class ThumbnailURL(Enum):
     default = ALT_THUMBNAIL_URL.format(id="{id}", res="")   # 120x90
     medium  = ALT_THUMBNAIL_URL.format(id="{id}", res="mq") # 320x180
