@@ -1,6 +1,5 @@
 import numpy as np
 import os
-import matplotlib.pyplot as plt
 from matplotlib import image
 from PIL import Image
 from tqdm import tqdm
