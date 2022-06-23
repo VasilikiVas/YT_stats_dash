@@ -72,6 +72,7 @@ def category():
 @main.route('/video', methods=['GET'])
 def video():
 	vid_id = request.args.get("video")
+	channel_name = request.args.get("channel")
 	subview_mode = request.args.get("subview_mode")
 
 	if not vid_id:
@@ -79,10 +80,17 @@ def video():
 	if not subview_mode:
 		subview_mode = "thumbnail"
 
-	video = {}
+	video = {
+		"id": vid_id, # str: video id
+		"thumbnail_sim_videos": list(), # list of dicts: top-n videos sorted by thumbnail similarity
+		"title_sim_videos": list(), # list of dicts: top-n videos sorted by title similarity
+	}
+
+	channel = {}
 
 	return render_template("video.html", 
 		video=video, 			    # dict: info about the video
+		channel=channel,			# dict: info about the video's channel
 		subview_mode=subview_mode,	# "thumbnail" or "title"
 	)
 
