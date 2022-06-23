@@ -1,6 +1,9 @@
 .channel_logo {
     width: 40px;
 }
+.video_list_thumb {
+    /* height: 70px */
+}
 
 .channel_list {
     height: 500px;
@@ -8,6 +11,19 @@
     padding-left: 0;
     margin-bottom: 0;
     list-style: none;
+    padding-right: 10px;
+}
+
+.videos_list {
+    display: flex;
+    width: 100%;
+    overflow: auto;
+    white-space: nowrap;
+    padding-bottom: 10px;
+    /* position: absolute;
+    top: 0;
+    left: 0; */
+    /* z-index: 1000; */
 }
 
 .nav-link {

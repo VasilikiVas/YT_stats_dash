@@ -21,7 +21,14 @@
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                         category: {{ category.name }}</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ category.avg_subs }}</div>
+                                    <table>
+                                        {% for key, value in category_display.items() %}
+                                        <tr>
+                                            <td>{{ key }}</td>
+                                            <td class="h5 mb-0 font-weight-bold text-gray-800">{{ value }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -29,14 +36,18 @@
                 </div>
 
                 <!-- Videos card -->
-                <div class="col-xl-3 col-md-6 mb-4">
+                <div class="col-xl-9 col-md-6 mb-4">
                     <div class="card border-left-warning shadow h-100">
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1" style="position: absolute; top: 0; left: 0; z-index: 1000">
                                         Videos</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">list of videos</div>
+                                    <div class="videos_list" data-simplebar>
+                                    {% for vid in videos %}
+                                        <a href="/video/{{ vid.id }}"><img src="https://i.ytimg.com/vi/{{ vid.id }}/default.jpg" class="video_list_thumb"></a>
+                                    {% endfor %}
+                                    </div>
                                 </div>
                             </div>
                         </div>

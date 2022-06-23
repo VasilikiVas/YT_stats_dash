@@ -32,9 +32,10 @@ def category():
 		videos_dict = json.load(f)
 	videos = []
 	for name, vids in videos_dict.items():
-		videos.extend([{"channel": name, **vid} for vid in videos])
+		videos.extend([{"channel": name, **vid} for vid in vids])
 		channels_dict[name]["avg_views"]	  = np.mean([vid["views"] for vid in vids])
 		channels_dict[name]["vids_available"] = len(vids)
+	videos.sort(key=lambda x: x["views"], reverse=True)
 
 	channels = []
 	for name, info in channels_dict.items():
@@ -63,10 +64,14 @@ def category():
 	}
 
 	return render_template("category.html", 
-		channels=channels, 			# list of dicts: all channels in the category, sorted by Subs
+		channels=channels[:20], 			# list of dicts: all channels in the category, sorted by Subs
 		category=category, 			# dict: info about the category
+		category_display={
+			"Subs/Channel: ": category["avg_subs"],
+			"Views/Video: ": category["avg_views"],
+		},
 		subview_mode=subview_mode,	# "thumbnail" or "title"
-		videos=videos,				# list of dicts: all videos (or maybe top-n if computation requires it) in the category, sorted by views
+		videos=videos[:20],				# list of dicts: all videos (or maybe top-n if computation requires it) in the category, sorted by views
 	)
 
 
