@@ -61,6 +61,17 @@
                 </div>
                 <div class="sidebar-brand-text mx-3">LOGO</div>
             </a>
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <li class="nav-item">
+                <select class="form-select">
+                    <option selected>all categories</option>
+                {% for cat in categories %}
+                    <option>{{ cat }}</option>
+                {% endfor %}
+                </select>
+            </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider">
