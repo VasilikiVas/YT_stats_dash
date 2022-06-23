@@ -7,8 +7,6 @@ import pandas as pd
 import numpy as np
 
 from . import main
-# from ../../py/get_creator_stats import *
-# from ../../py/util.constants import Topic
 
 DATA_DIR = os.path.join("data")
 
@@ -42,23 +40,17 @@ def category():
 	for name, info in channels_dict.items():
 		channels.append({
 			"name": name,
-			"thumbnail_std": get_standard_dev(cat, name, "thumbnail"),
-			"title_std": get_standard_dev(cat, name, "title"),
 			**info
 		})
 
-    cat_avg_subs = np.mean([creator["Subscribers"] for creator in channels_dict.items()])
-    cat_avg_views = np.mean([creator["Video views"]/creator["Video count"] for creator in channels_dict.items()])
-
 	category = {
 		"name": cat, 		  # str: name of category
-		"avg_subs": cat_avg_subs,   # int: avg subs per channel in cat
-		"avg_views": cat_avg_views, # int: avg views per video in cat
+		"avg_subs": 190000,   # int: avg subs per channel in cat
+		"avg_views": 1200000, # int: avg views per video in cat
 		# THUMBNAIL
-        # TODO write code for saving most representative thumbnails, following below folder structure
-        # "avg_thumbnail": os.path.join(DATA_DIR, f"thumbnail-averages/categories/{cat}_average.png"), # str: path to avg thumbnail
-        # "repr_thumbnail": os.path.join(DATA_DIR, f"thumbnail-most-representatives/categories/{cat}_repr.jpg"), # str: path to most representative thumbnail
-        # "dominant_colors": {"#ffaa99": 36.5, "#00ff00": 11.7}, # dict: keys are color clusters, values are percentage TODO
+        "avg_thumbnail": os.path.join(DATA_DIR, f"thumbnail-averages/categories/{cat}_average.png"), # str: path to avg thumbnail
+        "repr_thumbnail": os.path.join(DATA_DIR, f"thumbnail-most-representatives/categories/{cat}_repr.jpg"), # str: path to most representative thumbnail
+        "dominant_colors": {"#ffaa99": 36.5, "#00ff00": 11.7}, # dict: keys are color clusters, values are percentage TODO
 		
 		"avg_thumbnail": os.path.join("static", "data", "thumbnail-averages", "channels", "a4.png"), # str: path to avg thumbnail TODO
 		"repr_thumbnail": os.path.join("static", "data", "thumbnails", "___OSEsR5pk_high.jpg"), # str: path to most representative thumbnail TODO
