@@ -132,7 +132,7 @@ def generate_repr_stats(out_dir, category: Topic):
         print(f'Number of thumbnails: {len(all_thumbnails)}')
         if all_thumbnails:
             latents = get_latent_vectors(model, feature_extractor, all_thumbnails, device)
-            latents_save = latents.detach().numpy().tolist()
+            latents_save = latents.detach().cpu().numpy().tolist()
         else:
             # If there aren't any thumbnails available save None
             latents_save = None

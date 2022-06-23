@@ -1,4 +1,5 @@
-from util.constants import Topic
+from turtle import shape
+from util.constants import Topic, THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH
 from tqdm import tqdm
 from PIL import Image
 import numpy as np
@@ -6,7 +7,7 @@ import json
 import os
 from matplotlib import pyplot as plt
 
-def generate_thumbnail_averages(out_folder, category: Topic):
+def generate_thumbnail_averages(category: Topic):
     """
     Function to generate all thumbnail averages per creator.
 
@@ -17,37 +18,67 @@ def generate_thumbnail_averages(out_folder, category: Topic):
     # Define thumbnail path
     thumbnail_dir = os.path.join("..", "data", "thumbnails")
 
-    with open(os.path.join("..", "data", f"videos-info_{category.name}.json"), "r") as f:
+    with open(os.path.join("..", "data", f"videos-info_{category}.json"), "r") as f:
         print("Loading creator's videos")
-        creator_info = json.load(f)
+        videos_info = json.load(f)
     print("Finished loading creator's videos\n")
 
-    print("Calculating thumbnail averages for all creators in category: " + category.name + "\n")
-    for creator in tqdm(list(creator_info.keys())):
+    print("Calculating thumbnail averages for all creators in category: " + category + "\n")
+    category_thumbnails = []
+    category_views = []
+    for creator in tqdm(list(videos_info.keys())):
         all_creator_thumbnails = []
         all_creator_views = []
         
         try:
-            all_creator_thumbnails.extend([np.array(Image.open(os.path.join(thumbnail_dir, vid_dict['id'] + "_high.jpg")))
-                                  for vid_dict in creator_info[creator]])
+            creator_thumbnails = []
+            creator_views = []
+            for vid_dict in videos_info[creator]:
+                img = np.array(Image.open(os.path.join(thumbnail_dir, vid_dict['id'] + "_high.jpg")))
+                h, w, _ = img.shape
+                if h == THUMBNAIL_HEIGHT and w == THUMBNAIL_WIDTH:
+                    # we exclude shorts by skipping the videos that were not cropped
+                    continue
+                creator_thumbnails.append(img)
+                creator_views.append(vid_dict["views"])
+            if len(creator_thumbnails) < 5:
+                continue
+            all_creator_thumbnails.extend(creator_thumbnails)
+            all_creator_views.extend(creator_views)
+            category_thumbnails.extend(all_creator_thumbnails)
+            category_views.extend(all_creator_views)
 
-            all_creator_views.extend([vid_dict["views"] for vid_dict in creator_info[creator]])
         except FileNotFoundError:
             continue
 
-        creators_palette = np.average(np.array(all_creator_thumbnails), weights = all_creator_views, axis=0)
+        creators_avg_thumbnail = np.average(np.array(all_creator_thumbnails), weights = all_creator_views, axis=0)
 
-        im = Image.fromarray(creators_palette.astype('uint8'))
-        im.save(os.path.join("..", "data", out_folder, creator + '.png'))
+        im = Image.fromarray(creators_avg_thumbnail.astype('uint8'))
+        im.save(os.path.join(CREATORS_PATH, creator + '.png'))
+    
+    print("Calculating thumbnail average for category: " + category + "\n")
+    category_avg_thumbnail = np.average(np.array(category_thumbnails), weights = category_views, axis=0)
 
-    print("Finished saving thumbnail averages per creator\n")
+    im = Image.fromarray(category_avg_thumbnail.astype('uint8'))
+    im.save(os.path.join(CATEGORY_PATH, category + '.png'))
+
+    print("Finished saving thumbnail averages per creator and for category\n")
 
 
 if __name__ == '__main__':
-    category = Topic.gaming
 
-    out_folder = "thumbnail-averages-" + category.name
-    if not os.path.exists(os.path.join("..", "data", out_folder)):
-        os.makedirs(os.path.join("..", "data", out_folder))
+    CATEGORY_PATH = "../data/thumbnail-averages/categories"
+    CREATORS_PATH = "../data/thumbnail-averages/creators"
 
-    generate_thumbnail_averages(out_folder, category)
+    if not os.path.exists(CATEGORY_PATH):
+        os.makedirs(CATEGORY_PATH)
+
+    if not os.path.exists(CREATORS_PATH):
+        os.makedirs(CREATORS_PATH)
+
+    # category = Topic.gaming
+
+    for category in Topic:
+        generate_thumbnail_averages(category.value)
+        # only do gaming for now
+        break
