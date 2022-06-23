@@ -58,7 +58,6 @@ def category():
     title_repr_id = most_repr_title_data[f"Category_{cat}"]
     thumbnail_repr_id = most_repr_thumbnail_data[f"Category_{cat}"]
     
-	
 	category = {
         # Hardcoded examples
 		"name": cat, 		  # str: name of category
