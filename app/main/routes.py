@@ -63,7 +63,7 @@ def category():
 	}
 
 	return render_template("category.html", 
-		channels=channels[:5], 			# list of dicts: all channels in the category, sorted by Subs
+		channels=channels, 			# list of dicts: all channels in the category, sorted by Subs
 		category=category, 			# dict: info about the category
 		subview_mode=subview_mode,	# "thumbnail" or "title"
 		videos=videos,				# list of dicts: all videos (or maybe top-n if computation requires it) in the category, sorted by views

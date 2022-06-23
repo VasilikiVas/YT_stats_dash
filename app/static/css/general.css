@@ -1,0 +1,15 @@
+.channel_logo {
+    width: 40px;
+}
+
+.channel_list {
+    height: 500px;
+    overflow: auto;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+
+.nav-link {
+    width: 100% !important;
+}
