@@ -7,6 +7,8 @@ import pandas as pd
 import numpy as np
 
 from . import main
+# from ...py.get_creator_stats import *
+# from ...py.util.constants import Topic
 
 DATA_DIR = os.path.join("data")
 
@@ -32,15 +34,15 @@ def category():
 		videos_dict = json.load(f)
 	videos = []
 
-    # Load in the video id of the videos with the most representative thumbnails
-    most_repr_thumbnail_path = os.path.join(DATA_DIR, "thumbnail_representatives", f"{cat}_representatives.json")
-    with open(most_repr_thumbnail_path, "r") as f:
-        most_repr_thumbnail_data = json.load(f)
+	# # Load in the video id of the videos with the most representative thumbnails
+	# most_repr_thumbnail_path = os.path.join(DATA_DIR, "thumbnail_representatives", f"{cat}_representatives.json")
+	# with open(most_repr_thumbnail_path, "r") as f:
+	# 	most_repr_thumbnail_data = json.load(f)
 
-    # Load in the video ids of the videos with the most representative titles
-    most_repr_title_path = os.path.join(DATA_DIR, "title_representatives", f"{cat}_representatives.json")
-    with open(most_repr_title_path, "r") as f:
-        most_repr_title_data = json.load(f)
+    # # Load in the video ids of the videos with the most representative titles
+	# most_repr_title_path = os.path.join(DATA_DIR, "title_representatives", f"{cat}_representatives.json")
+	# with open(most_repr_title_path, "r") as f:
+	# 	most_repr_title_data = json.load(f)
 
 	for name, vids in videos_dict.items():
 		videos.extend([{"channel": name, **vid} for vid in videos])
@@ -51,21 +53,20 @@ def category():
 	for name, info in channels_dict.items():
 		channels.append({
 			"name": name,
+			# "thumbnail_std": get_standard_dev(cat, name, "thumbnail"),
+			# "title_std": get_standard_dev(cat, name, "title"),
 			**info
 		})
 
-    cat_avg_subs = np.mean([creator["Subscribers"] for creator in channels_dict.items()])
-    cat_avg_views = np.mean([creator["Video views"]/creator["Video count"] for creator in channels_dict.items()])
+	cat_avg_subs = int(np.mean([info["Subscribers"] for name,info in channels_dict.items()]))
+	cat_avg_views = int(np.mean([info["avg_views"] for name,info in channels_dict.items() if "avg_views" in info]))
 
     # Get the most representative title and thumbnail for this category specifically
-    title_repr_id = most_repr_title_data[f"Category_{cat}"]
-    thumbnail_repr_id = most_repr_thumbnail_data[f"Category_{cat}"]
+	# title_repr_id = most_repr_title_data[f"Category_{cat}"]
+	# thumbnail_repr_id = most_repr_thumbnail_data[f"Category_{cat}"]
     
 	category = {
         # Hardcoded examples
-		"name": cat, 		  # str: name of category
-		"avg_subs": 190000,   # int: avg subs per channel in cat
-		"avg_views": 1200000, # int: avg views per video in cat
 		# THUMBNAIL
 		"avg_thumbnail": os.path.join("static", "data", "thumbnail-averages", "channels", "a4.png"), # str: path to avg thumbnail TODO
 		"repr_thumbnail": os.path.join("static", "data", "thumbnails", "___OSEsR5pk_high.jpg"), # str: path to most representative thumbnail TODO
@@ -77,9 +78,9 @@ def category():
 		"token_effectiveness": {"$10,000": 11.3, "best": 3.5, "books": -5.3}, # dict: keys are tokens, values are percentage (delta/avg_views_without) TODO
 
         # TODO Actual code (WIP)
-        # "name": cat, 		  # str: name of category
-        # "avg_subs": cat_avg_subs,   # int: avg subs per channel in cat
-        # "avg_views": cat_avg_views, # int: avg views per video in cat
+        "name": cat, 		  # str: name of category
+        "avg_subs": cat_avg_subs,   # int: avg subs per channel in cat
+        "avg_views": cat_avg_views, # int: avg views per video in cat
         # # THUMBNAIL
         # "avg_thumbnail": os.path.join(DATA_DIR, f"thumbnail-averages/categories/{cat}_average.png"), # str: path to avg thumbnail
         # "repr_thumbnail": os.path.join(DATA_DIR, f"thumbnails/{thumbnail_repr_id}_high.jpg"), # str: path to most representative thumbnail
