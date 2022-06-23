@@ -11,7 +11,6 @@ from . import main
 try:
 	from ...py.get_creator_stats import *
 	from ...py.util.constants import Topic
-	print("EDWWWW")
 except:
 	path = os.getcwd()
 	sys.path.append(os.path.join(path ,"py/"))
