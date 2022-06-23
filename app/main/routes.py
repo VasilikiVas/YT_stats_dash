@@ -32,10 +32,12 @@ def category():
 		videos_dict = json.load(f)
 	videos = []
 
+    # Load in the video id of the videos with the most representative thumbnails
     most_repr_thumbnail_path = os.path.join(DATA_DIR, "thumbnail_representatives", f"{cat}_representatives.json")
     with open(most_repr_thumbnail_path, "r") as f:
         most_repr_thumbnail_data = json.load(f)
 
+    # Load in the video ids of the videos with the most representative titles
     most_repr_title_path = os.path.join(DATA_DIR, "title_representatives", f"{cat}_representatives.json")
     with open(most_repr_title_path, "r") as f:
         most_repr_title_data = json.load(f)
@@ -55,6 +57,7 @@ def category():
     cat_avg_subs = np.mean([creator["Subscribers"] for creator in channels_dict.items()])
     cat_avg_views = np.mean([creator["Video views"]/creator["Video count"] for creator in channels_dict.items()])
 
+    # Get the most representative title and thumbnail for this category specifically
     title_repr_id = most_repr_title_data[f"Category_{cat}"]
     thumbnail_repr_id = most_repr_thumbnail_data[f"Category_{cat}"]
     
@@ -64,10 +67,6 @@ def category():
 		"avg_subs": 190000,   # int: avg subs per channel in cat
 		"avg_views": 1200000, # int: avg views per video in cat
 		# THUMBNAIL
-        "avg_thumbnail": os.path.join(DATA_DIR, f"thumbnail-averages/categories/{cat}_average.png"), # str: path to avg thumbnail
-        "repr_thumbnail": os.path.join(DATA_DIR, f"thumbnail-most-representatives/categories/{cat}_repr.jpg"), # str: path to most representative thumbnail
-        "dominant_colors": {"#ffaa99": 36.5, "#00ff00": 11.7}, # dict: keys are color clusters, values are percentage TODO
-		
 		"avg_thumbnail": os.path.join("static", "data", "thumbnail-averages", "channels", "a4.png"), # str: path to avg thumbnail TODO
 		"repr_thumbnail": os.path.join("static", "data", "thumbnails", "___OSEsR5pk_high.jpg"), # str: path to most representative thumbnail TODO
 		"dominant_colors": {"#ffaa99": 36.5, "#00ff00": 11.7}, # dict: keys are color clusters, values are percentage TODO
@@ -81,7 +80,6 @@ def category():
         # "name": cat, 		  # str: name of category
         # "avg_subs": cat_avg_subs,   # int: avg subs per channel in cat
         # "avg_views": cat_avg_views, # int: avg views per video in cat
-        
         # # THUMBNAIL
         # "avg_thumbnail": os.path.join(DATA_DIR, f"thumbnail-averages/categories/{cat}_average.png"), # str: path to avg thumbnail
         # "repr_thumbnail": os.path.join(DATA_DIR, f"thumbnails/{thumbnail_repr_id}_high.jpg"), # str: path to most representative thumbnail
