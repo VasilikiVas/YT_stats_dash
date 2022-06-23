@@ -125,6 +125,7 @@ def generate_repr_stats(out_dir, category: Topic):
         
         stats_dic = {}
 
+        vid_ids = [vid_dict['id'] for vid_dict in creator_info[creator] if os.path.isfile(os.path.join(thumbnail_dir, vid_dict['id'] + "_high.jpg"))]
         all_thumbnails = [Image.open(os.path.join(thumbnail_dir, vid_dict['id'] + "_high.jpg")) 
                             for vid_dict in creator_info[creator] if os.path.isfile(os.path.join(thumbnail_dir, vid_dict['id'] + "_high.jpg"))]
 
@@ -137,7 +138,7 @@ def generate_repr_stats(out_dir, category: Topic):
             latents_save = None
 
         # Save the relevant statistics
-        stats_dic['all_latents'] = latents_save
+        stats_dic['all_latents'] = {i: latents_save[i] for i in range(len(latents_save))}
         stats_dic['mean_latent'] = torch.mean(latents, dim=0).detach().cpu().numpy().tolist()
         stats_dic['stdev'] = torch.sum(torch.std(latents, dim=0)).detach().cpu().numpy().tolist()
 
