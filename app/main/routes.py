@@ -34,11 +34,19 @@ def category():
 		videos_dict = json.load(f)
 	videos = []
 
-	for name, videos in videos_dict.items():
-		for vid in videos:
+    most_repr_thumbnail_path = os.path.join(DATA_DIR, "thumbnail_representatives", f"{cat}_representatives.json")
+    with open(most_repr_thumbnail_path, "r") as f:
+        most_repr_thumbnail_data = json.load(f)
+
+    most_repr_title_path = os.path.join(DATA_DIR, "title_representatives", f"{cat}_representatives.json")
+    with open(most_repr_title_path, "r") as f:
+        most_repr_title_data = json.load(f)
+
+	for name, vids in videos_dict.items():
+		for vid in vids:
 			videos.append({"channel": name, **vid})
-		channels_dict[name]["avg_views"]	  = np.mean([vid["views"] for vid in videos])
-		channels_dict[name]["vids_available"] = len(videos)
+		channels_dict[name]["avg_views"]	  = np.mean([vid["views"] for vid in vids])
+		channels_dict[name]["vids_available"] = len(vids)
 
 	channels = []
 	for name, info in channels_dict.items():
@@ -52,16 +60,16 @@ def category():
     cat_avg_subs = np.mean([creator["Subscribers"] for creator in channels_dict.items()])
     cat_avg_views = np.mean([creator["Video views"]/creator["Video count"] for creator in channels_dict.items()])
 
+    title_repr_id = most_repr_title_data[f"Category_{cat}"]
+    thumbnail_repr_id = most_repr_thumbnail_data[f"Category_{cat}"]
+    
 	category = {
 		"name": cat, 		  # str: name of category
 		"avg_subs": cat_avg_subs,   # int: avg subs per channel in cat
 		"avg_views": cat_avg_views, # int: avg views per video in cat
-		# THUMBNAIL
-        # TODO write code for saving most representative thumbnails, following below folder structure
-        # "avg_thumbnail": os.path.join(DATA_DIR, f"thumbnail-averages/categories/{cat}_average.png"), # str: path to avg thumbnail
-        # "repr_thumbnail": os.path.join(DATA_DIR, f"thumbnail-most-representatives/categories/{cat}_repr.jpg"), # str: path to most representative thumbnail
-        # "dominant_colors": {"#ffaa99": 36.5, "#00ff00": 11.7}, # dict: keys are color clusters, values are percentage TODO
 		
+        # Hardcoded examples
+        # THUMBNAIL
 		"avg_thumbnail": os.path.join(DATA_DIR, "thumbnail-averages-gaming", "1c63394b-91b6-4f7e-9e53-58c4318200da.png"), # str: path to avg thumbnail TODO
 		"repr_thumbnail": os.path.join(DATA_DIR, "thumbnails", "___OSEsR5pk_high.jpg"), # str: path to most representative thumbnail TODO
 		"dominant_colors": {"#ffaa99": 36.5, "#00ff00": 11.7}, # dict: keys are color clusters, values are percentage TODO
@@ -70,6 +78,17 @@ def category():
 		"repr_title": "This is a title", # str: most representative title TODO
 		"token_count": {"token1": 13000, "token2": 5000}, # dict: keys are tokens, values are the count TODO
 		"token_effectiveness": {"$10,000": 11.3, "best": 3.5, "books": -5.3}, # dict: keys are tokens, values are percentage (delta/avg_views_without) TODO
+
+        # TODO Actual code (WIP)
+        # # THUMBNAIL
+        # "avg_thumbnail": os.path.join(DATA_DIR, f"thumbnail-averages/categories/{cat}_average.png"), # str: path to avg thumbnail
+        # "repr_thumbnail": os.path.join(DATA_DIR, f"thumbnails/{thumbnail_repr_id}_high.jpg"), # str: path to most representative thumbnail
+        # "dominant_colors": {"#ffaa99": 36.5, "#00ff00": 11.7}, # dict: keys are color clusters, values are percentage TODO
+        # "object_effectiveness": {"person": 11.3, "cat": 3.5, "tie": -5.3}, # dict: keys are objects, values are percentage (delta/avg_views_without) TODO
+		# # TITLE
+		# "repr_title": "This is a title", # str: most representative title TODO
+		# "token_count": {"token1": 13000, "token2": 5000}, # dict: keys are tokens, values are the count TODO
+		# "token_effectiveness": {"$10,000": 11.3, "best": 3.5, "books": -5.3}, # dict: keys are tokens, values are percentage (delta/avg_views_without) TODO
 	}
 
 	return render_template("category.html", 
