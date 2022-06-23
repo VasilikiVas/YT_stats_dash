@@ -7,8 +7,22 @@ import pandas as pd
 import numpy as np
 
 from . import main
-# from ...py.get_creator_stats import *
-# from ...py.util.constants import Topic
+
+try:
+	from ...py.get_creator_stats import *
+	from ...py.util.constants import Topic
+	print("EDWWWW")
+except:
+	path = os.getcwd()
+	sys.path.append(os.path.join(path ,"py/"))
+	sys.path.append(os.path.join(path ,"py/util/"))
+
+	from get_creator_stats import *
+	from util.constants import Topic
+
+	sys.path.remove(os.path.join(path ,"py/"))
+	sys.path.remove(os.path.join(path ,"py/util/"))
+
 
 DATA_DIR = os.path.join("data")
 
