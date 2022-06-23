@@ -1,6 +1,5 @@
 import numpy as np
 import argparse
-import matplotlib.pyplot as plt
 import cv2
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, Flatten
@@ -9,14 +8,14 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.layers import MaxPooling2D
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import os
-import math
+import json
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 # command line argument
 ap = argparse.ArgumentParser()
 ap.add_argument("--mode",help="train/display")
-ap.add_argument('--image')
+#ap.add_argument('--image')
 mode = ap.parse_args().mode
 args=ap.parse_args()
 
@@ -51,73 +50,80 @@ genderList=['Male','Female']
 faceNet=cv2.dnn.readNet(faceModel,faceProto)
 genderNet=cv2.dnn.readNet(genderModel,genderProto)
 
-frame = cv2.imread(args.image if args.image else 0)
-resultImg,faceBoxes=highlightFace(faceNet,frame)
-if not faceBoxes:
-    print("No face detected")
+for frame_name in os.listdir("../../data/thumbnails-not-cropped"):
+    gender_list = []
+    emotion_list = []
+    frame_dict = "../../data/thumbnails-not-cropped/"+frame_name
+    print(frame_name)
+    frame = cv2.imread(frame_dict)
+    if frame is None:
+        print('Wrong path:', frame_dict)
+    else:
+        resultImg,faceBoxes=highlightFace(faceNet,frame)
+        if not faceBoxes:
+            print("No face detected")
 
-num_train = 28709
-num_val = 7178
-batch_size = 64
-num_epoch = 50
+        # Create the model
+        model = Sequential()
 
-train_datagen = ImageDataGenerator(rescale=1./255)
-val_datagen = ImageDataGenerator(rescale=1./255)
+        model.add(Conv2D(32, kernel_size=(3, 3), activation='relu', input_shape=(48,48,1)))
+        model.add(Conv2D(64, kernel_size=(3, 3), activation='relu'))
+        model.add(MaxPooling2D(pool_size=(2, 2)))
+        model.add(Dropout(0.25))
 
-# Create the model
-model = Sequential()
+        model.add(Conv2D(128, kernel_size=(3, 3), activation='relu'))
+        model.add(MaxPooling2D(pool_size=(2, 2)))
+        model.add(Conv2D(128, kernel_size=(3, 3), activation='relu'))
+        model.add(MaxPooling2D(pool_size=(2, 2)))
+        model.add(Dropout(0.25))
 
-model.add(Conv2D(32, kernel_size=(3, 3), activation='relu', input_shape=(48,48,1)))
-model.add(Conv2D(64, kernel_size=(3, 3), activation='relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Dropout(0.25))
+        model.add(Flatten())
+        model.add(Dense(1024, activation='relu'))
+        model.add(Dropout(0.5))
+        model.add(Dense(7, activation='softmax'))
 
-model.add(Conv2D(128, kernel_size=(3, 3), activation='relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Conv2D(128, kernel_size=(3, 3), activation='relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Dropout(0.25))
+        # emotions will be displayed on your face from the webcam feed
+        if mode == "display":
+            model.load_weights('model.h5')
 
-model.add(Flatten())
-model.add(Dense(1024, activation='relu'))
-model.add(Dropout(0.5))
-model.add(Dense(7, activation='softmax'))
+            # prevents openCL usage and unnecessary logging messages
+            cv2.ocl.setUseOpenCL(False)
 
-# emotions will be displayed on your face from the webcam feed
-if mode == "display":
-    model.load_weights('model.h5')
+            # dictionary which assigns each label an emotion (alphabetical order)
+            emotion_dict = {0: "Angry", 1: "Disgusted", 2: "Fearful", 3: "Happy", 4: "Neutral", 5: "Sad", 6: "Surprised"}
 
-    # prevents openCL usage and unnecessary logging messages
-    cv2.ocl.setUseOpenCL(False)
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-    # dictionary which assigns each label an emotion (alphabetical order)
-    emotion_dict = {0: "Angry", 1: "Disgusted", 2: "Fearful", 3: "Happy", 4: "Neutral", 5: "Sad", 6: "Surprised"}
-
-gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
-pl = 0
-for (x, y, w, h) in faceBoxes:
-    pl += 1
-    face=frame[max(0,y-10):
-                min(h+10,frame.shape[0]-1),max(0,x-10)
-                :min(w+10, frame.shape[1]-1)]
-    #gender model
-    blob=cv2.dnn.blobFromImage(face, 1.0, (227,227), MODEL_MEAN_VALUES, swapRB=False)
-    genderNet.setInput(blob)
-    genderPreds=genderNet.forward()
-    gender=genderList[genderPreds[0].argmax()]
-    print(f'Gender: {gender}')
-    #save faces
-    cv2.imwrite("face"+str(pl)+".jpg", face)
-    #create the bounding box
-    cv2.rectangle(frame, (max(0,x-20), max(0,y-20)), (min(w+10, frame.shape[1]-1), min(h+10,frame.shape[0]-1)), (255, 0, 0), 2)
-    roi_gray = gray[max(0,y-10):
-                min(h+10,frame.shape[0]-1),max(0,x-10)
-                :min(w+10, frame.shape[1]-1)]
-    cropped_img = np.expand_dims(np.expand_dims(cv2.resize(roi_gray, (48, 48)), -1), 0)
-    prediction = model.predict(cropped_img)
-    maxindex = int(np.argmax(prediction))
-    print(emotion_dict[maxindex])
-    cv2.putText(frame, f'{gender}', (x, y-30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2, cv2.LINE_AA)
-    cv2.putText(frame, f'{emotion_dict[maxindex]}', (x-20, y-60), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2, cv2.LINE_AA)
-cv2.imwrite("result_image_new.jpg", frame)
+        pl = 0
+        for (x, y, w, h) in faceBoxes:
+            pl += 1
+            face=frame[max(0,y-10):
+                        min(h+10,frame.shape[0]-1),max(0,x-10)
+                        :min(w+10, frame.shape[1]-1)]
+            if face.shape[0] != 0 and face.shape[1] !=0 :
+                blob=cv2.dnn.blobFromImage(face, 1.0, (227,227), MODEL_MEAN_VALUES, swapRB=False)
+                genderNet.setInput(blob)
+                genderPreds=genderNet.forward()
+                gender=genderList[genderPreds[0].argmax()]
+                print(f'Gender: {gender}')
+                #save faces
+                #cv2.imwrite("face"+str(pl)+".jpg", face)
+                #create the bounding box
+                cv2.rectangle(frame, (max(0,x-20), max(0,y-20)), (min(w+10, frame.shape[1]-1), min(h+10,frame.shape[0]-1)), (255, 0, 0), 2)
+                roi_gray = gray[max(0,y-10):
+                            min(h+10,frame.shape[0]-1),max(0,x-10)
+                            :min(w+10, frame.shape[1]-1)]
+                cropped_img = np.expand_dims(np.expand_dims(cv2.resize(roi_gray, (48, 48)), -1), 0)
+                prediction = model.predict(cropped_img)
+                maxindex = int(np.argmax(prediction))
+                print(emotion_dict[maxindex])
+                cv2.putText(frame, f'{gender}', (x, y-30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2, cv2.LINE_AA)
+                cv2.putText(frame, f'{emotion_dict[maxindex]}', (x-20, y-60), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2, cv2.LINE_AA)
+                x = {"number": pl,
+                    "gender": gender,
+                    "emotion": emotion_dict[maxindex],
+                    "box_dim": [max(0,x-20), max(0,y-20), min(w+10, frame.shape[1]-1), min(h+10,frame.shape[0]-1)]}
+                y = json.dumps(x)
+                with open("../result_json/"+frame_name.split(".")[0]+".json", 'a') as outfile:
+                    outfile.write(y)
+        cv2.imwrite("../result_images/"+frame_name, frame)
