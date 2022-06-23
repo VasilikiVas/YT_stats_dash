@@ -138,8 +138,8 @@ def generate_repr_stats(out_dir, category: Topic):
 
         # Save the relevant statistics
         stats_dic['all_latents'] = latents_save
-        # stats_dic['mean_latent'] = torch.mean(latents, dim=0).detach().cpu().numpy().tolist()
-        # stats_dic['stdev'] = torch.sum(torch.std(latents, dim=0)).detach().cpu().numpy().tolist()
+        stats_dic['mean_latent'] = torch.mean(latents, dim=0).detach().cpu().numpy().tolist()
+        stats_dic['stdev'] = torch.sum(torch.std(latents, dim=0)).detach().cpu().numpy().tolist()
 
         with open(os.path.join(out_dir, creator + "_stats.json"), 'w') as f:
             json.dump(stats_dic, f)
