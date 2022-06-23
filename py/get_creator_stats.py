@@ -12,9 +12,8 @@ import torch
 import json
 import os
 
-# TODO add some more functions to get other statistics from the json files?
 
-def get_thumbnail_repr(category, creator):
+def get_all_latents(category, creator, latent_type):
     """
     Function to retrieve the thumbnail latent representation statistics for a specific YouTuber.
     If the data does not yet exist, this function calls generate_repr_stats() to generate the latent's
@@ -23,13 +22,16 @@ def get_thumbnail_repr(category, creator):
     args:
         - category: the type of content we're looking for
         - creator: The name of the YouTuber whose statistics we're looking for
+        - latent_type: The type of data we're looking for. Can be either 'thumbnail' or 'title'
     
     returns:
-        - latent_mean: The mean of all thumbnail latent vectors from this YouTuber
-        - latent_std: The standard deviation of all dimensions of the latent thumbnail
-                      vectors from the above mentioned mean, summed together.
+        - all_latents: all latent representations of the video thumbnails
     """
-    out_dir = os.path.join("..", "data", "thumbnail_latents")
+    if std_type not in ['thumbnail', 'title']:
+        print(f"Wrong type of data requested. Please request either 'thumbnail' or 'title'")
+        return
+
+    out_dir = os.path.join("..", "data", f"{latent_type}_latents")
     thumbnail_stats_file = os.path.join(out_dir, category, creator + "_stats.json")
 
     # Check if the thumbnail statistics data already exists
@@ -46,8 +48,81 @@ def get_thumbnail_repr(category, creator):
 
     return all_latents
 
+    
+def get_standard_dev(category, creator, std_type):
+    """
+    Helper function to retrieve the standard deviation of the latent representations
+    of either the video thumbnails or the video titles.
+    
+    args:
+        - category: the type of content we're looking for
+        - creator: The name of the YouTuber whose statistics we're looking for
+        - std_type: The type of data we're looking for. Can be either 'thumbnail' or 'title'
+    
+    returns:
+        - stdev: float representing the standard deviation of the latent representations
+    """
+
+    if std_type not in ['thumbnail', 'title']:
+        print(f"Wrong type of data requested. Please request either 'thumbnail' or 'title'")
+        return
+
+    out_dir = os.path.join("..", "data", f"{std_type}_latents")
+    thumbnail_stats_file = os.path.join(out_dir, category, creator + "_stats.json")
+
+    # Check if the thumbnail statistics data already exists
+    # TODO: if you wanna use this, change category to be instance of Topic
+    # if not os.path.exists(thumbnail_stats_file):
+    #     ts.generate_repr_stats(out_dir, category)
+
+    try:
+        with open(thumbnail_stats_file) as f:
+            creator_dict = json.load(f)
+    except FileNotFoundError:
+        print(f"{creator} doesn't appear in the dataset. Try again with a different YouTuber.")    # Check if the creator is in the data    
+
+    stdev = torch.Tensor(creator_dict["stdev"]) 
+
+    return stdev
+
+def get_mean_latent(category, creator, mean_type):
+    """
+    Helper function to retrieve the mean vector of the latent representations
+    of either the video thumbnails or the video titles.
+    
+    args:
+        - category: the type of content we're looking for
+        - creator: The name of the YouTuber whose statistics we're looking for
+        - mean_type: The type of data we're looking for. Can be either 'thumbnail' or 'title'
+    
+    returns:
+        - mean: mean tensor representing the mean of the latent representations
+    """
+
+    if std_type not in ['thumbnail', 'title']:
+        print(f"Wrong type of data requested. Please request either 'thumbnail' or 'title'")
+        return
+
+    out_dir = os.path.join("..", "data", f"{std_type}_latents")
+    thumbnail_stats_file = os.path.join(out_dir, category, creator + "_stats.json")
+
+    # Check if the thumbnail statistics data already exists
+    # TODO: if you wanna use this, change category to be instance of Topic
+    # if not os.path.exists(thumbnail_stats_file):
+    #     ts.generate_repr_stats(out_dir, category)
+
+    try:
+        with open(thumbnail_stats_file) as f:
+            creator_dict = json.load(f)
+    except FileNotFoundError:
+        print(f"{creator} doesn't appear in the dataset. Try again with a different YouTuber.")    # Check if the creator is in the data    
+
+    mean = torch.Tensor(creator_dict["mean_latent"]) 
+
+    return mean
+
 if __name__ == '__main__':
     # Just some testing code
-    category = Topic.gaming
+    category = "gaming"
     creator = 'pewdiepie'
     all_latents = get_thumbnail_repr(category, creator)
