@@ -8,38 +8,35 @@
     <div class="container-fluid row">
 
         <!-- Content Middle -->
-        <div class="col-auto">
+        <div class="col-10">
 
             <!-- Content Row -->
             <div class="row">
 
-                <!-- Earnings (Monthly) Card Example -->
+                <!-- Channel info card -->
                 <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card border-left-primary shadow h-100">
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                         category: {{ category.name }}</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ category.subs }}</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ category.avg_subs }}</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Pending Requests Card Example -->
+                <!-- Videos card -->
                 <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-left-warning shadow h-100 py-2">
+                    <div class="card border-left-warning shadow h-100">
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                        Pending Requests</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                        Videos</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">list of videos</div>
                                 </div>
                             </div>
                         </div>
@@ -51,57 +48,36 @@
 
             <div class="row">
 
-                <!-- Area Chart -->
-                <div class="col-xl-8 col-lg-7">
+                <!-- Average Thumbnail -->
+                <div class="col-4">
                     <div class="card shadow mb-4">
                         <!-- Card Header - Dropdown -->
                         <div
-                            class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                            <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
+                            class="card-header d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Average Thumbnail</h6>
                             <div class="dropdown no-arrow">
                                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                                 </a>
-                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                    aria-labelledby="dropdownMenuLink">
-                                    <div class="dropdown-header">Dropdown Header:</div>
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Something else here</a>
-                                </div>
                             </div>
                         </div>
-                        <!-- Card Body -->
-                        <div class="card-body">
-                            <div class="chart-area">
-                                <canvas id="myAreaChart"></canvas>
-                            </div>
-                        </div>
+                        <img src="{{ category.avg_thumbnail }}">
                     </div>
                 </div>
 
                 <!-- Pie Chart -->
-                <div class="col-xl-4 col-lg-5">
+                <div class="col-4">
                     <div class="card shadow mb-4">
                         <!-- Card Header - Dropdown -->
                         <div
-                            class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                            <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
+                            class="card-header d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Dominant Colors</h6>
                             <div class="dropdown no-arrow">
                                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                                 </a>
-                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                    aria-labelledby="dropdownMenuLink">
-                                    <div class="dropdown-header">Dropdown Header:</div>
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Something else here</a>
-                                </div>
                             </div>
                         </div>
                         <!-- Card Body -->
@@ -123,14 +99,62 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Repr Thumbnail -->
+                <div class="col-4">
+                    <div class="card shadow mb-4">
+                        <!-- Card Header - Dropdown -->
+                        <div
+                            class="card-header d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Most Representative Thumbnail</h6>
+                            <div class="dropdown no-arrow">
+                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <img src="{{ category.repr_thumbnail }}">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Row -->
+            <div class="row">
+
+                <!-- Channel info card -->
+                <div class="col-12">
+                    <div class="card border-left-primary shadow h-100">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        Average Views by Thumbnail Consistency</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">Std plot</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </div>
         <!-- Content Middle End -->
 
         <!-- Content Right -->
-        <div class="col-auto">
-
+        <div class="col-2">
+            <!-- Videos card -->
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Tokens in Titles</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">effectiveness plot</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <!-- Content Right End -->
 

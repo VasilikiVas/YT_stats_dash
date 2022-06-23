@@ -31,11 +31,10 @@ def category():
 	with open(videos_info_path, "r") as f:
 		videos_dict = json.load(f)
 	videos = []
-	for name, videos in videos_dict.items():
-		for vid in videos:
-			videos.append({"channel": name, **vid})
-		channels_dict[name]["avg_views"]	  = np.mean([vid["views"] for vid in videos])
-		channels_dict[name]["vids_available"] = len(videos)
+	for name, vids in videos_dict.items():
+		videos.extend([{"channel": name, **vid} for vid in videos])
+		channels_dict[name]["avg_views"]	  = np.mean([vid["views"] for vid in vids])
+		channels_dict[name]["vids_available"] = len(vids)
 
 	channels = []
 	for name, info in channels_dict.items():
@@ -51,8 +50,8 @@ def category():
 		"avg_subs": 190000,   # int: avg subs per channel in cat TODO
 		"avg_views": 1200000, # int: avg views per video in cat TODO
 		# THUMBNAIL
-		"avg_thumbnail": os.path.join(DATA_DIR, "thumbnail-averages-gaming", "1c63394b-91b6-4f7e-9e53-58c4318200da.png"), # str: path to avg thumbnail TODO
-		"repr_thumbnail": os.path.join(DATA_DIR, "thumbnails", "___OSEsR5pk_high.jpg"), # str: path to most representative thumbnail TODO
+		"avg_thumbnail": os.path.join("static", "data", "thumbnail-averages", "channels", "a4.png"), # str: path to avg thumbnail TODO
+		"repr_thumbnail": os.path.join("static", "data", "thumbnails", "___OSEsR5pk_high.jpg"), # str: path to most representative thumbnail TODO
 		"dominant_colors": {"#ffaa99": 36.5, "#00ff00": 11.7}, # dict: keys are color clusters, values are percentage TODO
 		"object_effectiveness": {"person": 11.3, "cat": 3.5, "tie": -5.3}, # dict: keys are objects, values are percentage (delta/avg_views_without) TODO
 		# TITLE
@@ -62,7 +61,7 @@ def category():
 	}
 
 	return render_template("category.html", 
-		channels=channels, 			# list of dicts: all channels in the category, sorted by Subs
+		channels=channels[:5], 			# list of dicts: all channels in the category, sorted by Subs
 		category=category, 			# dict: info about the category
 		subview_mode=subview_mode,	# "thumbnail" or "title"
 		videos=videos,				# list of dicts: all videos (or maybe top-n if computation requires it) in the category, sorted by views
