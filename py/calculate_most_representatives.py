@@ -14,6 +14,12 @@ import os
 from util.constants import Topic
 
 
+def cosine_sim(vec1, vec2):
+    """Helper function which calculates cosine similarity of two vectors"""
+
+    return abs(np.dot(vec1, vec2)/np.linalg.norm(vec1)*np.linalg.norm(vec2))
+
+
 def generate_most_repr(data_type):
     """
     Function that calculates the most representative thumbnails or titles for
@@ -47,8 +53,8 @@ def generate_most_repr(data_type):
             similarities = []
 
             for vid_id, latent in all_channel_latents.items():
-                similarities.append(abs(np.dot(latent, channel_avg)/np.linalg.norm(latent)*np.linalg.norm(channel_avg)))
-                all_vids[vid_id] = abs(np.dot(latent, category_avg)/np.linalg.norm(latent)*np.linalg.norm(category_avg))
+                similarities.append(cosine_sim(latent, channel_avg))
+                all_vids[vid_id] = cosine_sim(latent, category_avg)
 
             most_similar_vid_id = all_channel_latents.keys()[np.argmin(similarities)]
             most_repr_dic[channel] = most_similar_vid_id
@@ -61,4 +67,5 @@ def generate_most_repr(data_type):
 
 if __name__ == "__main__":
     DATA_DIR = os.path.join("..", "data")
-    generate_most_repr()
+    generate_most_repr('thumbnail')
+    generate_most_repr('title')
