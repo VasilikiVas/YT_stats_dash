@@ -78,7 +78,7 @@ def extract_category_dom_colours(category: Topic, clusters):
         videos_info = json.load(f)
     print("Finished loading creator's videos\n")
 
-    print("Calculating dominant colours for all creators in category: " + category + "\n")
+    print("Calculating dominant colours for all channels in category: " + category + "\n")
     all_category_thumbnails = []
     for creator in tqdm(list(videos_info.keys())):
         all_creator_thumbnails = []
@@ -105,7 +105,7 @@ def extract_category_dom_colours(category: Topic, clusters):
         img_grid = make_image_grid_1_row(all_creator_thumbnails)
         dom_colours = extract_dom_colours(img_grid, clusters)
 
-        with open(os.path.join(CREATORS_PATH, creator + ".json"), 'w') as f:
+        with open(os.path.join(CHANNELS_PATH, creator + ".json"), 'w') as f:
             json.dump(dom_colours, f)
         
     print("Calculating dominant colours for category: " + category + "\n")
@@ -122,13 +122,13 @@ def extract_category_dom_colours(category: Topic, clusters):
 if __name__ == '__main__':
 
     CATEGORY_PATH = "../data/thumbnail-dom-colours/categories"
-    CREATORS_PATH = "../data/thumbnail-dom-colours/creators"
+    CHANNELS_PATH = "../data/thumbnail-dom-colours/channels"
 
     if not os.path.exists(CATEGORY_PATH):
         os.makedirs(CATEGORY_PATH)
 
-    if not os.path.exists(CREATORS_PATH):
-        os.makedirs(CREATORS_PATH)
+    if not os.path.exists(CHANNELS_PATH):
+        os.makedirs(CHANNELS_PATH)
 
     # choose how many colours to extract
     clusters = 10
