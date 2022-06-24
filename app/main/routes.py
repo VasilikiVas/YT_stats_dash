@@ -133,6 +133,25 @@ def category():
     )
 
 
+@main.route('/get_dom_colour_data', methods = ['GET'])
+def get_dom_colour_data():
+
+    category = request.args.get("category")
+    channel = request.args.get("channel")
+
+    if category:
+        # Get category dom colours
+        colour_data_path = os.path.join(DATA_DIR, "thumbnail-dom-colours", "categories", f"{category}.json")
+    elif channel:
+        # Get channel dom colours
+        colour_data_path = os.path.join(DATA_DIR, "thumbnail-dom-colours", "channels", f"{channel}.json")
+
+    with open(colour_data_path, "r") as f:
+        colour_data = f.read()
+
+    return colour_data
+
+
 @main.route('/video', methods=['GET'])
 def video():
     vid_id = request.args.get("video")
