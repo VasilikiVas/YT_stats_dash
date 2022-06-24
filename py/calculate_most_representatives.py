@@ -23,7 +23,8 @@ def cosine_sim(vec1, vec2):
 def generate_most_repr(data_type):
     """
     Function that calculates the most representative thumbnails or titles for
-    all categories and channels and saves the output to a single JSON file.
+    all categories and channels and saves the output to a single JSON file for 
+    each category.
 
     args:
         - data_type: the type of representation we're working on. Can be 'thumbnail' or 'title'

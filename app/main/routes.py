@@ -201,12 +201,17 @@ def channel():
     # Load the most similar channels
     similar_thumbnails_path = os.path.join(DATA_DIR, "thumbnail_similars", f"{cat}_similars.json")
     with open(most_repr_thumbnail_path, "r") as f:
-        most_sim_channels_thumbnail = json.load(f)
+        sim_chans_thumbnail = json.load(f)
 
     most_repr_title_path = os.path.join(DATA_DIR, "title_similars", f"{cat}_similars.json")
     with open(most_repr_title_path, "r") as f:
-        most_sim_channels_title = json.load(f)
+        sim_chans_title = json.load(f)
 
+    most_sim_chans_thumbnail = sim_chans_thumbnail[chan]
+    most_sim_chans_thumbnail = dict(sorted(most_sim_chans_thumbnail.items(), key=lambda item: item[1]))
+
+    most_sim_chans_title = sim_chans_title[chan]
+    most_sim_chans_title = dict(sorted(most_sim_chans_title.items(), key=lambda item: item[1]))
 
     # Load in the video id of the videos with the most representative thumbnails
     most_repr_thumbnail_path = os.path.join(DATA_DIR, "thumbnail_representatives", f"{cat}_representatives.json")
@@ -236,8 +241,8 @@ def channel():
     # channel_info["token_count"]: {"token1": 13000, "token2": 5000}, # dict: keys are tokens, values are the count TODO
     # channel_info["token_effectiveness"]: {"$10,000": 11.3, "best": 3.5, "books": -5.3}, # dict: keys are tokens, values are percentage (delta/avg_views_without) TODO
     # MISC
-    # channel_info["most_similar_channels_title"] = most_sim_channels_title
-    # channel_info["most_similar_channels_thumbnail"] = most_sim_channels_thumbnail
+    # channel_info["most_similar_channels_title"] = most_sim_chans_title
+    # channel_info["most_similar_channels_thumbnail"] = most_sim_chans_thumbnail
 
     # Hardcoded examples
     # THUMBNAIL
