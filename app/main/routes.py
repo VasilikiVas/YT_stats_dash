@@ -199,11 +199,11 @@ def channel():
 
     # TODO write code to calculate the most similar channels based on either thumbnail or title
     # Load the most similar channels
-    similar_thumbnails_path = os.path.join(DATA_DIR, "thumbnail_most_similars", f"{cat}_similars.json")
+    similar_thumbnails_path = os.path.join(DATA_DIR, "thumbnail_similars", f"{cat}_similars.json")
     with open(most_repr_thumbnail_path, "r") as f:
         most_sim_channels_thumbnail = json.load(f)
 
-    most_repr_title_path = os.path.join(DATA_DIR, "title_most_similars", f"{cat}_similars.json")
+    most_repr_title_path = os.path.join(DATA_DIR, "title_similars", f"{cat}_similars.json")
     with open(most_repr_title_path, "r") as f:
         most_sim_channels_title = json.load(f)
 
