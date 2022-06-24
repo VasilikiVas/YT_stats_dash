@@ -61,7 +61,6 @@
                 </div>
                 <div class="sidebar-brand-text mx-3">LOGO</div>
             </a>
-
             <!-- Divider -->
             <hr class="sidebar-divider">
 
@@ -69,6 +68,17 @@
             <div class="sidebar-heading">
                 Channels
             </div>
+
+            <li class="nav-item">
+                <div class="nav-link">
+                    <select class="custom-select">
+                        <option selected>all categories</option>
+                    {% for cat in categories %}
+                        <option>{{ cat }}</option>
+                    {% endfor %}
+                    </select>
+                </div>
+            </li>
 
             <!-- Nav Item - Channels -->
             <li class="nav-item"><ul class="channel_list" data-simplebar>

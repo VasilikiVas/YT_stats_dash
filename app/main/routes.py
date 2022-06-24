@@ -32,9 +32,10 @@ def category():
 		videos_dict = json.load(f)
 	videos = []
 	for name, vids in videos_dict.items():
-		videos.extend([{"channel": name, **vid} for vid in videos])
+		videos.extend([{"channel": name, **vid} for vid in vids])
 		channels_dict[name]["avg_views"]	  = np.mean([vid["views"] for vid in vids])
 		channels_dict[name]["vids_available"] = len(vids)
+	videos.sort(key=lambda x: x["views"], reverse=True)
 
 	channels = []
 	for name, info in channels_dict.items():
@@ -47,6 +48,7 @@ def category():
 		"name": cat, 		  # str: name of category
 		"avg_subs": 190000,   # int: avg subs per channel in cat
 		"avg_views": 1200000, # int: avg views per video in cat
+		"avg_video_count": 10, # int: avg amount of videos per channel in cat
 		# THUMBNAIL
         "avg_thumbnail": os.path.join(DATA_DIR, f"thumbnail-averages/categories/{cat}_average.png"), # str: path to avg thumbnail
         "repr_thumbnail": os.path.join(DATA_DIR, f"thumbnail-most-representatives/categories/{cat}_repr.jpg"), # str: path to most representative thumbnail
@@ -62,11 +64,17 @@ def category():
 		"token_effectiveness": {"$10,000": 11.3, "best": 3.5, "books": -5.3}, # dict: keys are tokens, values are percentage (delta/avg_views_without) TODO
 	}
 
-	return render_template("category.html", 
-		channels=channels, 			# list of dicts: all channels in the category, sorted by Subs
+	return render_template("category.html",
+		categories=["gaming", "howto", "science", "autos", "blogs"],
+		channels=channels[:20], 			# list of dicts: all channels in the category, sorted by Subs
 		category=category, 			# dict: info about the category
+		category_display={
+			"Subs/Channel: ": category["avg_subs"],
+			"Views/Video: ": category["avg_views"],
+			"Videos/Channel: ": category["avg_video_count"],
+		},
 		subview_mode=subview_mode,	# "thumbnail" or "title"
-		videos=videos,				# list of dicts: all videos (or maybe top-n if computation requires it) in the category, sorted by views
+		videos=videos[:20],				# list of dicts: all videos (or maybe top-n if computation requires it) in the category, sorted by views
 	)
 
 

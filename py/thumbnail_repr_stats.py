@@ -108,9 +108,9 @@ def generate_repr_stats(out_dir, category: Topic):
     out_dir = os.path.join(out_dir, category.name)
 
     with open(os.path.join("..", "data", f"videos-info_{category.name}.json"), "r") as f:
-        print("Loading creator's videos")
-        creator_info = json.load(f)
-    print("Finished loading creator's videos\n")
+        print("Loading channel's videos")
+        channel_info = json.load(f)
+    print("Finished loading channel's videos\n")
 
     model, feature_extractor = load_model(device, install=False)
     # Print model size
@@ -118,16 +118,16 @@ def generate_repr_stats(out_dir, category: Topic):
     mem_bufs = sum([buf.nelement()*buf.element_size() for buf in model.buffers()])
     print(f"Memory used by model: {mem_params + mem_bufs} bytes")
 
-    print("Calculating thumbnail latent representation stats for all creators\n")
-    for creator in tqdm(list(creator_info.keys())):
-        if os.path.isfile(os.path.join(out_dir, creator + "_stats.json")):
+    print("Calculating thumbnail latent representation stats for all channels\n")
+    for channel in tqdm(list(channel_info.keys())):
+        if os.path.isfile(os.path.join(out_dir, channel + "_stats.json")):
             continue
         
         stats_dic = {}
 
-        vid_ids = [vid_dict['id'] for vid_dict in creator_info[creator] if os.path.isfile(os.path.join(thumbnail_dir, vid_dict['id'] + "_high.jpg"))]
+        vid_ids = [vid_dict['id'] for vid_dict in channel_info[channel] if os.path.isfile(os.path.join(thumbnail_dir, vid_dict['id'] + "_high.jpg"))]
         all_thumbnails = [Image.open(os.path.join(thumbnail_dir, vid_dict['id'] + "_high.jpg")) 
-                            for vid_dict in creator_info[creator] if os.path.isfile(os.path.join(thumbnail_dir, vid_dict['id'] + "_high.jpg"))]
+                            for vid_dict in channel_info[channel] if os.path.isfile(os.path.join(thumbnail_dir, vid_dict['id'] + "_high.jpg"))]
 
         print(f'Number of thumbnails: {len(all_thumbnails)}')
         if all_thumbnails:
@@ -142,7 +142,7 @@ def generate_repr_stats(out_dir, category: Topic):
         stats_dic['mean_latent'] = torch.mean(latents, dim=0).detach().cpu().numpy().tolist()
         stats_dic['stdev'] = torch.sum(torch.std(latents, dim=0)).detach().cpu().numpy().tolist()
 
-        with open(os.path.join(out_dir, creator + "_stats.json"), 'w') as f:
+        with open(os.path.join(out_dir, channel + "_stats.json"), 'w') as f:
             json.dump(stats_dic, f)
 
     print("Finished calculating statistics\n")
