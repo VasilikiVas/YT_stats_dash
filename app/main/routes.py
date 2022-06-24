@@ -9,14 +9,14 @@ import numpy as np
 from . import main
 
 try:
-	from ...py.get_creator_stats import *
+	from ...py.get_channel_stats import *
 	from ...py.util.constants import Topic
 except:
 	path = os.getcwd()
 	sys.path.append(os.path.join(path ,"py/"))
 	sys.path.append(os.path.join(path ,"py/util/"))
 
-	from get_creator_stats import *
+	from get_channel_stats import *
 	from util.constants import Topic
 
 	sys.path.remove(os.path.join(path ,"py/"))
@@ -232,35 +232,35 @@ def channel():
 
     # TODO Actual code (WIP)
     # # THUMBNAIL
-    # channel_info["avg_thumbnail"]: os.path.join(DATA_DIR, f"thumbnail-averages/categories/{cat}_average.png"), # str: path to avg thumbnail
-    # channel_info["repr_thumbnail"]: most_repr_thumbnail_path, # str: path to most representative thumbnail
-    # channel_info["dominant_colors"]: {"#ffaa99": 36.5, "#00ff00": 11.7}, # dict: keys are color clusters, values are percentage TODO
-    # channel_info["object_effectiveness"]: {"person": 11.3, "cat": 3.5, "tie": -5.3}, # dict: keys are objects, values are percentage (delta/avg_views_without) TODO
+    # channel_info["avg_thumbnail"]: os.path.join(DATA_DIR, f"thumbnail-averages/categories/{cat}_average.png") # str: path to avg thumbnail
+    # channel_info["repr_thumbnail"]: most_repr_thumbnail_path # str: path to most representative thumbnail
+    # channel_info["dominant_colors"]: {"#ffaa99": 36.5, "#00ff00": 11.7} # dict: keys are color clusters, values are percentage TODO
+    # channel_info["object_effectiveness"]: {"person": 11.3, "cat": 3.5, "tie": -5.3} # dict: keys are objects, values are percentage (delta/avg_views_without) TODO
     # # TITLE
-    # channel_info["repr_title"]: most_repr_title, # str: most representative title
-    # channel_info["token_count"]: {"token1": 13000, "token2": 5000}, # dict: keys are tokens, values are the count TODO
-    # channel_info["token_effectiveness"]: {"$10,000": 11.3, "best": 3.5, "books": -5.3}, # dict: keys are tokens, values are percentage (delta/avg_views_without) TODO
+    # channel_info["repr_title"]: most_repr_title # str: most representative title
+    # channel_info["token_count"]: {"token1": 13000, "token2": 5000} # dict: keys are tokens, values are the count TODO
+    # channel_info["token_effectiveness"]: {"$10,000": 11.3, "best": 3.5, "books": -5.3} # dict: keys are tokens, values are percentage (delta/avg_views_without) TODO
     # MISC
     # channel_info["most_similar_channels_title"] = most_sim_chans_title
     # channel_info["most_similar_channels_thumbnail"] = most_sim_chans_thumbnail
 
     # Hardcoded examples
     # THUMBNAIL
-    channel_info["avg_thumbnail"]: os.path.join("static", "data", "thumbnail-averages", "channels", "a4.png"), # str: path to avg thumbnail TODO
-    channel_info["repr_thumbnail"]: os.path.join("static", "data", "thumbnails", "___OSEsR5pk_high.jpg"), # str: path to most representative thumbnail TODO
-    channel_info["dominant_colors"]: {"#ffaa99": 36.5, "#00ff00": 11.7}, # dict: keys are color clusters, values are percentage TODO
-    channel_info["object_effectiveness"]: {"person": 11.3, "cat": 3.5, "tie": -5.3}, # dict: keys are objects, values are percentage (delta/avg_views_without) TODO
+    channel_info["avg_thumbnail"]: os.path.join("static", "data", "thumbnail-averages", "channels", "a4.png") # str: path to avg thumbnail TODO
+    channel_info["repr_thumbnail"]: os.path.join("static", "data", "thumbnails", "___OSEsR5pk_high.jpg") # str: path to most representative thumbnail TODO
+    channel_info["dominant_colors"]: {"#ffaa99": 36.5, "#00ff00": 11.7} # dict: keys are color clusters, values are percentage TODO
+    channel_info["object_effectiveness"]: {"person": 11.3, "cat": 3.5, "tie": -5.3} # dict: keys are objects, values are percentage (delta/avg_views_without) TODO
     # TITLE
-    channel_info["repr_title"]: "This is a title", # str: most representative title TODO
-    channel_info["token_count"]: {"token1": 13000, "token2": 5000}, # dict: keys are tokens, values are the count TODO
-    channel_info["token_effectiveness"]: {"$10,000": 11.3, "best": 3.5, "books": -5.3}, # dict: keys are tokens, values are percentage (delta/avg_views_without) TODO
+    channel_info["repr_title"]: "This is a title" # str: most representative title TODO
+    channel_info["token_count"]: {"token1": 13000, "token2": 5000} # dict: keys are tokens, values are the count TODO
+    channel_info["token_effectiveness"]: {"$10,000": 11.3, "best": 3.5, "books": -5.3} # dict: keys are tokens, values are percentage (delta/avg_views_without) TODO
     # MISC
     channel_info["most_similar_channels_title"] = ["pewdiepie", "penguinz0", "sssniperwolf"]
     channel_info["most_similar_channels_thumbnail"] = ["pewdiepie", "penguinz0", "sssniperwolf"]
 
     return render_template("channel.html",
         categories=["gaming", "howto", "science", "autos", "blogs"],
-        channel_info=channel_info
+        channel_info=channel_info,
         channels=all_channels[:20], 			# list of dicts: all channels in the category, sorted by Subs
         channel_display={
             "Subs/Channel: ": channel_info["Subscribers"],
