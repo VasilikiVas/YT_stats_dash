@@ -13,8 +13,8 @@ import matplotlib.pyplot as plt
 def rgb_to_hex(rgb):
     return '#%02x%02x%02x' % rgb
 
-def make_image_grid_1_row(imgs):
 
+def make_image_grid_1_row(imgs):
     w, h = imgs[0].size
     cols = len(imgs)
 
@@ -37,8 +37,16 @@ def make_image_grid(imgs, rows, cols):
 
 
 def extract_dom_colours(img, clusters):
-    _, W, C = img.shape
-    img = np.resize(img,(200, W, C))
+    """
+    Function to extract dominant colours of given image.
+    """
+    _, _, C = img.shape
+        
+    # resize so kmeans is faster
+    img = np.resize(img,(100, 200, C))
+
+    # remove dark colours from image
+    img = img[img[:,:,0] + img[:,:,1] + img[:,:,2] > 50]
 
     flat_img = np.reshape(img,(-1,3))
 
@@ -50,11 +58,11 @@ def extract_dom_colours(img, clusters):
     dominant_colors = [rgb_to_hex(dom_color) for dom_color in dominant_colors]
 
     percentages = (np.unique(kmeans.labels_, return_counts=True)[1]) / flat_img.shape[0]
-    print(sum(percentages))
-    p_and_c = zip(percentages, dominant_colors)
-    p_and_c = sorted(p_and_c,reverse = True)
+    percentages = [round(perc, 3) for perc in percentages]
 
-    return p_and_c
+    c_and_p_dict = {"colours" : dominant_colors, "perc" : percentages}
+
+    return c_and_p_dict
 
 
 def extract_category_dom_colours(category: Topic, clusters):
@@ -95,20 +103,20 @@ def extract_category_dom_colours(category: Topic, clusters):
             continue
 
         img_grid = make_image_grid_1_row(all_creator_thumbnails)
-
         dom_colours = extract_dom_colours(img_grid, clusters)
-        print(dom_colours)
 
         with open(os.path.join(CREATORS_PATH, creator + ".json"), 'w') as f:
             json.dump(dom_colours, f)
-      
-    
+        
     print("Calculating dominant colours for category: " + category + "\n")
 
     img_grid = make_image_grid_1_row(all_category_thumbnails)
     dom_colours = extract_dom_colours(img_grid, clusters)
 
-    # print("Finished saving thumbnail averages per creator and for category\n")
+    with open(os.path.join(CATEGORY_PATH, category + ".json"), 'w') as f:
+        json.dump(dom_colours, f)
+
+    print("Finished calculating dominant colours per creator and for category\n")
 
 
 if __name__ == '__main__':
