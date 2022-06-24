@@ -5,9 +5,9 @@ from PIL import Image
 from tqdm import tqdm
 from util.constants import THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT
 
-def crop_black_boarder(img_dir, overwrite_img = False):
+def crop_black_border(img_dir, overwrite_img = False):
     """
-     Function to crop_black_boarder of an image
+     Function to crop_black_border of an image
      
      args:
         - img_dir: path to the image directory
@@ -42,7 +42,7 @@ if __name__ == '__main__':
     thumbnail_dir = os.path.join("..", "data", "thumbnails")
     for img in tqdm(os.listdir(thumbnail_dir)):
         img_dir = os.path.join(thumbnail_dir, img)
-        img = crop_black_boarder(img_dir, overwrite_img = True)
+        img = crop_black_border(img_dir, overwrite_img = True)
         
         # plt.imshow(img)
         # plt.show()
