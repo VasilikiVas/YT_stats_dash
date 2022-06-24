@@ -22,6 +22,7 @@ CHANNEL_URL         = "https://dz.youtubers.me/{name}/youtube?lang=en"
 THUMBNAIL_URL       = "http://img.youtube.com/vi/{id}/maxresdefault.jpg" # 1280x720
 ALT_THUMBNAIL_URL   = "https://i.ytimg.com/vi/{id}/{res}default.jpg"
 
+THUMBNAIL_PATH = "../data/thumbnails"
 THUMBNAIL_WIDTH = 480
 THUMBNAIL_HEIGHT = 360
 

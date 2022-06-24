@@ -45,18 +45,17 @@ def category():
     videos_info_path = os.path.join(DATA_DIR, "info_videos", f"videos-info_{cat}.json")
     with open(videos_info_path, "r") as f:
         videos_dict = json.load(f)
-
-    # Get dictionary to translate video ids to channel names (useful for e.g. most representative title)
-    vid2channel_path = os.path.join(DATA_DIR, "vid2channel.json")
-    with open(vid2channel_path, "r") as f:
-        vid2channel = json.load(f)
-
     videos = []
     for name, vids in videos_dict.items():
         videos.extend([{"channel": name, **vid} for vid in vids])
         channels_dict[name]["avg_views"]	  = np.mean([vid["views"] for vid in vids])
         channels_dict[name]["vids_available"] = len(vids)
     videos.sort(key=lambda x: x["views"], reverse=True)
+
+    # Get dictionary to translate video ids to channel names (useful for e.g. most representative title)
+    vid2channel_path = os.path.join(DATA_DIR, "vid2channel.json")
+    with open(vid2channel_path, "r") as f:
+        vid2channel = json.load(f)
 
     channels = []
     for name, info in channels_dict.items():

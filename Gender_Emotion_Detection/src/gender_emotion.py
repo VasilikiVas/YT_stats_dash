@@ -59,6 +59,7 @@ for frame_name in os.listdir("../../data/thumbnails-not-cropped"):
     if frame is None:
         print('Wrong path:', frame_dict)
     else:
+        l = []
         resultImg,faceBoxes=highlightFace(faceNet,frame)
         if not faceBoxes:
             print("No face detected")
@@ -123,7 +124,8 @@ for frame_name in os.listdir("../../data/thumbnails-not-cropped"):
                     "gender": gender,
                     "emotion": emotion_dict[maxindex],
                     "box_dim": [max(0,x-20), max(0,y-20), min(w+10, frame.shape[1]-1), min(h+10,frame.shape[0]-1)]}
-                y = json.dumps(x)
-                with open("../result_json/"+frame_name.split(".")[0]+".json", 'a') as outfile:
-                    outfile.write(y)
+                l.append(x)
+        y = json.dumps(l)
+        with open("../result_json/"+frame_name.split(".")[0]+".json", 'w') as outfile:
+            outfile.write(y)
         cv2.imwrite("../result_images/"+frame_name, frame)

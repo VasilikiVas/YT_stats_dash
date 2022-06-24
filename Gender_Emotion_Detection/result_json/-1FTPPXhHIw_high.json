@@ -1,1 +1,1 @@
-{"number": 1, "gender": "Male", "emotion": "Neutral", "box_dim": [318, 38, 374, 105]}{"number": 2, "gender": "Male", "emotion": "Angry", "box_dim": [403, 37, 461, 107]}
+[{"number": 1, "gender": "Male", "emotion": "Neutral", "box_dim": [318, 38, 374, 105]}, {"number": 2, "gender": "Male", "emotion": "Angry", "box_dim": [403, 37, 461, 107]}]
