@@ -22,12 +22,12 @@ def category():
 		subview_mode = "thumbnail"
 
 	# Get channels info
-	channels_info_path = os.path.join(DATA_DIR, f"channels-info_{cat}.json")
+	channels_info_path = os.path.join(DATA_DIR, "info_channels", f"channels-info_{cat}.json")
 	with open(channels_info_path, "r") as f:
 		channels_dict = json.load(f)
 
 	# Get videos info
-	videos_info_path = os.path.join(DATA_DIR, f"videos-info_{cat}.json")
+	videos_info_path = os.path.join(DATA_DIR, "info_videos", f"videos-info_{cat}.json")
 	with open(videos_info_path, "r") as f:
 		videos_dict = json.load(f)
 	videos = []
@@ -49,6 +49,7 @@ def category():
 		"avg_subs": 190000,   # int: avg subs per channel in cat
 		"avg_views": 1200000, # int: avg views per video in cat
 		"avg_video_count": 10, # int: avg amount of videos per channel in cat
+		
 		# THUMBNAIL
         "avg_thumbnail": os.path.join(DATA_DIR, f"thumbnail-averages/categories/{cat}_average.png"), # str: path to avg thumbnail
         "repr_thumbnail": os.path.join(DATA_DIR, f"thumbnail-most-representatives/categories/{cat}_repr.jpg"), # str: path to most representative thumbnail
