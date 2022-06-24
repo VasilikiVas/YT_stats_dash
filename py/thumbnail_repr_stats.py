@@ -103,9 +103,9 @@ def generate_repr_stats(out_dir, category: Topic):
     thumbnail_dir = os.path.join("..", "data", "thumbnails")
     
     # Save the thumbnail stats per category
-    if not os.path.isdir(os.path.join(out_dir, category.name)):
-        os.mkdir(os.path.join(out_dir, category.name))
-    out_dir = os.path.join(out_dir, category.name)
+    out_dir = os.path.join(out_dir, "videos")
+    if not os.path.isdir(out_dir):
+        os.mkdir(out_dir)
 
     with open(os.path.join("..", "data", f"videos-info_{category.name}.json"), "r") as f:
         print("Loading channel's videos")
@@ -149,5 +149,5 @@ def generate_repr_stats(out_dir, category: Topic):
 
 
 if __name__ == '__main__':
-    out_dir = os.path.join("..", "data", "thumbnail_latents")
+    out_dir = os.path.join("..", "data", "thumbnail-latents")
     generate_repr_stats(out_dir, Topic.gaming)
