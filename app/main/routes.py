@@ -23,7 +23,7 @@ except:
 	sys.path.remove(os.path.join(path ,"py/util/"))
 
 
-DATA_DIR = os.path.join("..", "..", "data")
+DATA_DIR = os.path.join("data")
 
 @main.route('/', methods=['GET'])
 @main.route('/category', methods=['GET'])
@@ -81,12 +81,12 @@ def category():
 	# with open(most_repr_title_path, "r") as f:
 	# 	most_repr_title_data = json.load(f)
 
-    # Get the most representative title and thumbnail for this category specifically
-    title_repr_id = most_repr_title_data[f"Category_{cat}"]
-    thumbnail_repr_id = most_repr_thumbnail_data[f"Category_{cat}"]
+    # # Get the most representative title and thumbnail for this category specifically
+    # title_repr_id = most_repr_title_data[f"Category_{cat}"]
+    # thumbnail_repr_id = most_repr_thumbnail_data[f"Category_{cat}"]
 
-    most_repr_title = next(vid for vid in videos_dict[vid2channel[title_repr_id]] if vid["id"]==title_repr_id)["title"]
-    most_repr_thumbnail_path = os.path.join(DATA_DIR, f"thumbnails/{thumbnail_repr_id}_high.jpg")
+    # most_repr_title = next(vid for vid in videos_dict[vid2channel[title_repr_id]] if vid["id"]==title_repr_id)["title"]
+    # most_repr_thumbnail_path = os.path.join(DATA_DIR, f"thumbnails/{thumbnail_repr_id}_high.jpg")
 
     category = {
         # TODO Actual code (WIP)
@@ -130,7 +130,7 @@ def category():
             "Videos/Channel: ": category["avg_video_count"],
         },
         subview_mode=subview_mode,	# "thumbnail" or "title"
-        videos=videos[:20],				# list of dicts: all videos (or maybe top-n if computation requires it) in the category, sorted by views
+        videos=videos[:20],			# list of dicts: all videos (or maybe top-n if computation requires it) in the category, sorted by views
     )
 
 
