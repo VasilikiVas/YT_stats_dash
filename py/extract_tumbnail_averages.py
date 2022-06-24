@@ -1,5 +1,5 @@
 from turtle import shape
-from util.constants import Topic, THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH
+from util.constants import Topic, THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH, THUMBNAIL_PATH
 from tqdm import tqdm
 from PIL import Image
 import numpy as np
@@ -9,14 +9,11 @@ from matplotlib import pyplot as plt
 
 def generate_thumbnail_averages(category: Topic):
     """
-    Function to generate all thumbnail averages per channel.
+    Function to generate all thumbnail averages per creator and category for the given category.
 
     args:
-        - out_folder: path to the folder where the thumbnail averages will be saved
+        - category: the given category
     """
-
-    # Define thumbnail path
-    thumbnail_dir = os.path.join("..", "data", "thumbnails")
 
     with open(os.path.join("..", "data", f"videos-info_{category}.json"), "r") as f:
         print("Loading channel's videos")
@@ -34,7 +31,7 @@ def generate_thumbnail_averages(category: Topic):
             channel_thumbnails = []
             channel_views = []
             for vid_dict in videos_info[channel]:
-                img = np.array(Image.open(os.path.join(thumbnail_dir, vid_dict['id'] + "_high.jpg")))
+                img = np.array(Image.open(os.path.join(THUMBNAIL_PATH, vid_dict['id'] + "_high.jpg")))
                 h, w, _ = img.shape
                 if h == THUMBNAIL_HEIGHT and w == THUMBNAIL_WIDTH:
                     # we exclude shorts by skipping the videos that were not cropped
