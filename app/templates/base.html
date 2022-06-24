@@ -28,6 +28,7 @@
     <!-- Custom styles for this template-->
     <link href="../static/css/sb-admin-2.css" rel="stylesheet">
     <link href="../static/css/sb-admin-custom.css" rel="stylesheet">
+    <link href="../static/css/general.css" rel="stylesheet">   
 
 </head>
 <body id="page-top">
@@ -60,7 +61,6 @@
                 </div>
                 <div class="sidebar-brand-text mx-3">LOGO</div>
             </a>
-
             <!-- Divider -->
             <hr class="sidebar-divider">
 
@@ -69,16 +69,28 @@
                 Channels
             </div>
 
-            <!-- Nav Item - Channels -->
-            {% for channel in channels %}
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                    aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-fw fa-wrench"></i>
-                    <span>{{ channel.name }}</span>
-                </a>
+                <div class="nav-link">
+                    <select class="custom-select">
+                        <option selected>all categories</option>
+                    {% for cat in categories %}
+                        <option>{{ cat }}</option>
+                    {% endfor %}
+                    </select>
+                </div>
             </li>
-            {% endfor %}
+
+            <!-- Nav Item - Channels -->
+            <li class="nav-item"><ul class="channel_list" data-simplebar>
+                {% for channel in channels %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/channel/{{ channel.name }}">
+                        <img src="{{ channel.logo_url }}" class="channel_logo">
+                        <span>{{ channel.name }}</span>
+                    </a>
+                </li>
+                {% endfor %}
+            </ul></li>
 
             <!-- Divider -->
             <hr class="sidebar-divider">
@@ -101,5 +113,9 @@
 
     </div>
     <!-- End of Page Wrapper -->
+    
+    <!-- For simple scroll bar (NEEDS TO BE HERE, AFTER THE JINJA2) -->
+    <link href="https://unpkg.com/simplebar@latest/dist/simplebar.css" rel="stylesheet" type="text/css">
+    <script src="https://unpkg.com/simplebar@latest/dist/simplebar.js"></script> 
 </body>
 </html>
