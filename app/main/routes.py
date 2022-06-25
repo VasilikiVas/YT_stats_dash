@@ -26,9 +26,8 @@ except:
 DATA_DIR = os.path.join("data")
 
 @main.route('/', methods=['GET'])
-@main.route('/category', methods=['GET'])
-def category():
-    cat = request.args.get("category")
+@main.route('/category/<cat>', methods=['GET'])
+def category(cat):
     subview_mode = request.args.get("subview_mode")
 
     if not cat:
@@ -108,8 +107,8 @@ def category():
         "avg_views": 1200000, # int: avg views per video in cat
         "avg_video_count": 10, # int: avg amount of videos per channel in cat
         # THUMBNAIL
-        "avg_thumbnail": os.path.join("static", "data", "thumbnail-averages", "channels", "a4.png"), # str: path to avg thumbnail TODO
-        "repr_thumbnail": os.path.join("static", "data", "thumbnails", "___OSEsR5pk_high.jpg"), # str: path to most representative thumbnail TODO
+        "avg_thumbnail": os.path.join("..", "static", "data", "thumbnail-averages", "channels", "a4.png"), # str: path to avg thumbnail TODO
+        "repr_thumbnail": os.path.join("..", "static", "data", "thumbnails", "___OSEsR5pk_high.jpg"), # str: path to most representative thumbnail TODO
         "dominant_colors": {"#ffaa99": 36.5, "#00ff00": 11.7}, # dict: keys are color clusters, values are percentage TODO
         "object_effectiveness": {"person": 11.3, "cat": 3.5, "tie": -5.3}, # dict: keys are objects, values are percentage (delta/avg_views_without) TODO
         # TITLE
@@ -181,7 +180,7 @@ def channel():
     if not subview_mode:
         subview_mode = "thumbnail"
 
-    channel2cat_path = os.path.join(DATA_DIR, "channel2cat.json")
+    channel2cat_path = os.path.join(DATA_DIR, "channel2category.json")
     with open(channel2cat_path, "r") as f:
         channels2cat = json.load(f)
     cat = channels2cat[chan]
@@ -266,15 +265,15 @@ def channel():
     # THUMBNAIL
     channel_info["avg_thumbnail"]: os.path.join("static", "data", "thumbnail-averages", "channels", "a4.png") # str: path to avg thumbnail TODO
     channel_info["repr_thumbnail"]: os.path.join("static", "data", "thumbnails", "___OSEsR5pk_high.jpg") # str: path to most representative thumbnail TODO
-    channel_info["dominant_colors"]: {"#ffaa99": 36.5, "#00ff00": 11.7} # dict: keys are color clusters, values are percentage TODO
-    channel_info["object_effectiveness"]: {"person": 11.3, "cat": 3.5, "tie": -5.3} # dict: keys are objects, values are percentage (delta/avg_views_without) TODO
+    # channel_info["dominant_colors"]: {"#ffaa99": 36.5, "#00ff00": 11.7} # dict: keys are color clusters, values are percentage TODO
+    # channel_info["object_effectiveness"]: {"person": 11.3, "cat": 3.5, "tie": -5.3} # dict: keys are objects, values are percentage (delta/avg_views_without) TODO
     # TITLE
-    channel_info["repr_title"]: "This is a title" # str: most representative title TODO
-    channel_info["token_count"]: {"token1": 13000, "token2": 5000} # dict: keys are tokens, values are the count TODO
-    channel_info["token_effectiveness"]: {"$10,000": 11.3, "best": 3.5, "books": -5.3} # dict: keys are tokens, values are percentage (delta/avg_views_without) TODO
+    # channel_info["repr_title"]: "This is a title" # str: most representative title TODO
+    # channel_info["token_count"]: {"token1": 13000, "token2": 5000} # dict: keys are tokens, values are the count TODO
+    # channel_info["token_effectiveness"]: {"$10,000": 11.3, "best": 3.5, "books": -5.3} # dict: keys are tokens, values are percentage (delta/avg_views_without) TODO
     # MISC
-    channel_info["most_similar_channels_title"] = ["pewdiepie", "penguinz0", "sssniperwolf"]
-    channel_info["most_similar_channels_thumbnail"] = ["pewdiepie", "penguinz0", "sssniperwolf"]
+    # channel_info["most_similar_channels_title"] = ["pewdiepie", "penguinz0", "sssniperwolf"]
+    # channel_info["most_similar_channels_thumbnail"] = ["pewdiepie", "penguinz0", "sssniperwolf"]
 
     return render_template("channel.html",
         categories=["gaming", "howto", "science", "autos", "blogs"],
@@ -286,7 +285,7 @@ def channel():
             "Videos/Channel: ": channel_info["Video count"],
         },
         subview_mode=subview_mode,	# "thumbnail" or "title"
-        videos=videos[:20],				# list of dicts: all videos (or maybe top-n if computation requires it) in the category, sorted by views
+        videos=videos[:20],			# list of dicts: all videos (or maybe top-n if computation requires it) in the category, sorted by views
     )
 
 # Debugging code
