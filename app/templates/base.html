@@ -17,6 +17,7 @@
 
 	<!-- D3 package -->
 	<script src="https://d3js.org/d3.v5.min.js"></script>
+    <script type="text/javascript" src="../static/js/display_category.js"></script>
 
     <!-- BOOTSTRAP TEMPLATE -->
     <!-- Custom fonts for this template-->
@@ -46,6 +47,9 @@
     <!-- Page level plugins -->
     <script src="../static/vendor/chart.js/Chart.min.js"></script>
 
+    <script type="text/javascript">
+        var channels = {{channels | safe}};
+    </script>
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -81,17 +85,16 @@
             </li>
 
             <!-- Nav Item - Channels -->
-            <li class="nav-item"><ul class="channel_list" data-simplebar>
-                {% for channel in channels %}
+            <li class="nav-item"><ul id="channel_display_list" class="channel_list" data-simplebar>
+                <!-- {% for channel in channels %}
                 <li class="nav-item">
                     <a class="nav-link" href="/channel/{{ channel.name }}">
                         <img src="{{ channel.logo_url }}" class="channel_logo">
                         <span>{{ channel.name }}</span>
                     </a>
                 </li>
-                {% endfor %}
+                {% endfor %} -->
             </ul></li>
-
             <!-- Divider -->
             <hr class="sidebar-divider">
 
@@ -116,6 +119,6 @@
     
     <!-- For simple scroll bar (NEEDS TO BE HERE, AFTER THE JINJA2) -->
     <link href="https://unpkg.com/simplebar@latest/dist/simplebar.css" rel="stylesheet" type="text/css">
-    <script src="https://unpkg.com/simplebar@latest/dist/simplebar.js"></script> 
+    <script src="https://unpkg.com/simplebar@latest/dist/simplebar.js"></script>
 </body>
 </html>
