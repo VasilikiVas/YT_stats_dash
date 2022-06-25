@@ -82,7 +82,7 @@ def get_latent_vectors(model, ft_extr, raw_imgs, device):
     print(f"Size of images in memory: {pixel_values.element_size()*pixel_values.nelement()} bytes")
     # Get the latent representation by passing it through the network
     latent_vecs = model(pixel_values)
-
+    del pixel_values
     return latent_vecs
 
 
@@ -107,7 +107,7 @@ def generate_repr_stats(out_dir, category: Topic):
     if not os.path.isdir(out_dir):
         os.mkdir(out_dir)
 
-    with open(os.path.join("..", "data", f"videos-info_{category.name}.json"), "r") as f:
+    with open(os.path.join("..", "data", "info_videos", f"videos-info_{category.name}.json"), "r") as f:
         print("Loading channel's videos")
         channel_info = json.load(f)
     print("Finished loading channel's videos\n")
@@ -135,15 +135,19 @@ def generate_repr_stats(out_dir, category: Topic):
             latents_save = latents.detach().cpu().numpy().tolist()
         else:
             # If there aren't any thumbnails available save None
-            latents_save = None
+            latents = torch.Tensor([])
+            latents_save = torch.Tensor([])
 
         # Save the relevant statistics
-        stats_dic['all_latents'] = {i: latents_save[i] for i in range(len(latents_save))}
-        stats_dic['mean_latent'] = torch.mean(latents, dim=0).detach().cpu().numpy().tolist()
-        stats_dic['stdev'] = torch.sum(torch.std(latents, dim=0)).detach().cpu().numpy().tolist()
+        stats_dic['all_latents'] = {vid_ids[i]: latents_save[i] for i in range(len(latents_save))}
+        stats_dic['mean_latent'] = torch.mean(latents_save, dim=0).detach().cpu().numpy().tolist()
+        stats_dic['stdev'] = torch.sum(torch.std(latents_save, dim=0)).detach().cpu().numpy().tolist()
 
         with open(os.path.join(out_dir, channel + "_stats.json"), 'w') as f:
             json.dump(stats_dic, f)
+
+        del latents
+        torch.cuda.empty_cache()
 
     print("Finished calculating statistics\n")
 
