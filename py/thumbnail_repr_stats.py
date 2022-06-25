@@ -107,7 +107,7 @@ def generate_repr_stats(out_dir, category: Topic):
     if not os.path.isdir(out_dir):
         os.mkdir(out_dir)
 
-    with open(os.path.join("..", "data", f"videos-info_{category.name}.json"), "r") as f:
+    with open(os.path.join("..", "data", "info_videos", f"videos-info_{category.name}.json"), "r") as f:
         print("Loading channel's videos")
         channel_info = json.load(f)
     print("Finished loading channel's videos\n")
