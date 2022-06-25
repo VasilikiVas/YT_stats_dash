@@ -135,17 +135,18 @@ def generate_repr_stats(out_dir, category: Topic):
             latents_save = latents.detach().cpu().numpy().tolist()
         else:
             # If there aren't any thumbnails available save None
-            latents_save = None
+            latents_save = torch.Tensor([])
 
         # Save the relevant statistics
-        stats_dic['all_latents'] = {i: latents_save[i] for i in range(len(latents_save))}
-        stats_dic['mean_latent'] = torch.mean(latents, dim=0).detach().cpu().numpy().tolist()
-        stats_dic['stdev'] = torch.sum(torch.std(latents, dim=0)).detach().cpu().numpy().tolist()
+        stats_dic['all_latents'] = {vid_ids[i]: latents_save[i] for i in range(len(latents_save))}
+        stats_dic['mean_latent'] = torch.mean(latents_save, dim=0).detach().cpu().numpy().tolist()
+        stats_dic['stdev'] = torch.sum(torch.std(latents_save, dim=0)).detach().cpu().numpy().tolist()
 
         with open(os.path.join(out_dir, channel + "_stats.json"), 'w') as f:
             json.dump(stats_dic, f)
 
         del latents
+        torch.cuda.empty_cache()
 
     print("Finished calculating statistics\n")
 
