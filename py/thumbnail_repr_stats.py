@@ -135,6 +135,7 @@ def generate_repr_stats(out_dir, category: Topic):
             latents_save = latents.detach().cpu().numpy().tolist()
         else:
             # If there aren't any thumbnails available save None
+            latents = torch.Tensor([])
             latents_save = torch.Tensor([])
 
         # Save the relevant statistics
