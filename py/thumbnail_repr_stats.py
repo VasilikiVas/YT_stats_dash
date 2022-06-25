@@ -82,7 +82,7 @@ def get_latent_vectors(model, ft_extr, raw_imgs, device):
     print(f"Size of images in memory: {pixel_values.element_size()*pixel_values.nelement()} bytes")
     # Get the latent representation by passing it through the network
     latent_vecs = model(pixel_values)
-
+    del pixel_values
     return latent_vecs
 
 
@@ -144,6 +144,8 @@ def generate_repr_stats(out_dir, category: Topic):
 
         with open(os.path.join(out_dir, channel + "_stats.json"), 'w') as f:
             json.dump(stats_dic, f)
+
+        del latents
 
     print("Finished calculating statistics\n")
 
