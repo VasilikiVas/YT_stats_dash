@@ -7,6 +7,7 @@ import pandas as pd
 import numpy as np
 
 from . import main
+from flask import redirect
 
 try:
 	from ...py.get_channel_stats import *
@@ -26,6 +27,9 @@ except:
 DATA_DIR = os.path.join("data")
 
 @main.route('/', methods=['GET'])
+def base():
+    return redirect('/category/gaming')
+
 @main.route('/category/<cat>', methods=['GET'])
 def category(cat):
     subview_mode = request.args.get("subview_mode")
