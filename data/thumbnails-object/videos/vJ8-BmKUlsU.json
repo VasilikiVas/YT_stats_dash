@@ -1,1 +1,0 @@
-[{"pred_class": "clock", "conf": 80.8, "bbox": [0.737, 0.357, 0.072, 0.099]}, {"pred_class": "keyboard", "conf": 84.1, "bbox": [0.5, 0.605, 1.0, 0.772]}, {"pred_class": "keyboard", "conf": 91.1, "bbox": [0.488, 0.507, 0.541, 0.225]}, {"pred_class": "keyboard", "conf": 90.8, "bbox": [0.501, 0.551, 0.538, 0.315]}]

@@ -1,1 +1,0 @@
-[{"pred_class": "tie", "conf": 92.5, "bbox": [0.18, 0.903, 0.122, 0.188]}, {"pred_class": "person", "conf": 99.4, "bbox": [0.786, 0.614, 0.424, 0.749]}, {"pred_class": "person", "conf": 98.5, "bbox": [0.22, 0.613, 0.437, 0.748]}, {"pred_class": "tie", "conf": 77.1, "bbox": [0.136, 0.931, 0.055, 0.135]}]

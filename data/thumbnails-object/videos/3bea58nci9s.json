@@ -1,1 +1,0 @@
-[{"pred_class": "toothbrush", "conf": 83.3, "bbox": [0.909, 0.074, 0.032, 0.062]}, {"pred_class": "person", "conf": 99.8, "bbox": [0.772, 0.519, 0.437, 0.949]}, {"pred_class": "person", "conf": 99.6, "bbox": [0.235, 0.541, 0.405, 0.904]}]
