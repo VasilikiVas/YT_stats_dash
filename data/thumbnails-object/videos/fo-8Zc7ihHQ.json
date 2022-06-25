@@ -1,0 +1,1 @@
+[{"pred_class": "traffic light", "conf": 95.4, "bbox": [0.768, 0.546, 0.103, 0.282]}, {"pred_class": "traffic light", "conf": 84.8, "bbox": [0.803, 0.559, 0.07, 0.235]}]

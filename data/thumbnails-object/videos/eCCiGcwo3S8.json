@@ -1,0 +1,1 @@
+[{"pred_class": "fire hydrant", "conf": 78.0, "bbox": [0.37, 0.155, 0.107, 0.195]}, {"pred_class": "person", "conf": 77.0, "bbox": [0.262, 0.266, 0.269, 0.416]}, {"pred_class": "motorcycle", "conf": 83.4, "bbox": [0.321, 0.667, 0.195, 0.483]}]

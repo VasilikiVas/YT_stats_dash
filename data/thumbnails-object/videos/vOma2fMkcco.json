@@ -1,0 +1,1 @@
+[{"pred_class": "airplane", "conf": 95.4, "bbox": [0.509, 0.282, 0.976, 0.477]}, {"pred_class": "person", "conf": 98.9, "bbox": [0.743, 0.52, 0.511, 0.946]}]

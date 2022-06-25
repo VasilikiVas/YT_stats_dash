@@ -1,0 +1,1 @@
+[{"pred_class": "person", "conf": 98.6, "bbox": [0.856, 0.497, 0.286, 0.99]}, {"pred_class": "frisbee", "conf": 90.6, "bbox": [0.573, 0.598, 0.378, 0.138]}, {"pred_class": "person", "conf": 90.3, "bbox": [0.276, 0.502, 0.387, 0.981]}]
