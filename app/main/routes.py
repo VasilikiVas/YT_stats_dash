@@ -30,6 +30,7 @@ DATA_DIR = os.path.join("data")
 def base():
     return redirect('/category/gaming')
 
+
 @main.route('/category/<cat>', methods=['GET'])
 def category(cat):
     subview_mode = request.args.get("subview_mode")
@@ -73,7 +74,7 @@ def category(cat):
     cat_avg_views = int(np.mean([info["avg_views"] for info in channels_dict.values() if "avg_views" in info]))
     # cat_avg_vids = int(np.mean([info["Video count"] for info in channels_dict.values()]))
 
-	# # Load in the video id of the videos with the most representative thumbnails
+	# # # Load in the video id of the videos with the most representative thumbnails
 	# most_repr_thumbnail_path = os.path.join(DATA_DIR, "thumbnail_representatives", f"{cat}_representatives.json")
 	# with open(most_repr_thumbnail_path, "r") as f:
 	# 	most_repr_thumbnail_data = json.load(f)
@@ -134,25 +135,6 @@ def category(cat):
         subview_mode=subview_mode,	# "thumbnail" or "title"
         videos=videos[:20],			# list of dicts: all videos (or maybe top-n if computation requires it) in the category, sorted by views
     )
-
-
-@main.route('/get_dom_colour_data', methods = ['GET'])
-def get_dom_colour_data():
-
-    category = request.args.get("category")
-    channel = request.args.get("channel")
-
-    if category:
-        # Get category dom colours
-        colour_data_path = os.path.join(DATA_DIR, "thumbnail-dom-colours", "categories", f"{category}.json")
-    elif channel:
-        # Get channel dom colours
-        colour_data_path = os.path.join(DATA_DIR, "thumbnail-dom-colours", "channels", f"{channel}.json")
-
-    with open(colour_data_path, "r") as f:
-        colour_data = f.read()
-
-    return colour_data
 
 
 @main.route('/video', methods=['GET'])
@@ -291,6 +273,98 @@ def channel():
         subview_mode=subview_mode,	# "thumbnail" or "title"
         videos=videos[:20],			# list of dicts: all videos (or maybe top-n if computation requires it) in the category, sorted by views
     )
+
+
+# API for getting data for the dominant colour pie chart
+@main.route('/get_dom_colour_data', methods = ['GET'])
+def get_dom_colour_data():
+
+    category = request.args.get("category")
+    channel = request.args.get("channel")
+
+    if category:
+        # Get category dom colours
+        colour_data_path = os.path.join(DATA_DIR, "thumbnail-dom-colours", "categories", f"{category}.json")
+    elif channel:
+        # Get channel dom colours
+        colour_data_path = os.path.join(DATA_DIR, "thumbnail-dom-colours", "channels", f"{channel}.json")
+
+    with open(colour_data_path, "r") as f:
+        colour_data = f.read()
+
+    return colour_data
+
+
+# API for getting data for the token effectiveness plot
+@main.route('/get_token_effectiveness_data', methods = ['GET'])
+def get_token_effectiveness_data():
+
+    category = request.args.get("category")
+    channel = request.args.get("channel")
+
+    if category:
+        token_data_path = os.path.join(DATA_DIR, "title-tokens", "categories", f"{category}.json")
+    elif channel:
+        token_data_path = os.path.join(DATA_DIR, "title-tokens", "channels", f"{channel}.json")
+
+    with open(token_data_path, "r") as f:
+        token_data = f.read()
+
+    return token_data
+
+
+# API for getting data for the tooltip in the token effectiveness plot
+@main.route('/get_token_tooltip_data', methods = ['GET'])
+def get_token_tooltip_data():
+
+    category = request.args.get("category")
+    channel = request.args.get("channel")
+
+    if category:
+        token_data_path = os.path.join(DATA_DIR, "title-tokens", "categories_inv_index", f"{category}.json")
+    elif channel:
+        token_data_path = os.path.join(DATA_DIR, "title-tokens", "channels_inv_index", f"{channel}.json")
+
+    with open(token_data_path, "r") as f:
+        token_data = f.read()
+
+    return token_data
+
+
+# API for getting data for the thumbnail effectiveness plot
+@main.route('/get_thumbnail_effectiveness_data', methods = ['GET'])
+def get_thumbnail_effectiveness_data():
+
+    category = request.args.get("category")
+    channel = request.args.get("channel")
+
+    if category:
+        thumbnail_data_path = os.path.join(DATA_DIR, "thumbnail-objects", "categories", f"{category}.json")
+    elif channel:
+        thumbnail_data_path = os.path.join(DATA_DIR, "thumbnail-objects", "channels", f"{channel}.json")
+
+    with open(thumbnail_data_path, "r") as f:
+        thumbnail_data = f.read()
+
+    return thumbnail_data
+
+
+# API for getting data for the tooltip in the thumbnail effectiveness plot
+@main.route('/get_thumbnail_tooltip_data', methods = ['GET'])
+def get_thumbnail_tooltip_data():
+    category = request.args.get("category")
+    channel = request.args.get("channel")
+
+    if category:
+        thumbnail_data_path = os.path.join(DATA_DIR, "thumbnail-objects", "categories_inv_index", f"{category}.json")
+    elif channel:
+        thumbnail_data_path = os.path.join(DATA_DIR, "thumbnail-objects", "channels_inv_index", f"{channel}.json")
+
+    with open(thumbnail_data_path, "r") as f:
+        thumbnail_data = f.read()
+
+    return thumbnail_data
+
 
 # Debugging code
 if __name__ == "__main__":
