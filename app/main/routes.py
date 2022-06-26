@@ -7,6 +7,7 @@ import pandas as pd
 import numpy as np
 
 from . import main
+from flask import redirect, send_file
 
 try:
 	from ...py.get_channel_stats import *
@@ -26,6 +27,10 @@ except:
 DATA_DIR = os.path.join("data")
 
 @main.route('/', methods=['GET'])
+def base():
+    return redirect('/category/gaming')
+
+
 @main.route('/category/<cat>', methods=['GET'])
 def category(cat):
     subview_mode = request.args.get("subview_mode")
@@ -52,24 +57,22 @@ def category(cat):
     videos.sort(key=lambda x: x["views"], reverse=True)
 
     # Get dictionary to translate video ids to channel names (useful for e.g. most representative title)
-    vid2channel_path = os.path.join(DATA_DIR, "vid2channel.json")
-    with open(vid2channel_path, "r") as f:
-        vid2channel = json.load(f)
+    # vid2channel_path = os.path.join(DATA_DIR, "vid2channel.json")
+    # with open(vid2channel_path, "r") as f:
+    #     vid2channel = json.load(f)
 
     channels = []
     for name, info in channels_dict.items():
         channels.append({
             "name": name,
-			# "thumbnail_std": get_standard_dev(cat, name, "thumbnail"),
-			# "title_std": get_standard_dev(cat, name, "title"),
             **info
         })
 
     cat_avg_subs = int(np.mean([info["Subscribers"] for info in channels_dict.values()]))
     cat_avg_views = int(np.mean([info["avg_views"] for info in channels_dict.values() if "avg_views" in info]))
-    # cat_avg_vids = int(np.mean([info["Video count"] for info in channels_dict.values()]))
+    cat_avg_vids = int(np.mean([info["Video count"] for info in channels_dict.values()]))
 
-	# # Load in the video id of the videos with the most representative thumbnails
+	# # # Load in the video id of the videos with the most representative thumbnails
 	# most_repr_thumbnail_path = os.path.join(DATA_DIR, "thumbnail_representatives", f"{cat}_representatives.json")
 	# with open(most_repr_thumbnail_path, "r") as f:
 	# 	most_repr_thumbnail_data = json.load(f)
@@ -88,39 +91,28 @@ def category(cat):
 
     category = {
         # TODO Actual code (WIP)
-        # "name": cat, 		  # str: name of category
-        # "avg_subs": cat_avg_subs,   # int: avg subs per channel in cat
-        # "avg_views": cat_avg_views, # int: avg views per video in cat
-        # # THUMBNAIL
-        # "avg_thumbnail": os.path.join(DATA_DIR, f"thumbnail-averages/categories/{cat}_average.png"), # str: path to avg thumbnail
+        "name": cat, 		  # str: name of category
+        "avg_subs": cat_avg_subs,   # int: avg subs per channel in cat
+        "avg_views": cat_avg_views, # int: avg views per video in cat
+        "avg_video_count": cat_avg_vids, # int: avg amount of videos per channel in cat
+        # THUMBNAIL
         # "repr_thumbnail": most_repr_thumbnail_path, # str: path to most representative thumbnail
-        # "dominant_colors": {"#ffaa99": 36.5, "#00ff00": 11.7}, # dict: keys are color clusters, values are percentage TODO
-        # "object_effectiveness": {"person": 11.3, "cat": 3.5, "tie": -5.3}, # dict: keys are objects, values are percentage (delta/avg_views_without) TODO
         # # TITLE
         # "repr_title": most_repr_title, # str: most representative title
-        # "token_count": {"token1": 13000, "token2": 5000}, # dict: keys are tokens, values are the count TODO
-        # "token_effectiveness": {"$10,000": 11.3, "best": 3.5, "books": -5.3}, # dict: keys are tokens, values are percentage (delta/avg_views_without) TODO
 
-        # Hardcoded examples
         "name": cat, 		  # str: name of category
-        "avg_subs": 190000,   # int: avg subs per channel in cat
-        "avg_views": 1200000, # int: avg views per video in cat
-        "avg_video_count": 10, # int: avg amount of videos per channel in cat
+        # Hardcoded examples
         # THUMBNAIL
-        "avg_thumbnail": os.path.join("..", "static", "data", "thumbnail-averages", "channels", "a4.png"), # str: path to avg thumbnail TODO
+        # "avg_thumbnail": os.path.join("..", "static", "data", "thumbnail-averages", "channels", "a4.png"), # str: path to avg thumbnail TODO
         "repr_thumbnail": os.path.join("..", "static", "data", "thumbnails", "___OSEsR5pk_high.jpg"), # str: path to most representative thumbnail TODO
-        "dominant_colors": {"#ffaa99": 36.5, "#00ff00": 11.7}, # dict: keys are color clusters, values are percentage TODO
-        "object_effectiveness": {"person": 11.3, "cat": 3.5, "tie": -5.3}, # dict: keys are objects, values are percentage (delta/avg_views_without) TODO
         # TITLE
         "repr_title": "This is a title", # str: most representative title TODO
-        "token_count": {"token1": 13000, "token2": 5000}, # dict: keys are tokens, values are the count TODO
-        "token_effectiveness": {"$10,000": 11.3, "best": 3.5, "books": -5.3}, # dict: keys are tokens, values are percentage (delta/avg_views_without) TODO
 
     }
 
     return render_template("category.html",
         categories=["gaming", "howto", "science", "autos", "blogs"],
-        channels=channels[:20], 			# list of dicts: all channels in the category, sorted by Subs
+        channels=channels, 	    # list of dicts: all channels in the category, sorted by Subs
         category=category, 			# dict: info about the category
         category_display={
             "Subs/Channel: ": category["avg_subs"],
@@ -130,25 +122,6 @@ def category(cat):
         subview_mode=subview_mode,	# "thumbnail" or "title"
         videos=videos[:20],			# list of dicts: all videos (or maybe top-n if computation requires it) in the category, sorted by views
     )
-
-
-@main.route('/get_dom_colour_data', methods = ['GET'])
-def get_dom_colour_data():
-
-    category = request.args.get("category")
-    channel = request.args.get("channel")
-
-    if category:
-        # Get category dom colours
-        colour_data_path = os.path.join(DATA_DIR, "thumbnail-dom-colours", "categories", f"{category}.json")
-    elif channel:
-        # Get channel dom colours
-        colour_data_path = os.path.join(DATA_DIR, "thumbnail-dom-colours", "channels", f"{channel}.json")
-
-    with open(colour_data_path, "r") as f:
-        colour_data = f.read()
-
-    return colour_data
 
 
 @main.route('/video', methods=['GET'])
@@ -288,8 +261,107 @@ def channel():
         videos=videos[:20],			# list of dicts: all videos (or maybe top-n if computation requires it) in the category, sorted by views
     )
 
-# Debugging code
-if __name__ == "__main__":
-    category()
-    video()
-    # channel()
+
+# API for getting data for the dominant colour pie chart
+@main.route('/get_dom_colour_data', methods = ['GET'])
+def get_dom_colour_data():
+
+    category = request.args.get("category")
+    channel = request.args.get("channel")
+
+    if category:
+        # Get category dom colours
+        colour_data_path = os.path.join(DATA_DIR, "thumbnail-dom-colours", "categories", f"{category}.json")
+    elif channel:
+        # Get channel dom colours
+        colour_data_path = os.path.join(DATA_DIR, "thumbnail-dom-colours", "channels", f"{channel}.json")
+
+    with open(colour_data_path, "r") as f:
+        colour_data = f.read()
+
+    return colour_data
+
+
+# API for getting data for the token effectiveness plot
+@main.route('/get_token_effectiveness_data', methods = ['GET'])
+def get_token_effectiveness_data():
+
+    category = request.args.get("category")
+    channel = request.args.get("channel")
+
+    if category:
+        token_data_path = os.path.join(DATA_DIR, "title-tokens", "categories", f"{category}.json")
+    elif channel:
+        token_data_path = os.path.join(DATA_DIR, "title-tokens", "channels", f"{channel}.json")
+
+    with open(token_data_path, "r") as f:
+        token_data = f.read()
+
+    return token_data
+
+
+# API for getting data for the tooltip in the token effectiveness plot
+@main.route('/get_token_tooltip_data', methods = ['GET'])
+def get_token_tooltip_data():
+
+    category = request.args.get("category")
+    channel = request.args.get("channel")
+
+    if category:
+        token_data_path = os.path.join(DATA_DIR, "title-tokens", "categories_inv_index", f"{category}.json")
+    elif channel:
+        token_data_path = os.path.join(DATA_DIR, "title-tokens", "channels_inv_index", f"{channel}.json")
+
+    with open(token_data_path, "r") as f:
+        token_data = f.read()
+
+    return token_data
+
+
+# API for getting data for the thumbnail effectiveness plot
+@main.route('/get_thumbnail_effectiveness_data', methods = ['GET'])
+def get_thumbnail_effectiveness_data():
+
+    category = request.args.get("category")
+    channel = request.args.get("channel")
+
+    if category:
+        thumbnail_data_path = os.path.join(DATA_DIR, "thumbnail-objects", "categories", f"{category}.json")
+    elif channel:
+        thumbnail_data_path = os.path.join(DATA_DIR, "thumbnail-objects", "channels", f"{channel}.json")
+
+    with open(thumbnail_data_path, "r") as f:
+        thumbnail_data = f.read()
+
+    return thumbnail_data
+
+
+# API for getting data for the tooltip in the thumbnail effectiveness plot
+@main.route('/get_thumbnail_tooltip_data', methods = ['GET'])
+def get_thumbnail_tooltip_data():
+    category = request.args.get("category")
+    channel = request.args.get("channel")
+
+    if category:
+        thumbnail_data_path = os.path.join(DATA_DIR, "thumbnail-objects", "categories_inv_index", f"{category}.json")
+    elif channel:
+        thumbnail_data_path = os.path.join(DATA_DIR, "thumbnail-objects", "channels_inv_index", f"{channel}.json")
+
+    with open(thumbnail_data_path, "r") as f:
+        thumbnail_data = f.read()
+
+    return thumbnail_data
+
+
+# API for getting data for the thumbnail average image
+@main.route('/get_thumbnail_average_img', methods = ['GET'])
+def get_thumbnail_average_img():
+    category = request.args.get("category")
+    channel = request.args.get("channel")
+
+    if category:
+        avg_img_data_path = os.path.join("..", "data", "thumbnail-averages", "categories", f"{category}.png")
+    elif channel:
+        avg_img_data_path = os.path.join("..", "data", "thumbnail-averages", "channels", f"{channel}.png")
+
+    return send_file(avg_img_data_path, mimetype='image/png')

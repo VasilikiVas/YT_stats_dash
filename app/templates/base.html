@@ -76,10 +76,12 @@
 
             <li class="nav-item">
                 <div class="nav-link">
-                    <select class="custom-select">
-                        <option selected>all categories</option>
+                    <select class="custom-select" id="categories" onchange="window.location.href=window.location.origin + this.options[this.selectedIndex].value"                        >
+                    <option selected>{{ category.name }}</option>
                     {% for cat in categories %}
-                        <option>{{ cat }}</option>
+                        {% if cat != category.name %}
+                            <option value="/category/{{ cat }}">{{ cat }}</option>  
+                        {% endif %}
                     {% endfor %}
                     </select>
                 </div>
@@ -142,6 +144,9 @@
         updateDomColoursPlot()
     </script>
     
+    <!-- Load avg thumbnail script -->
+    <script src="../static/js/load-avg-thumbnail.js"></script>
+
     <!-- For simple scroll bar (NEEDS TO BE HERE, AFTER THE JINJA2) -->
     <link href="https://unpkg.com/simplebar@latest/dist/simplebar.css" rel="stylesheet" type="text/css">
     <script src="https://unpkg.com/simplebar@latest/dist/simplebar.js"></script>

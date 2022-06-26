@@ -1,6 +1,6 @@
-window.onload = function(){
+window.addEventListener('load', (event) => {
     displayChannels();
-};
+})
 
 var num_channels_display = 5;
 

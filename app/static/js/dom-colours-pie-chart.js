@@ -4,26 +4,25 @@ Chart.defaults.global.defaultFontColor = '#858796';
 
 function updateDomColoursPlot() {
   var url = window.location.pathname
-  var splitURL = url.toString().split("/");
+  var splitURL = url.toString().split("/")
 
   var view = splitURL.at(-2)
   var name = splitURL.at(-1)
 
-  var fetch_url = `/get_dom_colour_data?${view}=` + name;
+  var fetch_url = `/get_dom_colour_data?${view}=` + name
   fetch(fetch_url)
       .then(function(response) { return response.json(); })
       .then((data) => {
-        pieChart = updateDomColoursChart(data, pieChart);
-  });
+        pieChart = updateDomColoursChart(data, pieChart)
+  })
 }
 
 
 function createNewDomColoursChart(data) { 
-  var ctx = document.getElementById("myPieChart");
+  var ctx = document.getElementById("myPieChart")
   var domColoursChart = new Chart(ctx, {
     type: 'doughnut',
     data: {
-      // labels: Array(data.colours.length).fill("")
       datasets: [{
         data: data.perc,
         backgroundColor: data.colours,
