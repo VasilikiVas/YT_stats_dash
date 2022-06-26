@@ -1,0 +1,1 @@
+{"object_views": {"train": 416401, "tv": 279255, "person": 248340, "kite": 175462, "bicycle": 167888, "cake": 160726, "bed": 156444, "cell phone": 125093, "toilet": 89298, "skateboard": 89298, "scissors": 36860}, "object_counts": {"train": 3, "kite": 2, "tv": 2, "bicycle": 2, "cake": 2, "person": 2, "scissors": 1, "bed": 1, "toilet": 1, "skateboard": 1, "cell phone": 1}}
