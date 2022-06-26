@@ -14,12 +14,12 @@ function updateDomColoursPlot() {
       .then(function(response) { return response.json(); })
       .then((data) => {
         pieChart = updateDomColoursChart(data, pieChart)
-  });
+  })
 }
 
 
 function createNewDomColoursChart(data) { 
-  var ctx = document.getElementById("myPieChart");
+  var ctx = document.getElementById("myPieChart")
   var domColoursChart = new Chart(ctx, {
     type: 'doughnut',
     data: {
