@@ -7,7 +7,7 @@ import pandas as pd
 import numpy as np
 
 from . import main
-from flask import redirect
+from flask import redirect, send_file
 
 try:
 	from ...py.get_channel_stats import *
@@ -366,8 +366,15 @@ def get_thumbnail_tooltip_data():
     return thumbnail_data
 
 
-# Debugging code
-if __name__ == "__main__":
-    category()
-    video()
-    # channel()
+# API for getting data for the thumbnail average image
+@main.route('/get_thumbnail_average_img', methods = ['GET'])
+def get_thumbnail_average_img():
+    category = request.args.get("category")
+    channel = request.args.get("channel")
+
+    if category:
+        avg_img_data_path = os.path.join("..", "data", "thumbnail-averages", "categories", f"{category}.png")
+    elif channel:
+        avg_img_data_path = os.path.join("..", "data", "thumbnail-averages", "channels", f"{channel}.png")
+
+    return send_file(avg_img_data_path, mimetype='image/png')
