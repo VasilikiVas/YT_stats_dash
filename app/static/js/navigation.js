@@ -1,13 +1,14 @@
-$(document).ready(function(){
-    $('#categories').change(function(){
-        var url = window.location.pathname
-        var splitURL = url.toString().split("/")
-        var view = splitURL.at(-2)
+    $(document).ready(function(){
+        $('#categories').change(function(){
+            var url = window.location.pathname
+            var splitURL = url.toString().split("/")
+            var view = splitURL.at(-2)
+            window.location.href = window.location.origin + '/' + view + '/' + $(this).val()
 
-        window.location.href = window.location.origin + '/' + view + '/' + $(this).val()
-        // update_URL('/category/' + $(this).val())
+            // update_URL('/category/' + $(this).val())
+        })
     })
-})
+
 
 // function update_URL(url) {
 //     window.history.pushState("", "", url);

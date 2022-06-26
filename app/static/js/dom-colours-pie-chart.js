@@ -23,7 +23,6 @@ function createNewDomColoursChart(data) {
   var domColoursChart = new Chart(ctx, {
     type: 'doughnut',
     data: {
-      // labels: Array(data.colours.length).fill("")
       datasets: [{
         data: data.perc,
         backgroundColor: data.colours,
