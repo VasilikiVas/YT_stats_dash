@@ -6,7 +6,6 @@ function numberWithCommas(x) {
 function displayWithCommas(){
     var elements = document.querySelectorAll('.cat_info')
     elements.forEach(element => {
-        console.log(element)
         var val = parseInt(element.getAttribute("value"))
         val = numberWithCommas(val)
         element.innerHTML = val

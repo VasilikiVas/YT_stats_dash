@@ -80,6 +80,10 @@ fetch(fetch_url)
             .attr("class", "dot")
             .attr("data-xvalue", (d) => d["x"])
             .attr("data-yvalue", (d) => d["y"])
+            .on("click", function(d) {
+               let url = `/channel/${d.target.__data__.channel_id}`
+               window.location.href = url
+            })
             .on("mouseover", function(d){
                info = d.toElement.__data__
                tooltip.style("visibility", "visible")
