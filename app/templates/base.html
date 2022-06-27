@@ -13,7 +13,7 @@
 
     <!-- ASSIGNMENT TEMPLATE -->
 	<!-- Bootstrap core CSS -->
-	<link href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="https://getbootstrap.com/docs/5.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
 	<!-- D3 package -->
 	<script src="https://d3js.org/d3.v6.min.js"></script>
@@ -54,49 +54,43 @@
             <!-- Divider -->
             <hr class="sidebar-divider">
 
-            <div class="nav-item">
-                showing stats for:
-                <button id="thumbnailBtn" type="button" class="btn btn-outline-primary" value="thumbnail">
-                    thumbnail
-                </button>
-                <button id="titleBtn" type="button" class="btn btn-outline-primary" value="title">
-                    title
-                </button>
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                show stats for
             </div>
+
+            <li class="nav-item">
+                <div class="input-group" id="subview_mode_div">
+                    <button id="thumbnailBtn" type="button" class="btn btn-light" value="thumbnail">
+                        thumbnail
+                    </button>
+                    <button id="titleBtn" type="button" class="btn btn-light" value="title">
+                        title
+                    </button>
+                </div>                
+            </li>
 
             <!-- Heading -->
             <div class="sidebar-heading">
                 Channels
             </div>
 
-            <li class="nav-item">
-                <div class="nav-link">
-                    <select class="custom-select" id="categories" onchange="window.location.href=window.location.origin + this.options[this.selectedIndex].value"                        >
-                    <option selected>{{ category.name }}</option>
-                    {% for cat in categories %}
-                        {% if cat != category.name %}
-                            <option value="/category/{{ cat }}">{{ cat }}</option>  
-                        {% endif %}
-                    {% endfor %}
-                    </select>
-                </div>
-            </li>
             <!-- TODO CSS and proper formatting -->
-            <li>
-                <input id="channel_searchbar" onkeyup="search_channels()" type="text"
+            <li id="filters-div">
+                <select class="custom-select" id="categories" onchange="window.location.href=window.location.origin + this.options[this.selectedIndex].value"                        >
+                <option selected>{{ category.name }}</option>
+                {% for cat in categories %}
+                    {% if cat != category.name %}
+                        <option value="/category/{{ cat }}">{{ cat }}</option>  
+                    {% endif %}
+                {% endfor %}
+                </select>
+                <input id="channel_searchbar" class="form-control" onkeyup="search_channels()" type="text"
                     name="search" placeholder="Search channels..">
             </li>
 
             <!-- Nav Item - Channels -->
             <li class="nav-item"><ul id="channel_display_list" class="channel_list" data-simplebar>
-                <!-- {% for channel in channels %}
-                <li class="nav-item">
-                    <a class="nav-link" href="/channel/{{ channel.name }}">
-                        <img src="{{ channel.logo_url }}" class="channel_logo">
-                        <span>{{ channel.name }}</span>
-                    </a>
-                </li>
-                {% endfor %} -->
             </ul></li>
             <!-- Divider -->
             <hr class="sidebar-divider">

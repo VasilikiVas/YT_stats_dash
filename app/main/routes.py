@@ -110,7 +110,7 @@ def category(cat):
     }
 
     return render_template("category.html",
-        categories=["gaming", "howto", "science", "autos", "blogs"],
+        categories=Topic._member_names_,
         channels=channels, 	    # list of dicts: all channels in the category, sorted by Subs
         category=category, 			# dict: info about the category
         category_display={
