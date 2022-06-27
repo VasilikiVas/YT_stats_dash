@@ -5,6 +5,13 @@
     /* height: 70px */
 }
 
+#filters-div {
+    padding: 5px;
+}
+#categories {
+    margin-bottom: 5px;
+}
+
 .channel_list {
     height: 60vh;
     overflow: auto;
@@ -20,10 +27,6 @@
     overflow: auto;
     white-space: nowrap;
     padding-bottom: 10px;
-    /* position: absolute;
-    top: 0;
-    left: 0; */
-    /* z-index: 1000; */
 }
 
 .nav-link {
