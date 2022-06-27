@@ -1,10 +1,5 @@
-// Url to the input data
-var url = "https://raw.githubusercontent.com/VasilikiVas/Thesis/main/std_test.json?token=GHSAT0AAAAAABUW463HYD5JZSFEIEB6LEPEYVY3ZTQ"
 // Colors to differentiate riders with and without doping allegations
 var colors = ["#27ae60"]
-
-// The attributes of the riders corresponding to the above colors
-var legendKeys = ["Video"]
 
 // Create an invisible div for the tooltip
 const tooltip = d3.select("body")
@@ -13,132 +8,114 @@ const tooltip = d3.select("body")
                   .style("visibility", "hidden")
 
 // 1. Load the data from external source
-d3.json(url).then(function(dataset) {
-   mean = dataset.mean
-   data = dataset.datapoints
-   //data = dataset
+var url = window.location.pathname
+var splitURL = url.toString().split("/")
 
-    // 2. Append svg-object for the bar chart to a div in your webpage
-    // (here we use a div with id=container)
-    var width = 700;
-    var height = 270;
-    var margin = {left: 90, top: 80, bottom: 50, right: 20};
-    var axisOffset = 10   // How for the axes are moved away from each other
+var view = splitURL.at(-2)
+var cname = splitURL.at(-1)
+var fetch_url = `/get_title_std_plot_data?${view}=` + cname
 
-    const svg = d3.select("#container")
-                  .append("svg")
-                  .attr("id", "svg")
-                  .attr("width", width)
-                  .attr("height", height)
+fetch(fetch_url)
+      .then(function(response) { return response.json(); })
+      .then((dataset) => {
+         
+         mean = dataset.mean
+         data = dataset.datapoints
 
-    // 3. Define scales to translate domains of the data to the range of the svg
-    var xMin = d3.min(data, (d) => d["std"]);
-    var xMax = d3.max(data, (d) => d["std"]);
+         // 2. Append svg-object for the bar chart to a div in your webpage
+         // (here we use a div with id=container)
+         var width = 1100;
+         var height = 600;
+         var margin = {left: 90, top: 80, bottom: 50, right: 20};
+         var axisOffset = 10   // How for the axes are moved away from each other
 
-    var yMin = d3.min(data, (d) => d["Video views"]);
-    var yMax = d3.max(data, (d) => d["Video views"]);
+         const svg = d3.select("#container")
+                        .append("svg")
+                        .attr("id", "svg")
+                        .attr("width", width)
+                        .attr("height", height)
 
-    var xScale = d3.scaleLinear()
-                   .domain([xMin, xMax])
-                   .range([margin.left + axisOffset, width- margin.right])
+         // 3. Define scales to translate domains of the data to the range of the svg
+         var xMin = d3.min(data, (d) => d["x"]);
+         var xMax = d3.max(data, (d) => d["x"]);
 
-    var yScale = d3.scaleLinear()
-                   .domain([yMin, yMax])
-                   .range([height- margin.bottom - axisOffset, margin.top])
+         var yMin = d3.min(data, (d) => d["y"]);
+         var yMax = d3.max(data, (d) => d["y"]);
 
-    // 4. Draw and transform/translate horizontal and vertical axes
-    var xAxis = d3.axisBottom().scale(xScale).tickFormat(d3.format(".3f"))
-    var yAxis = d3.axisLeft().scale(yScale).tickFormat(d3.format("d"))
+         var xScale = d3.scaleLinear()
+                        .domain([xMin, xMax])
+                        .range([margin.left + axisOffset, width- margin.right])
 
-    svg.append("g")
-       .attr("transform", "translate(0, "+ (height - margin.bottom) + ")")
-       .attr("id", "x-axis")
-       .call(xAxis)
+         var yScale = d3.scaleLinear()
+                        .domain([yMin, yMax])
+                        .range([height- margin.bottom - axisOffset, margin.top])
 
-    svg.append("g")
-       .attr("transform", "translate("+ (margin.left)+", 0)")
-       .attr("id", "y-axis")
-       .call(yAxis)
+         // 4. Draw and transform/translate horizontal and vertical axes
+         var xAxis = d3.axisBottom().scale(xScale).tickFormat(d3.format(".3f"))
+         var yAxis = d3.axisLeft().scale(yScale).tickFormat(d3.format("d"))
 
-    svg.append("line")
-       .style("stroke-dasharray", ("4, 4"))
-       .attr("x1",xScale(mean))
-       .attr("y1",yScale(yMax - 0.5))
-       .attr("x2",xScale(mean))
-       .attr("y2",yScale(yMin))
-       .style("stroke", "black")
+         svg.append("g")
+            .attr("transform", "translate(0, "+ (height - margin.bottom) + ")")
+            .attr("id", "x-axis")
+            .call(xAxis)
 
-    // 5. Draw individual scatter points and define mouse events for the tooltip
-    svg.selectAll("scatterPoints")
-       .data(data)
-       .enter()
-       .append("circle")
-       .attr("cx", (d) => xScale(d["std"]))
-       .attr("cy", (d) => yScale(d["Video views"]))
-       .attr("r", 5)
-       .attr("fill", colors[0])
-       .attr("class", "dot")
-       .attr("data-xvalue", (d) => d["std"])
-       .attr("data-yvalue", (d) => d["Video views"])
-       .on("mouseover", function(d){
-         info = d.toElement.__data__
-           tooltip.style("visibility", "visible")
-                  .style("left", event.pageX+10+"px")
-                  .style("top", event.pageY-80+"px")
-                  .attr("data-std", info["std"])
-                  .html("Video name: "+info["Video_name"]+"<br><br>"+"STD: "+info["std"]+"<br><br>"+"Number of views: "+ info["Video views"]+"<br><br>"+"Channel name: "+info["Channel"])
-       })
-       .on("mousemove", function(){
-           tooltip.style("left", event.pageX+10+"px")
-       })
-       .on("mouseout", function(){
-           tooltip.style("visibility", "hidden")
-       })
+         svg.append("g")
+            .attr("transform", "translate("+ (margin.left)+", 0)")
+            .attr("id", "y-axis")
+            .call(yAxis)
 
-     // 6. Finalize chart by adding title, axes labels and legend
-     svg.append("text")
-        .attr("x", margin.left + (width - margin.left - margin.right) / 2)
-        .attr("y", height - margin.bottom / 5)
-        .attr("class", "label")
-        .text("std");
+         // 5. Draw individual scatter points and define mouse events for the tooltip
+         svg.selectAll("scatterPoints")
+            .data(data)
+            .enter()
+            .append("circle")
+            .attr("cx", (d) => xScale(d["x"]))
+            .attr("cy", (d) => yScale(d["y"]))
+            .attr("r", 5)
+            .attr("fill", colors[0])
+            .attr("class", "dot")
+            .attr("data-xvalue", (d) => d["x"])
+            .attr("data-yvalue", (d) => d["y"])
+            .on("mouseover", function(d){
+               info = d.toElement.__data__
+               tooltip.style("visibility", "visible")
+                        .style("left", event.pageX+10+"px")
+                        .style("top", event.pageY-80+"px")
+                        .attr("data-std", info["x"])
+                        .html("Channel name: "+info["name"]+"<br><br>"+"STD: "+info["x"]+"<br><br>"+"Number of views: "+ info["y"]+"<br><br>")
+            })
+            .on("mousemove", function(){
+               tooltip.style("left", event.pageX+10+"px")
+            })
+            .on("mouseout", function(){
+               tooltip.style("visibility", "hidden")
+            })
 
-     svg.append("text")
-         .attr("y", margin.left/2)
-         .attr("x", -height/2)
-         .attr("transform", "rotate(-90)")
-         .attr("class", "label")
-         .text("Views");
+         svg.append("line")
+            .style("stroke-dasharray", ("4, 4"))
+            .attr("x1",xScale(mean))
+            .attr("y1",yScale(yMax - 0.5))
+            .attr("x2",xScale(mean))
+            .attr("y2",yScale(yMin))
+            .style("stroke", "black")
 
-     svg.selectAll("legendSymbols")
-        .data(legendKeys)
-        .enter()
-        .append("circle")
-        .attr("cx", width - margin.right - 75)
-        .attr("cy", (d, i) => 150 + i * 25)
-        .attr("r", 5)
-        .attr("fill", (d, i) => colors[i])
+         // 6. Finalize chart by adding title, axes labels and legend
+         svg.append("text")
+            .attr("x", margin.left + (width - margin.left - margin.right) / 2)
+            .attr("y", height - margin.bottom / 5)
+            .attr("class", "label")
+            .text("std");
 
-     svg.selectAll("legendTexts")
-        .data(legendKeys)
-        .enter()
-        .append("text")
-        .text((d) => d)
-        .attr("x", width - margin.right - 75 + 10)
-        .attr("y", (d, i) => 150 + i * 25 + 5)
-        .attr("class", "textbox")
+         svg.append("text")
+               .attr("y", margin.left/2-20)
+               .attr("x", -height/2)
+               .attr("transform", "rotate(-90)")
+               .attr("class", "label")
+               .text("Views");
 
-     svg.append("text")
-        .attr("x", xScale(mean))
-        .attr("y", yScale(yMax+0.5))
-        .attr("class", "label")
-        .text("mean");
-
-     const legend = svg.append("rect")
-                       .attr("x", width - margin.right - 85)
-                       .attr("y", 150-5-10)
-                       .attr("rx", 5)
-                       .attr("ry", 5)
-                       .attr("width", 63)
-                       .attr("height", 30)
-                       .attr("id", "legend")
-}) 
+         svg.append("text")
+            .attr("x", xScale(mean))
+            .attr("y", yScale(yMax+0.5))
+            .attr("class", "label")
+            .text("mean");
+         })

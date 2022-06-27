@@ -8,7 +8,6 @@ from PIL import Image
 import numpy as np
 import json
 import os
-import matplotlib.pyplot as plt
 
 def rgb_to_hex(rgb):
     return '#%02x%02x%02x' % rgb
