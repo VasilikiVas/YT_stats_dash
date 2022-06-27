@@ -52,7 +52,7 @@ function createNewDomColoursChart(data) {
       legend: {
         display: false
       },
-      cutoutPercentage: 0,
+      cutoutPercentage: 40,
     },
 })
 return domColoursChart

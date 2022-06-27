@@ -17,7 +17,6 @@
 
 	<!-- D3 package -->
 	<script src="https://d3js.org/d3.v6.min.js"></script>
-    <script type="text/javascript" src="../static/js/display_category.js"></script>
 
     <!-- BOOTSTRAP TEMPLATE -->
     <!-- Custom fonts for this template-->
@@ -34,23 +33,6 @@
 
 </head>
 <body id="page-top">
-
-    <!-- Bootstrap core JavaScript-->
-    <script src="../static/vendor/jquery/jquery.min.js"></script>
-    <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="../static/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="../static/js/sb-admin-2.js"></script>
-
-    <!-- Page level plugins -->
-    <script src="../static/vendor/chart.js/Chart.min.js"></script>
-
-    <script type="text/javascript">
-        var channels = {{channels | safe}};
-    </script>
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -68,6 +50,16 @@
             </a>
             <!-- Divider -->
             <hr class="sidebar-divider">
+
+            <div class="nav-item">
+                showing stats for:
+                <button id="thumbnailBtn" type="button" class="btn btn-outline-primary" value="thumbnail">
+                    thumbnail
+                </button>
+                <button id="titleBtn" type="button" class="btn btn-outline-primary" value="title">
+                    title
+                </button>
+            </div>
 
             <!-- Heading -->
             <div class="sidebar-heading">
@@ -133,13 +125,21 @@
     <!-- Page level plugins -->
     <script src="../static/vendor/chart.js/Chart.min.js"></script>
 
-    <!-- Page level custom scripts -->
+    <!-- Piechart script -->
     <script src="../static/js/dom-colours-pie-chart.js"></script>
 
-    <!-- Scatterpl<ot -->
+    <!-- Scatterplot -->
     <script src="../static/js/std_thumbnail.js"></script>
 
+    <!-- Navigation buttons -->
+    <script src="../static/js/navigation.js"></script>
+
+    <!-- Load more scripts -->
+    <script src="../static/js/display_category.js"></script>
+
     <script type="text/javascript">
+        var channels = {{channels | safe}}
+
         var pieChart
         updateDomColoursPlot()
     </script>

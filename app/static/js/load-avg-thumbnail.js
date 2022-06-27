@@ -9,7 +9,6 @@ window.addEventListener('load', (event) => {
     fetch(fetch_url)
         .then(function(response) { return response })
         .then((data) => {
-            console.log(data)
             document.getElementById("avgThumbnail").setAttribute("src", data.url)
     })
 })

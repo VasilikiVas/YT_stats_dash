@@ -1,3 +1,13 @@
+$(document).ready(function(){
+    $('#thumbnailBtn').click(function(){
+        window.location.href = window.location.pathname + "?" + "subview_mode=" + $(this).val()
+    })
+
+    $('#titleBtn').click(function(){
+        window.location.href = window.location.pathname + "?" + "subview_mode=" + $(this).val()
+    })
+})
+
 // $(document).ready(function(){
 //     $('#categories').change(function(){
 //         var url = window.location.pathname
