@@ -15,6 +15,10 @@ import logging
 import functools
 import datetime as dt
 
+# Other
+from collections import defaultdict
+import numpy as np
+
 def startWebdriver(chrome=True, headless=True) -> webdriver.Chrome:
     """Starts the selenium webdriver and adds options"""
 
@@ -102,3 +106,26 @@ def catch_user_data_error(func):
             reset_user_data(USER_DATA_PATH, USER_DATA_BACKUP_PATH)
             return func(*args, **kwargs)
     return wrapper
+
+def sum_dicts(dics):
+    new_dic = defaultdict(int)
+    for dic in dics:
+        for k,v in dic.items():
+            new_dic[k] += v
+    return new_dic
+
+def extend_dicts(dics):
+    new_dic = defaultdict(list)
+    for dic in dics:
+        for k,l in dic.items():
+            new_dic[k].extend(l)
+    return new_dic
+
+def sort_dict(dic):
+    return {k:v for k,v in sorted(dic.items(), key=lambda x: x[1], reverse=True)}
+
+def cos_sim(arrayA, arrayB):
+    """[N,D], [M,D] -> [N,M]"""
+    normA = np.linalg.norm(arrayA, ord=2, axis=1)[:,None]
+    normB = np.linalg.norm(arrayB, ord=2, axis=1)[:,None]
+    return arrayA/normA @ (arrayB/normB).transpose()

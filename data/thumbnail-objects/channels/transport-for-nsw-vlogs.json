@@ -1,0 +1,1 @@
+{"object_views": {"train": 65187, "person": 44527, "bus": 17509, "bench": 15890, "car": 10711, "traffic light": 5600, "boat": 953}, "object_counts": {"train": 23, "person": 12, "bus": 6, "car": 4, "traffic light": 3, "boat": 1, "bench": 1}}

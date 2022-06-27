@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
 {% block body %}
+
+<script type="text/javascript">
+    var videos = {{videos | safe}};
+</script>
 <!-- Main Content -->
 <div id="content">
 
@@ -43,7 +47,7 @@
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-warning text-uppercase mb-1" style="position: absolute; top: 0; left: 0; z-index: 1000">
                                         Videos</div>
-                                    <div class="videos_list" data-simplebar>
+                                    <div class="videos_list" id="video_display_list" data-simplebar>
                                     {% for vid in videos %}
                                         <a href="/video/{{ vid.id }}"><img src="https://i.ytimg.com/vi/{{ vid.id }}/default.jpg" class="video_list_thumb"></a>
                                     {% endfor %}
@@ -76,7 +80,45 @@
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                         Average Views by Thumbnail Consistency</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">Std plot</div>
+                                        <style>
+                                        * {
+                                            font-family: sans-serif;
+                                        }
+
+                                        #tooltip {
+                                            visibility: hidden;
+                                            position: absolute;
+                                            opacity: 0.8;
+                                            padding: 10px;
+                                            vertical-align: middle;
+                                            border-radius: 5px;
+                                            background-color: #ecf0f1;
+                                            font-size: 14px;
+                                        }
+
+                                        .textbox {
+                                            font-size: 14px
+                                        }
+
+                                        #legend {
+                                            opacity: 0.2;
+                                            fill: #2c3e50;
+                                        }
+
+                                        #title {
+                                            text-anchor: middle;
+                                            font-size: 22px;
+                                        }
+
+                                        .label {
+                                            text-anchor: middle;
+                                        }
+
+                                        #svg{
+                                            background-color: white;
+                                        }
+                                        </style>
+                                    <div class="h9 mb-0 text-gray-800" id=container></div>
                                 </div>
                             </div>
                         </div>
