@@ -35,6 +35,9 @@
 <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
+        <script type="text/javascript">
+            var channels = {{channels | safe}}
+        </script>
 
         <div class="tooltip" id="tooltip"></div>
 
@@ -77,6 +80,11 @@
                     {% endfor %}
                     </select>
                 </div>
+            </li>
+            <!-- TODO CSS and proper formatting -->
+            <li>
+                <input id="channel_searchbar" onkeyup="search_channels()" type="text"
+                    name="search" placeholder="Search channels..">
             </li>
 
             <!-- Nav Item - Channels -->
@@ -137,15 +145,16 @@
     <!-- Load more scripts -->
     <script src="../static/js/display_category.js"></script>
 
-    <script type="text/javascript">
-        var channels = {{channels | safe}}
-
-        var pieChart
-        updateDomColoursPlot()
-    </script>
+    <!-- Script for adding search functionality -->
+    <script type="text/javascript" src="../static/js/search_channel.js"></script>
     
     <!-- Load avg thumbnail script -->
     <script src="../static/js/load-avg-thumbnail.js"></script>
+
+    <script>
+        var pieChart
+        updateDomColoursPlot()
+    </script>
 
     <!-- For simple scroll bar (NEEDS TO BE HERE, AFTER THE JINJA2) -->
     <link href="https://unpkg.com/simplebar@latest/dist/simplebar.css" rel="stylesheet" type="text/css">
