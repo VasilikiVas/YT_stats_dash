@@ -121,7 +121,11 @@
                                             background-color: white;
                                         }
                                         </style>
-                                    <div class="h9 mb-0 text-gray-800" id=container></div>
+                                    {% if subview_mode == "thumbnail" %}
+                                    <div class="h9 mb-0 text-gray-800" id=thumbnail_std_plot></div>
+                                    {% else %}
+                                    <div class="h9 mb-0 text-gray-800" id=title_std_plot></div>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>

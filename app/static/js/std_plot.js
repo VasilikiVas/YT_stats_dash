@@ -26,13 +26,12 @@ fetch(fetch_url)
          data = dataset.datapoints
 
          // 2. Append svg-object for the bar chart to a div in your webpage
-         // (here we use a div with id=container)
          var width = 1100;
          var height = 600;
          var margin = {left: 90, top: 80, bottom: 50, right: 20};
          var axisOffset = 10   // How for the axes are moved away from each other
 
-         const svg = d3.select("#container")
+         const svg = d3.select("#title_std_plot")
                         .append("svg")
                         .attr("id", "svg")
                         .attr("width", width)

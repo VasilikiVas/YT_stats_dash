@@ -34,6 +34,7 @@ for category in Topic._member_names_:
         datapoint["x"] = np.round(channel_std, 3)
         datapoint["y"] = channel_avg_view
         datapoint["name"] = get_name_using_regex(name)
+        datapoint["channel_id"] = name
         datapoint["subs"] = channels_dict[name]["Subscribers"]
         datapoint["logo_url"] = channels_dict[name]["logo_url"]
         datapoints.append(datapoint)
