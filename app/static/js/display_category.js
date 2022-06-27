@@ -24,7 +24,7 @@ function increaseDisplayedChannels(){
 
 function displayChannels(channels_to_display){
 
-    var channelsDisplay = document.getElementById("channel_display_list");
+    var channelsDisplay = document.getElementById("channel_display_list").querySelector(".simplebar-content");
 
     // Remove all children so as to not have duplicate channels displayed
     removeAllChildNodes(channelsDisplay)
@@ -39,15 +39,15 @@ function displayChannels(channels_to_display){
         var channel_link = document.createElement("a");
         channel_link.className = "nav-link";
         channel_link.setAttribute("href", `/channel/${channel.name}`);
-        channel_link.style.cssText = "width: 100% !important";
+        // channel_link.style.cssText = "width: 100% !important";
 
         var channel_name = document.createElement("span")
         channel_name.innerHTML = `${channel.name}`
 
         var channel_img = document.createElement("img")
-        channel_link.className = "channel_logo";
+        channel_img.className = "channel_logo";
         channel_img.setAttribute("src", `${channel.logo_url}`);
-        channel_img.style.cssText = "width: 40px;";
+        // channel_img.style.cssText = "width: 40px;";
 
         channel_link.appendChild(channel_img);
         channel_link.appendChild(channel_name);
@@ -60,7 +60,7 @@ function displayChannels(channels_to_display){
     load_more_button.setAttribute("id", "load_more_channels_button");
     load_more_button.setAttribute("onclick", "increaseDisplayedChannels()");
 
-    channelsDisplay.appendChild(load_more_button);    
+    channelsDisplay.appendChild(load_more_button);
 };
 
 
