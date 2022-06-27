@@ -29,3 +29,6 @@
 .nav-link {
     width: 100% !important;
 }
+#load_more_channels_button {
+    text-align: center;
+}
