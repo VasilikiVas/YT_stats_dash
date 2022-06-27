@@ -1,10 +1,14 @@
-window.addEventListener('load', (event) => {
-    displayChannels();
-    // displayVideos();
-})
-
 var num_channels_display = 10;
-var num_videos_display = 10
+var num_videos_display = 10;
+
+var selected_channels = channels;
+
+window.addEventListener('load', (event) => {
+    channels_to_display = selected_channels.slice(0,num_channels_display);
+    var videos_to_display = videos.slice(0,num_videos_display);
+    displayChannels(channels_to_display);
+    // displayVideos(videos_to_display);
+})
 
 function removeAllChildNodes(parent) {
     while (parent.firstChild) {
@@ -14,10 +18,11 @@ function removeAllChildNodes(parent) {
 
 function increaseDisplayedChannels(){
     num_channels_display += 10;
-    displayChannels();
+    channels_to_display = selected_channels.slice(0,num_channels_display);
+    displayChannels(channels_to_display);
 };
 
-function displayChannels(){
+function displayChannels(channels_to_display){
 
     var channelsDisplay = document.getElementById("channel_display_list");
 
@@ -25,9 +30,8 @@ function displayChannels(){
     removeAllChildNodes(channelsDisplay)
 
     // Get the amount of channels to display
-    channels_to_display = channels.slice(0,num_channels_display);
     for (let i=0; i<channels_to_display.length;i++){
-        var channel = channels[i];
+        var channel = channels_to_display[i];
 
         var channel_item = document.createElement("li");
         channel_item.className = "nav-item";
@@ -62,20 +66,19 @@ function displayChannels(){
 
 function increaseDisplayedVideos(){
     num_videos_display += 10;
-    displayVideos();
+    videos_to_display = videos.slice(0,num_videos_display);
+    displayVideos(videos_to_display);
 };
 
-function displayVideos(){
+function displayVideos(videos_to_display){
 
     var videosDisplay = document.getElementById("video_display_list");
 
-    // Remove all children so as to not have duplicate channels displayed
+    // Remove all children so as to not have duplicate videos displayed
     removeAllChildNodes(videosDisplay)
 
-    // Get the amount of channels to display
-    videos_to_display = videos.slice(0,num_videos_display);
     for (let i=0; i<videos_to_display.length;i++){
-        // <a href="/video/{{ vid.id }}"><img src="https://i.ytimg.com/vi/{{ vid.id }}/default.jpg" class="video_list_thumb"></a>
+
         var vid = videos[i];
 
         var video_link = document.createElement("a");
@@ -91,10 +94,12 @@ function displayVideos(){
         videosDisplay.appendChild(video_link);
 
     };
-    var load_more_button = document.createElement("button");
-    load_more_button.innerText = "Load more...";
-    load_more_button.setAttribute("id", "load_more_vids_button");
-    load_more_button.setAttribute("onclick", "increaseDisplayedVideos()");
+    if (displayLoadMore){
+        var load_more_button = document.createElement("button");
+        load_more_button.innerText = "Load more...";
+        load_more_button.setAttribute("id", "load_more_vids_button");
+        load_more_button.setAttribute("onclick", "increaseDisplayedVideos()");
 
-    videosDisplay.appendChild(load_more_button);    
+        videosDisplay.appendChild(load_more_button);
+    }
 };
