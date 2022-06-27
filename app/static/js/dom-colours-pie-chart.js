@@ -2,6 +2,8 @@
 Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#858796';
 
+var pieChart
+
 function updateDomColoursPlot() {
   var url = window.location.pathname
   var splitURL = url.toString().split("/")
@@ -76,3 +78,4 @@ function updateDomColoursChart(data, pieChart) {
   }
 }
 
+updateDomColoursPlot()
