@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"person": 212225, "book": 175299, "tv": 101313, "banana": 76820, "bed": 59825, "teddy bear": 43712, "potted plant": 32516, "umbrella": 23038, "remote": 20048, "bird": 19510}, "object_counts": {"person": 7, "tv": 4, "book": 3, "bed": 1, "umbrella": 1, "bird": 1, "potted plant": 1, "remote": 1, "teddy bear": 1, "banana": 1}}

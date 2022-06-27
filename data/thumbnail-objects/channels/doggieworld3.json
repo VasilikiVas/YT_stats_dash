@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"person": 1210, "parking meter": 580, "train": 278, "tv": 69, "sink": 59, "bottle": 13, "cell phone": 8, "book": 6, "cup": 4, "keyboard": 2}, "object_counts": {"tv": 11, "person": 9, "book": 3, "sink": 1, "keyboard": 1, "train": 1, "cell phone": 1, "bottle": 1, "parking meter": 1, "cup": 1}}

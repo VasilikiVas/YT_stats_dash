@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"person": 107313, "laptop": 32939, "cell phone": 13565, "baseball glove": 13565, "bicycle": 7423, "car": 4948, "chair": 3515, "tv": 2724, "traffic light": 1875, "bench": 1875, "hair drier": 1643, "banana": 1370, "tie": 1370, "donut": 723, "handbag": 615, "carrot": 368}, "object_counts": {"person": 26, "chair": 3, "bicycle": 2, "car": 2, "carrot": 1, "handbag": 1, "donut": 1, "traffic light": 1, "bench": 1, "hair drier": 1, "banana": 1, "tie": 1, "tv": 1, "cell phone": 1, "baseball glove": 1, "laptop": 1}}

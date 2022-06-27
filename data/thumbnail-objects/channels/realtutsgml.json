@@ -1,1 +1,1 @@
-{"object_views": {"person": 215622, "bench": 159140, "bird": 159140, "tv": 50552, "clock": 36079, "cell phone": 7000, "teddy bear": 5061, "kite": 5061}, "object_counts": {"person": 6, "tv": 5, "clock": 3, "teddy bear": 1, "kite": 1, "bench": 1, "bird": 1, "cell phone": 1}}
+{"object_views": {"person": 215622, "bird": 159140, "bench": 159140, "tv": 50552, "clock": 36079, "cell phone": 7000, "teddy bear": 5061, "kite": 5061}, "object_counts": {"person": 6, "tv": 5, "clock": 3, "teddy bear": 1, "kite": 1, "bird": 1, "bench": 1, "cell phone": 1}}

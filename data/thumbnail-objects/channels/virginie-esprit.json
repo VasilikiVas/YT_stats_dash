@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"bird": 21421, "boat": 21332, "person": 5803, "chair": 339, "parking meter": 221, "potted plant": 145, "umbrella": 111, "dining table": 88, "apple": 75, "tv": 38, "vase": 38, "clock": 38, "tie": 38, "couch": 28}, "object_counts": {"person": 16, "potted plant": 2, "bird": 2, "couch": 1, "tv": 1, "apple": 1, "dining table": 1, "vase": 1, "clock": 1, "tie": 1, "umbrella": 1, "parking meter": 1, "chair": 1, "boat": 1}}

@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"person": 1617, "car": 679, "bird": 653, "cow": 356, "bed": 314, "tie": 174, "dog": 118, "truck": 101, "bicycle": 98, "sheep": 85, "tv": 66, "refrigerator": 39, "bottle": 39}, "object_counts": {"person": 11, "bird": 6, "car": 5, "bed": 4, "cow": 2, "refrigerator": 1, "bottle": 1, "tv": 1, "sheep": 1, "bicycle": 1, "dog": 1, "truck": 1, "tie": 1}}

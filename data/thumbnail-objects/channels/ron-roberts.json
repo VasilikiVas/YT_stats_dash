@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"person": 160840, "car": 77396, "truck": 74815, "suitcase": 9289, "bus": 4201, "traffic light": 4199, "train": 3878, "skateboard": 2820, "fire hydrant": 2809, "wine glass": 2612, "airplane": 1625, "bicycle": 1195}, "object_counts": {"person": 23, "car": 13, "truck": 12, "skateboard": 2, "bus": 2, "traffic light": 2, "suitcase": 2, "bicycle": 1, "airplane": 1, "fire hydrant": 1, "wine glass": 1, "train": 1}}

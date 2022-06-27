@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"person": 1554500, "chair": 369472, "tie": 308725, "clock": 307492, "book": 239806, "teddy bear": 239656, "tv": 170325, "bench": 105478, "bottle": 67713, "cake": 55141, "dining table": 55141, "cup": 33545, "potted plant": 616, "handbag": 286, "laptop": 237, "couch": 123}, "object_counts": {"person": 30, "tv": 6, "chair": 6, "clock": 3, "potted plant": 3, "tie": 2, "book": 2, "couch": 1, "bottle": 1, "cake": 1, "dining table": 1, "bench": 1, "cup": 1, "handbag": 1, "laptop": 1, "teddy bear": 1}}

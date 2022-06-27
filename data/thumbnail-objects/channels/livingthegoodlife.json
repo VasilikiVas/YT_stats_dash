@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"person": 15256, "tv": 7275, "tie": 5269, "mouse": 4245, "skateboard": 4245, "cell phone": 1691, "clock": 1267, "car": 1017, "chair": 846, "wine glass": 611, "bicycle": 385, "cat": 270, "teddy bear": 216, "hot dog": 155, "bench": 151, "dog": 136, "bird": 131}, "object_counts": {"person": 16, "tie": 6, "tv": 3, "car": 3, "bench": 2, "chair": 2, "cat": 2, "clock": 1, "wine glass": 1, "hot dog": 1, "dog": 1, "mouse": 1, "skateboard": 1, "bird": 1, "bicycle": 1, "teddy bear": 1, "cell phone": 1}}

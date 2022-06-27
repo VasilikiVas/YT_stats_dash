@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"train": 411987, "bottle": 411251, "person": 324383, "teddy bear": 316958, "book": 183936, "cake": 181280, "vase": 180347, "car": 171460, "cup": 112434, "truck": 76024, "remote": 67690, "suitcase": 51777, "parking meter": 35737, "clock": 32168}, "object_counts": {"bottle": 6, "person": 5, "teddy bear": 3, "book": 3, "car": 2, "vase": 2, "cup": 2, "train": 1, "cake": 1, "remote": 1, "truck": 1, "clock": 1, "parking meter": 1, "suitcase": 1}}

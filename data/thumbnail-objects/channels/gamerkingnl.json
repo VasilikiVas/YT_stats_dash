@@ -1,1 +1,1 @@
-{"object_views": {"person": 5697, "tie": 5044, "train": 5044, "tv": 3798, "clock": 937, "book": 704, "toilet": 99, "bench": 82}, "object_counts": {"person": 5, "tv": 4, "clock": 2, "toilet": 1, "bench": 1, "tie": 1, "train": 1, "book": 1}}
+{"object_views": {"person": 5697, "train": 5044, "tie": 5044, "tv": 3798, "clock": 937, "book": 704, "toilet": 99, "bench": 82}, "object_counts": {"person": 5, "tv": 4, "clock": 2, "toilet": 1, "bench": 1, "train": 1, "tie": 1, "book": 1}}

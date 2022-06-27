@@ -1,1 +1,1 @@
-{"object_views": {"person": 3039, "bottle": 539, "refrigerator": 305, "cup": 305, "sink": 257, "microwave": 203, "donut": 147, "vase": 90}, "object_counts": {"person": 19, "refrigerator": 4, "cup": 4, "bottle": 3, "microwave": 3, "sink": 2, "donut": 1, "vase": 1}}
+{"object_views": {"person": 3039, "bottle": 539, "cup": 305, "refrigerator": 305, "sink": 257, "microwave": 203, "donut": 147, "vase": 90}, "object_counts": {"person": 19, "cup": 4, "refrigerator": 4, "bottle": 3, "microwave": 3, "sink": 2, "donut": 1, "vase": 1}}

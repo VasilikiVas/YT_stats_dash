@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"person": 137673067, "train": 30923404, "tie": 9449902, "clock": 6212725, "horse": 993007, "tv": 837473, "bed": 719799, "cup": 466177, "cell phone": 420880, "bottle": 236511, "book": 26372, "baseball bat": 23493, "handbag": 16450, "chair": 14838, "traffic light": 10244}, "object_counts": {"person": 51, "tv": 11, "tie": 6, "cell phone": 4, "clock": 3, "bed": 3, "handbag": 1, "traffic light": 1, "cup": 1, "bottle": 1, "horse": 1, "train": 1, "book": 1, "baseball bat": 1, "chair": 1}}

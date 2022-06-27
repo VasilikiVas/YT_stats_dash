@@ -1,1 +1,1 @@
-{"object_views": {"banana": 5058, "carrot": 2782, "person": 2040, "bird": 1254, "bus": 219, "cell phone": 219, "traffic light": 139, "tv": 118}, "object_counts": {"banana": 3, "person": 2, "tv": 1, "traffic light": 1, "bus": 1, "cell phone": 1, "carrot": 1, "bird": 1}}
+{"object_views": {"banana": 5058, "carrot": 2782, "person": 2040, "bird": 1254, "cell phone": 219, "bus": 219, "traffic light": 139, "tv": 118}, "object_counts": {"banana": 3, "person": 2, "tv": 1, "traffic light": 1, "cell phone": 1, "bus": 1, "carrot": 1, "bird": 1}}

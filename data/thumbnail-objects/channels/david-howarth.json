@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"train": 41816, "person": 17100, "potted plant": 12553, "clock": 6876, "cow": 4767, "car": 4767, "bus": 4723, "traffic light": 2766, "truck": 1870, "boat": 1458, "fire hydrant": 1434, "laptop": 983, "kite": 848}, "object_counts": {"train": 12, "person": 9, "potted plant": 6, "bus": 2, "fire hydrant": 2, "boat": 2, "clock": 2, "kite": 1, "traffic light": 1, "cow": 1, "car": 1, "laptop": 1, "truck": 1}}

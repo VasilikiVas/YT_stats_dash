@@ -1,1 +1,1 @@
-{"object_views": {"person": 797480, "boat": 191977, "airplane": 95716, "tv": 91527, "car": 41783, "book": 24840, "train": 5398, "tie": 4119, "horse": 4119}, "object_counts": {"person": 11, "airplane": 3, "tv": 2, "car": 2, "boat": 2, "train": 1, "book": 1, "tie": 1, "horse": 1}}
+{"object_views": {"person": 797480, "boat": 191977, "airplane": 95716, "tv": 91527, "car": 41783, "book": 24840, "train": 5398, "horse": 4119, "tie": 4119}, "object_counts": {"person": 11, "airplane": 3, "tv": 2, "car": 2, "boat": 2, "train": 1, "book": 1, "horse": 1, "tie": 1}}

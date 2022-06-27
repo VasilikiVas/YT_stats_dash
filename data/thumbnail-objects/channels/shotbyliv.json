@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"person": 120317, "bed": 57954, "tie": 57954, "book": 55269, "bottle": 3450, "donut": 2600, "tv": 960, "dog": 960, "carrot": 960, "cup": 850, "chair": 850, "hot dog": 182, "cell phone": 174, "potted plant": 99, "sandwich": 78, "banana": 78, "boat": 76}, "object_counts": {"person": 24, "cell phone": 3, "bottle": 2, "bed": 1, "tie": 1, "potted plant": 1, "tv": 1, "dog": 1, "carrot": 1, "boat": 1, "sandwich": 1, "banana": 1, "book": 1, "donut": 1, "hot dog": 1, "cup": 1, "chair": 1}}
