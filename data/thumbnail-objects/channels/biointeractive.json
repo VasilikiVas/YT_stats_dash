@@ -1,1 +1,1 @@
-{"object_views": {"bird": 35304, "person": 21588, "elephant": 7030, "car": 2426, "backpack": 2426, "tv": 2134, "apple": 573, "clock": 356, "bottle": 157}, "object_counts": {"person": 5, "tv": 2, "apple": 2, "bird": 2, "bottle": 1, "clock": 1, "car": 1, "backpack": 1, "elephant": 1}}
+{"object_views": {"bird": 35304, "person": 21588, "elephant": 7030, "backpack": 2426, "car": 2426, "tv": 2134, "apple": 573, "clock": 356, "bottle": 157}, "object_counts": {"person": 5, "tv": 2, "apple": 2, "bird": 2, "bottle": 1, "clock": 1, "backpack": 1, "car": 1, "elephant": 1}}

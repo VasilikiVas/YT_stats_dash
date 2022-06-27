@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"person": 2343, "train": 619, "car": 376, "tie": 373, "cell phone": 319, "cup": 282, "tv": 174, "chair": 164, "potted plant": 124, "laptop": 123, "broccoli": 118, "carrot": 118, "couch": 89, "dining table": 75, "bottle": 70, "vase": 54, "bench": 3, "umbrella": 3}, "object_counts": {"person": 30, "train": 11, "cell phone": 3, "cup": 3, "tie": 3, "potted plant": 2, "car": 2, "chair": 2, "bench": 1, "umbrella": 1, "bottle": 1, "tv": 1, "vase": 1, "broccoli": 1, "carrot": 1, "couch": 1, "dining table": 1, "laptop": 1}}

@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"person": 118787, "bicycle": 81777, "mouse": 16866, "umbrella": 16391, "dog": 13844, "stop sign": 13148, "tv": 7646, "potted plant": 7646, "tie": 7646, "motorcycle": 6646, "car": 5852, "skateboard": 2788, "apple": 1917, "truck": 965, "bench": 693, "frisbee": 312}, "object_counts": {"person": 19, "bicycle": 12, "car": 5, "umbrella": 2, "stop sign": 2, "skateboard": 2, "mouse": 1, "apple": 1, "dog": 1, "tv": 1, "potted plant": 1, "tie": 1, "frisbee": 1, "bench": 1, "truck": 1, "motorcycle": 1}}

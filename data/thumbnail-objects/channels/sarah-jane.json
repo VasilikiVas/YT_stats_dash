@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"person": 618276, "bed": 63206, "couch": 32275, "toothbrush": 18680, "cake": 17827, "book": 16709, "sink": 15228, "knife": 15228, "car": 15228, "tv": 14614, "cup": 13629, "bowl": 13495, "baseball bat": 7788, "orange": 6685, "chair": 5332, "bottle": 5332, "dining table": 4589}, "object_counts": {"person": 28, "bed": 3, "cup": 2, "bowl": 2, "cake": 2, "orange": 1, "baseball bat": 1, "couch": 1, "chair": 1, "bottle": 1, "toothbrush": 1, "dining table": 1, "tv": 1, "book": 1, "sink": 1, "knife": 1, "car": 1}}

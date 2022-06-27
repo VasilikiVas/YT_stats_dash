@@ -1,1 +1,1 @@
-{"object_views": {"person": 63653, "cell phone": 11136, "car": 182, "sandwich": 182, "microwave": 165, "potted plant": 112, "bottle": 112, "book": 29}, "object_counts": {"person": 9, "microwave": 3, "cell phone": 2, "book": 2, "car": 1, "sandwich": 1, "potted plant": 1, "bottle": 1}}
+{"object_views": {"person": 63653, "cell phone": 11136, "sandwich": 182, "car": 182, "microwave": 165, "potted plant": 112, "bottle": 112, "book": 29}, "object_counts": {"person": 9, "microwave": 3, "cell phone": 2, "book": 2, "sandwich": 1, "car": 1, "potted plant": 1, "bottle": 1}}

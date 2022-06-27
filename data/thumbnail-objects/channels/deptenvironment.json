@@ -1,1 +1,1 @@
-{"object_views": {"person": 3554, "tv": 907, "tie": 695, "cake": 144, "cat": 140, "cell phone": 73, "train": 9, "chair": 5, "bottle": 3, "cup": 3}, "object_counts": {"person": 27, "tv": 7, "tie": 5, "cell phone": 2, "bottle": 1, "cup": 1, "chair": 1, "train": 1, "cake": 1, "cat": 1}}
+{"object_views": {"person": 3554, "tv": 907, "tie": 695, "cake": 144, "cat": 140, "cell phone": 73, "train": 9, "chair": 5, "cup": 3, "bottle": 3}, "object_counts": {"person": 27, "tv": 7, "tie": 5, "cell phone": 2, "cup": 1, "bottle": 1, "chair": 1, "train": 1, "cake": 1, "cat": 1}}

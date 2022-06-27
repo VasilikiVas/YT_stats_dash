@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"person": 30886, "bench": 4512, "car": 3464, "cell phone": 2600, "tv": 1926, "cake": 1071, "pizza": 996, "boat": 812, "tie": 742, "chair": 703, "cup": 672, "refrigerator": 547, "sink": 547, "backpack": 474}, "object_counts": {"person": 29, "car": 4, "cell phone": 3, "bench": 3, "cake": 2, "tie": 1, "refrigerator": 1, "sink": 1, "backpack": 1, "chair": 1, "boat": 1, "tv": 1, "pizza": 1, "cup": 1}}

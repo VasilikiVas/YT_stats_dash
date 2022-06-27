@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"dog": 607880, "cat": 315799, "person": 181138, "couch": 110346, "truck": 104533, "bird": 53498, "sports ball": 51753, "car": 39720, "fire hydrant": 33005, "handbag": 32833, "bowl": 29044, "motorcycle": 28107, "surfboard": 24835, "train": 24655, "carrot": 19830}, "object_counts": {"dog": 18, "cat": 9, "person": 7, "truck": 4, "couch": 3, "surfboard": 1, "train": 1, "sports ball": 1, "fire hydrant": 1, "handbag": 1, "carrot": 1, "bowl": 1, "motorcycle": 1, "car": 1, "bird": 1}}

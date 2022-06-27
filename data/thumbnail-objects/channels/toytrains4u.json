@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"train": 934605, "person": 169175, "suitcase": 90765, "bus": 81732, "truck": 75956, "fire hydrant": 19654, "teddy bear": 15615, "donut": 15615, "broccoli": 15112}, "object_counts": {"train": 18, "suitcase": 3, "person": 3, "teddy bear": 1, "donut": 1, "broccoli": 1, "truck": 1, "bus": 1, "fire hydrant": 1}}

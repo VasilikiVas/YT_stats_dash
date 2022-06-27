@@ -1,1 +1,1 @@
-{"object_views": {"person": 12570, "tv": 4383, "tie": 3627, "book": 3627, "clock": 337, "car": 56, "apple": 56}, "object_counts": {"clock": 13, "person": 12, "tv": 3, "tie": 1, "book": 1, "car": 1, "apple": 1}}
+{"object_views": {"person": 12570, "tv": 4383, "book": 3627, "tie": 3627, "clock": 337, "apple": 56, "car": 56}, "object_counts": {"clock": 13, "person": 12, "tv": 3, "book": 1, "tie": 1, "apple": 1, "car": 1}}

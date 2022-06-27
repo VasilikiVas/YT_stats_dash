@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"person": 16301, "book": 5507, "tv": 3096, "car": 2254, "chair": 2193, "laptop": 1856, "potted plant": 1485, "couch": 780, "clock": 666, "umbrella": 610, "train": 509, "refrigerator": 490, "keyboard": 489, "cup": 386, "bottle": 386}, "object_counts": {"person": 30, "book": 10, "tv": 6, "car": 4, "chair": 4, "laptop": 3, "potted plant": 3, "couch": 1, "cup": 1, "bottle": 1, "refrigerator": 1, "keyboard": 1, "clock": 1, "umbrella": 1, "train": 1}}

@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"person": 20073, "bench": 8795, "microwave": 2483, "bottle": 2222, "potted plant": 1841, "knife": 1554, "cake": 1269, "cell phone": 1095, "toothbrush": 1091, "refrigerator": 826, "chair": 779, "oven": 728, "umbrella": 626, "book": 585, "tv": 484}, "object_counts": {"person": 20, "bottle": 3, "knife": 2, "potted plant": 2, "bench": 2, "oven": 1, "microwave": 1, "toothbrush": 1, "chair": 1, "book": 1, "cell phone": 1, "refrigerator": 1, "cake": 1, "umbrella": 1, "tv": 1}}

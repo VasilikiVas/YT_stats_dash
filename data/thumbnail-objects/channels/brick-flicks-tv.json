@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"train": 18123, "refrigerator": 15057, "person": 11193, "cell phone": 9344, "keyboard": 7142, "tv": 4609, "toilet": 3681, "chair": 3415, "cup": 3133, "fire hydrant": 2784, "clock": 1435, "airplane": 1038, "bottle": 333, "donut": 226}, "object_counts": {"clock": 4, "person": 3, "chair": 2, "airplane": 1, "keyboard": 1, "donut": 1, "refrigerator": 1, "cell phone": 1, "fire hydrant": 1, "cup": 1, "tv": 1, "bottle": 1, "train": 1, "toilet": 1}}

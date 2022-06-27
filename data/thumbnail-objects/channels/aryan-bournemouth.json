@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"person": 2015, "handbag": 328, "bed": 147, "umbrella": 54, "parking meter": 51, "book": 46, "refrigerator": 45, "backpack": 19, "cell phone": 16, "suitcase": 16}, "object_counts": {"person": 10, "book": 2, "refrigerator": 2, "cell phone": 1, "suitcase": 1, "parking meter": 1, "umbrella": 1, "backpack": 1, "handbag": 1, "bed": 1}}
