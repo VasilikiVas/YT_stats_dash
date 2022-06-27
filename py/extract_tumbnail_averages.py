@@ -22,10 +22,13 @@ def generate_thumbnail_averages(category: Topic):
         videos_info = json.load(f)
     print("Finished loading channel's videos\n")
 
+    done_list = [nm.replace(".png",'') for nm in os.listdir(CHANNELS_PATH)]
+    channels = set(videos_info.keys()).difference(done_list)
+
     print("Calculating thumbnail averages for all channels in category: " + category + "\n")
     category_thumbnails = []
     category_views = []
-    for channel in tqdm(list(videos_info.keys())):        
+    for channel in tqdm(channels):
         channel_thumbnails = []
         channel_views = []
         for vid_dict in videos_info[channel]:
@@ -35,6 +38,8 @@ def generate_thumbnail_averages(category: Topic):
                 continue
             img = crop_black_border_img(img)
             if type(img) == bool and not img: # Exclude shorts and wrong shapes
+                continue
+            if img.shape != (270,480,3):
                 continue
             channel_thumbnails.append(img)
             channel_views.append(vid_dict["views"])
@@ -68,5 +73,5 @@ if __name__ == '__main__':
     if not os.path.exists(CHANNELS_PATH):
         os.makedirs(CHANNELS_PATH)
 
-    for cat in Topic._member_names_:
+    for cat in Topic._member_names_[1:]:
         generate_thumbnail_averages(cat)
