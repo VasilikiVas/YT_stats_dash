@@ -1,5 +1,6 @@
 from flask import render_template, request, jsonify, send_from_directory
 import os, json, sys
+import re
 
 from decimal import Decimal
 
@@ -64,7 +65,7 @@ def category(cat):
     channels = []
     for name, info in channels_dict.items():
         channels.append({
-            "name": name,
+            "name": re.sub(r"-?([A-z0-9]){8}-([A-z0-9]){4}-([A-z0-9]){4}-([A-z0-9]){4}-([A-z0-9]){12}", "", name),
             **info
         })
 
@@ -100,10 +101,8 @@ def category(cat):
         # # TITLE
         # "repr_title": most_repr_title, # str: most representative title
 
-        "name": cat, 		  # str: name of category
         # Hardcoded examples
         # THUMBNAIL
-        # "avg_thumbnail": os.path.join("..", "static", "data", "thumbnail-averages", "channels", "a4.png"), # str: path to avg thumbnail TODO
         "repr_thumbnail": os.path.join("..", "static", "data", "thumbnails", "___OSEsR5pk_high.jpg"), # str: path to most representative thumbnail TODO
         # TITLE
         "repr_title": "This is a title", # str: most representative title TODO
@@ -121,24 +120,6 @@ def category(cat):
         },
         subview_mode=subview_mode,	# "thumbnail" or "title"
         videos=videos[:20],			# list of dicts: all videos (or maybe top-n if computation requires it) in the category, sorted by views
-    )
-
-
-@main.route('/video', methods=['GET'])
-def video():
-    vid_id = request.args.get("video")
-    subview_mode = request.args.get("subview_mode")
-
-    if not vid_id:
-        pass # TODO show error message and redirect
-    if not subview_mode:
-        subview_mode = "thumbnail"
-
-    video = {}
-
-    return render_template("video.html", 
-        video=video, 			    # dict: info about the video
-        subview_mode=subview_mode,	# "thumbnail" or "title"
     )
 
 
@@ -365,3 +346,41 @@ def get_thumbnail_average_img():
         avg_img_data_path = os.path.join("..", "data", "thumbnail-averages", "channels", f"{channel}.png")
 
     return send_file(avg_img_data_path, mimetype='image/png')
+
+
+# API for getting data for the title std plot
+@main.route('/get_title_std_plot_data', methods = ['GET'])
+def get_title_std_plot_data():
+
+    category = request.args.get("category")
+    channel = request.args.get("channel")
+
+    if category:
+        std_data_path = os.path.join(DATA_DIR, "title-latents", "categories_plot_data", f"{category}.json")
+    elif channel:
+        std_data_path = os.path.join(DATA_DIR, "title-latents", "channels_plot_data", f"{channel}.json")
+
+    with open(std_data_path, "r") as f:
+        std_data = f.read()
+
+    return std_data
+
+
+# API for getting data for the thumbnail std plot
+@main.route('/get_thumbnail_std_plot_data', methods = ['GET'])
+def get_thumbnail_std_plot_data():
+
+    category = request.args.get("category")
+    channel = request.args.get("channel")
+
+    if category:
+        # Get category dom colours
+        std_data_path = os.path.join(DATA_DIR, "title-latents", "categories", f"{category}.json")
+    elif channel:
+        # Get channel dom colours
+        std_data_path = os.path.join(DATA_DIR, "title-latents", "channels", f"{channel}.json")
+
+    with open(std_data_path, "r") as f:
+        std_data = f.read()
+
+    return std_data
