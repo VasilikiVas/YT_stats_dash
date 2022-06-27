@@ -15,6 +15,9 @@ var view = splitURL.at(-2)
 var cname = splitURL.at(-1)
 var fetch_url = `/get_title_std_plot_data?${view}=` + cname
 
+// function to format tooltip data
+const formater =  d3.format(',d')
+
 fetch(fetch_url)
       .then(function(response) { return response.json(); })
       .then((dataset) => {
@@ -52,7 +55,7 @@ fetch(fetch_url)
 
          // 4. Draw and transform/translate horizontal and vertical axes
          var xAxis = d3.axisBottom().scale(xScale).tickFormat(d3.format(".3f"))
-         var yAxis = d3.axisLeft().scale(yScale).tickFormat(d3.format("d"))
+         var yAxis = d3.axisLeft().scale(yScale)
 
          svg.append("g")
             .attr("transform", "translate(0, "+ (height - margin.bottom) + ")")
@@ -69,6 +72,7 @@ fetch(fetch_url)
             .data(data)
             .enter()
             .append("circle")
+            .style("opacity", 0.6)
             .attr("cx", (d) => xScale(d["x"]))
             .attr("cy", (d) => yScale(d["y"]))
             .attr("r", 5)
@@ -82,7 +86,7 @@ fetch(fetch_url)
                         .style("left", event.pageX+10+"px")
                         .style("top", event.pageY-80+"px")
                         .attr("data-std", info["x"])
-                        .html("Channel name: "+info["name"]+"<br><br>"+"STD: "+info["x"]+"<br><br>"+"Number of views: "+ info["y"]+"<br><br>")
+                        .html("Channel name: "+info["name"]+"<br><br>"+"STD: "+info["x"]+"<br><br>"+"Number of views: "+ formater(info["y"])+"<br><br>")
             })
             .on("mousemove", function(){
                tooltip.style("left", event.pageX+10+"px")
