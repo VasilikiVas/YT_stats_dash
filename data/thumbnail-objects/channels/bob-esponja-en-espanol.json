@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"train": 6813985, "cake": 4012165, "stop sign": 417371, "scissors": 408618}, "object_counts": {"stop sign": 1, "scissors": 1, "train": 1, "cake": 1}}

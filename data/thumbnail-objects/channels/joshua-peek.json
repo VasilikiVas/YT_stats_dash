@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"person": 1003, "cup": 282, "bottle": 238, "truck": 167, "pizza": 156, "motorcycle": 81, "car": 72, "dining table": 55, "boat": 36, "clock": 33, "bench": 28, "microwave": 27, "knife": 27, "dog": 19, "book": 15, "couch": 13, "bed": 13, "cell phone": 12, "tv": 6}, "object_counts": {"person": 18, "cup": 4, "bottle": 4, "motorcycle": 2, "dining table": 2, "truck": 2, "car": 2, "couch": 1, "bed": 1, "boat": 1, "tv": 1, "clock": 1, "book": 1, "cell phone": 1, "bench": 1, "dog": 1, "pizza": 1, "microwave": 1, "knife": 1}}

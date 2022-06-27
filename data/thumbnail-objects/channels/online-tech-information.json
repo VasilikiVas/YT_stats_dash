@@ -1,1 +1,1 @@
-{"object_views": {"person": 398263, "tv": 92551, "cell phone": 69581, "tie": 59238, "bottle": 37066, "umbrella": 24500, "clock": 21175, "hot dog": 14298}, "object_counts": {"person": 30, "tie": 6, "cell phone": 6, "tv": 6, "bottle": 3, "hot dog": 1, "clock": 1, "umbrella": 1}}
+{"object_views": {"person": 398263, "tv": 92551, "cell phone": 69581, "tie": 59238, "bottle": 37066, "umbrella": 24500, "clock": 21175, "hot dog": 14298}, "object_counts": {"person": 30, "cell phone": 6, "tie": 6, "tv": 6, "bottle": 3, "hot dog": 1, "clock": 1, "umbrella": 1}}

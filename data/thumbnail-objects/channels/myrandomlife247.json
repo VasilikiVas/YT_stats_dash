@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"car": 51749, "motorcycle": 39034, "person": 12547, "traffic light": 754, "backpack": 540, "bicycle": 540, "microwave": 520, "umbrella": 467, "clock": 446, "chair": 298, "tie": 156}, "object_counts": {"person": 16, "motorcycle": 12, "car": 8, "clock": 2, "microwave": 1, "chair": 1, "tie": 1, "traffic light": 1, "umbrella": 1, "backpack": 1, "bicycle": 1}}

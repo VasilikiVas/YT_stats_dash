@@ -73,7 +73,7 @@ def extract_category_dom_colours(category: Topic, clusters):
         - category: the given category
     """
 
-    with open(os.path.join("..", "data", f"videos-info_{category}.json"), "r") as f:
+    with open(os.path.join("..", "data", "info_videos", f"videos-info_{category}.json"), "r") as f:
         print("Loading creator's videos")
         videos_info = json.load(f)
     print("Finished loading creator's videos\n")
@@ -131,7 +131,7 @@ if __name__ == '__main__':
         os.makedirs(CHANNELS_PATH)
 
     # choose how many colours to extract
-    clusters = 10
+    clusters = 5
 
     for category in Topic:
         extract_category_dom_colours(category.value, clusters)

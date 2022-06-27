@@ -1,1 +1,1 @@
-{"object_views": {"person": 3218630, "tv": 941221, "pizza": 361477, "bird": 326553, "tie": 168249, "airplane": 127208, "train": 127208, "book": 123110}, "object_counts": {"person": 17, "tv": 5, "bird": 2, "book": 1, "tie": 1, "pizza": 1, "airplane": 1, "train": 1}}
+{"object_views": {"person": 3218630, "tv": 941221, "pizza": 361477, "bird": 326553, "tie": 168249, "train": 127208, "airplane": 127208, "book": 123110}, "object_counts": {"person": 17, "tv": 5, "bird": 2, "book": 1, "tie": 1, "pizza": 1, "train": 1, "airplane": 1}}

@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"person": 2009, "chair": 1123, "car": 885, "bus": 819, "suitcase": 774, "bench": 251, "vase": 210, "bed": 184, "fire hydrant": 184, "stop sign": 184, "train": 67}, "object_counts": {"person": 10, "chair": 6, "car": 4, "bus": 3, "suitcase": 2, "train": 1, "bed": 1, "vase": 1, "bench": 1, "fire hydrant": 1, "stop sign": 1}}

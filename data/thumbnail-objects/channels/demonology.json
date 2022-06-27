@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"car": 726978, "person": 676471, "traffic light": 69431, "truck": 21641, "dog": 11733, "motorcycle": 9860, "suitcase": 8663, "cell phone": 8237, "bench": 8237, "book": 7550, "airplane": 5318, "potted plant": 1370}, "object_counts": {"car": 24, "person": 21, "motorcycle": 2, "truck": 2, "potted plant": 1, "airplane": 1, "suitcase": 1, "traffic light": 1, "book": 1, "cell phone": 1, "bench": 1, "dog": 1}}

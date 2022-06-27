@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"dog": 882, "bed": 451, "cat": 218, "person": 133, "sports ball": 91, "couch": 82, "remote": 82, "bottle": 82, "cup": 63, "apple": 48, "teddy bear": 48, "banana": 24, "vase": 23, "book": 22, "potted plant": 21, "cow": 14, "frisbee": 13}, "object_counts": {"dog": 17, "bed": 5, "cat": 4, "sports ball": 3, "person": 2, "teddy bear": 2, "cup": 2, "couch": 1, "remote": 1, "bottle": 1, "apple": 1, "vase": 1, "cow": 1, "potted plant": 1, "banana": 1, "frisbee": 1, "book": 1}}

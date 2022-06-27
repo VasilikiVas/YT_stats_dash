@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"person": 1458483, "cup": 452743, "tv": 322152, "wine glass": 280578, "dining table": 280578, "bowl": 226827, "pizza": 203151, "hot dog": 117553, "donut": 115693, "chair": 54957, "orange": 48376, "apple": 40468, "banana": 24995, "cell phone": 17271, "stop sign": 14681, "bottle": 14681}, "object_counts": {"person": 30, "pizza": 6, "bowl": 6, "cup": 5, "donut": 4, "hot dog": 3, "tv": 3, "wine glass": 1, "dining table": 1, "chair": 1, "banana": 1, "stop sign": 1, "bottle": 1, "cell phone": 1, "orange": 1, "apple": 1}}

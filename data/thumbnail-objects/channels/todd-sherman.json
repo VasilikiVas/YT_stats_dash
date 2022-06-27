@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"person": 46807, "car": 16498, "truck": 11236, "skateboard": 10864, "surfboard": 9535, "fire hydrant": 1329, "clock": 919, "bus": 691, "airplane": 673, "motorcycle": 530, "traffic light": 530, "stop sign": 530}, "object_counts": {"person": 12, "car": 11, "truck": 4, "skateboard": 2, "fire hydrant": 1, "clock": 1, "motorcycle": 1, "traffic light": 1, "stop sign": 1, "airplane": 1, "bus": 1, "surfboard": 1}}

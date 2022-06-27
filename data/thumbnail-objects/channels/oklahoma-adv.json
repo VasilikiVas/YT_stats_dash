@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"person": 263099, "motorcycle": 56061, "car": 20870, "cell phone": 3973, "backpack": 3962, "potted plant": 3265, "bench": 2880, "bed": 2301, "skateboard": 2152, "truck": 1704, "sink": 1225, "traffic light": 943, "microwave": 758, "dog": 692, "bus": 609}, "object_counts": {"person": 20, "motorcycle": 12, "car": 10, "traffic light": 2, "backpack": 2, "truck": 2, "sink": 1, "potted plant": 1, "bus": 1, "cell phone": 1, "microwave": 1, "bench": 1, "skateboard": 1, "dog": 1, "bed": 1}}

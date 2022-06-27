@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"person": 286888, "tie": 276379, "train": 9237, "boat": 8037, "chair": 2374, "cow": 1832, "sheep": 1832, "bed": 1354, "car": 1275, "bus": 779, "donut": 610, "potted plant": 440, "suitcase": 336, "tv": 177}, "object_counts": {"train": 12, "person": 12, "boat": 4, "car": 2, "suitcase": 1, "potted plant": 1, "cow": 1, "sheep": 1, "tie": 1, "tv": 1, "chair": 1, "donut": 1, "bed": 1, "bus": 1}}

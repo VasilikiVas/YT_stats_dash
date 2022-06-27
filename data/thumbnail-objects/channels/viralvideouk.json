@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"person": 9151, "tie": 2508, "car": 1936, "potted plant": 729, "cat": 729, "traffic light": 572, "umbrella": 338, "skateboard": 296, "dog": 282, "airplane": 272, "teddy bear": 243, "bench": 199, "train": 175, "vase": 155, "skis": 128, "motorcycle": 93, "laptop": 47}, "object_counts": {"person": 25, "car": 6, "teddy bear": 2, "dog": 2, "skateboard": 2, "laptop": 1, "train": 1, "vase": 1, "skis": 1, "airplane": 1, "motorcycle": 1, "tie": 1, "bench": 1, "potted plant": 1, "cat": 1, "traffic light": 1, "umbrella": 1}}

@@ -1,1 +1,1 @@
-{"object_views": {"boat": 4119, "truck": 2930, "person": 1964, "tv": 507, "car": 282, "traffic light": 282, "bed": 254, "bench": 150}, "object_counts": {"person": 3, "boat": 3, "truck": 2, "bench": 1, "tv": 1, "car": 1, "traffic light": 1, "bed": 1}}
+{"object_views": {"boat": 4119, "truck": 2930, "person": 1964, "tv": 507, "traffic light": 282, "car": 282, "bed": 254, "bench": 150}, "object_counts": {"person": 3, "boat": 3, "truck": 2, "bench": 1, "tv": 1, "traffic light": 1, "car": 1, "bed": 1}}

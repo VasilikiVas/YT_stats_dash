@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"car": 14514, "train": 12946, "person": 3957, "baseball glove": 3617, "bottle": 957, "umbrella": 791, "dog": 769, "tie": 545, "tv": 440, "laptop": 266, "clock": 193, "stop sign": 193, "cup": 50, "cat": 27, "bird": 19}, "object_counts": {"person": 13, "tv": 5, "car": 3, "cup": 1, "umbrella": 1, "cat": 1, "bird": 1, "dog": 1, "tie": 1, "clock": 1, "stop sign": 1, "bottle": 1, "laptop": 1, "baseball glove": 1, "train": 1}}

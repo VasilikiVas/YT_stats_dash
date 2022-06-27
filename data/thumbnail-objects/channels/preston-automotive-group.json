@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"person": 2345, "car": 727, "tv": 254, "tie": 243, "truck": 243, "cake": 179, "bottle": 179, "train": 172, "book": 149, "chair": 144, "toothbrush": 130, "cup": 124, "handbag": 124, "airplane": 39, "cell phone": 29}, "object_counts": {"person": 20, "car": 10, "tv": 4, "tie": 2, "truck": 2, "book": 1, "train": 1, "airplane": 1, "cell phone": 1, "chair": 1, "cake": 1, "bottle": 1, "toothbrush": 1, "cup": 1, "handbag": 1}}

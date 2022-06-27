@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"car": 700597, "truck": 683459, "person": 514701, "umbrella": 323685, "pizza": 100360, "chair": 100360, "motorcycle": 94911, "train": 78958, "vase": 74429, "banana": 53281, "donut": 39939, "boat": 39381, "bowl": 37598, "knife": 30154, "clock": 26703}, "object_counts": {"truck": 6, "car": 6, "clock": 1, "bowl": 1, "knife": 1, "pizza": 1, "chair": 1, "banana": 1, "donut": 1, "vase": 1, "person": 1, "boat": 1, "motorcycle": 1, "umbrella": 1, "train": 1}}

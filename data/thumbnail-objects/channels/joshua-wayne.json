@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"person": 384765, "car": 167867, "tv": 60440, "tie": 36066, "bench": 10819, "wine glass": 9471, "sports ball": 6555, "cup": 5242, "bed": 4400, "chair": 3423, "bird": 917, "remote": 601}, "object_counts": {"person": 29, "tv": 9, "tie": 8, "car": 4, "sports ball": 1, "cup": 1, "chair": 1, "bird": 1, "bench": 1, "bed": 1, "remote": 1, "wine glass": 1}}

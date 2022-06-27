@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"person": 22647, "bicycle": 1646, "traffic light": 1199, "bench": 1043, "car": 907, "book": 875, "tie": 658, "backpack": 642, "laptop": 492, "vase": 407, "potted plant": 407, "umbrella": 394, "frisbee": 288}, "object_counts": {"person": 30, "bench": 3, "traffic light": 2, "car": 2, "bicycle": 2, "tie": 1, "umbrella": 1, "vase": 1, "potted plant": 1, "frisbee": 1, "backpack": 1, "book": 1, "laptop": 1}}

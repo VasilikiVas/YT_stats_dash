@@ -1,1 +1,1 @@
-{"object_views": {}, "object_counts": {}}
+{"object_views": {"bottle": 4097, "person": 2199, "bowl": 1715, "cup": 1611, "cake": 1153, "car": 678, "scissors": 651, "bird": 651, "truck": 490, "clock": 474, "sandwich": 312, "toilet": 310, "donut": 310, "elephant": 262, "horse": 222, "boat": 220, "apple": 209, "parking meter": 86}, "object_counts": {"person": 8, "bottle": 7, "cake": 2, "cup": 2, "bowl": 2, "parking meter": 1, "horse": 1, "toilet": 1, "donut": 1, "boat": 1, "truck": 1, "apple": 1, "car": 1, "elephant": 1, "sandwich": 1, "scissors": 1, "bird": 1, "clock": 1}}
