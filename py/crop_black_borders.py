@@ -7,6 +7,10 @@ from util.constants import THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT
 
 def crop_black_border_img(img):
     y_nonzero, _, _ = np.nonzero(img)
+
+    # if y_nonzero is empty (all black image) return cropped img
+    if not np.any(y_nonzero):
+        return img[44:314]    
     
     min_y = y_nonzero.min()
     max_y = y_nonzero.max()
