@@ -49,7 +49,7 @@
                                         Videos</div>
                                     <div class="videos_list" id="video_display_list" data-simplebar>
                                     {% for vid in videos %}
-                                        <a href="/video/{{ vid.id }}"><img src="https://i.ytimg.com/vi/{{ vid.id }}/default.jpg" class="video_list_thumb"></a>
+                                        <a href="https://youtu.be/watch?v={{ vid.id }}"><img src="https://i.ytimg.com/vi/{{ vid.id }}/default.jpg" class="video_list_thumb"></a>
                                     {% endfor %}
                                     </div>
                                 </div>

@@ -82,7 +82,23 @@ fetch(fetch_url)
                         .style("left", event.pageX+10+"px")
                         .style("top", event.pageY-80+"px")
                         .attr("data-std", info["x"])
-                        .html("Channel name: "+info["name"]+"<br><br>"+"STD: "+info["x"]+"<br><br>"+"Number of views: "+ info["y"]+"<br><br>")
+                        .html(`
+               <div>
+                  <a class="channel_entry nav-link">
+                        <img src="${info["logo_url"]}" class="channel_logo">
+                        <span class="ml-1 h5 font-weight-bold text-gray-800">${info["name"]}</span>
+                  </a>
+                  <table>
+                        <tr>
+                           <td>std: </td>
+                           <td class="h5 mb-0 font-weight-bold text-gray-800">${info["x"]}</td>
+                        </tr>
+                        <tr>
+                           <td>avg views: </td>
+                           <td class="h5 mb-0 font-weight-bold text-gray-800">${info["y"]}</td>
+                        </tr>
+                  </table>
+               </div>`)
             })
             .on("mousemove", function(){
                tooltip.style("left", event.pageX+10+"px")
