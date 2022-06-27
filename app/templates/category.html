@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
 {% block body %}
+
+<script type="text/javascript">
+    var videos = {{videos | safe}};
+</script>
 <!-- Main Content -->
 <div id="content">
 
@@ -43,7 +47,7 @@
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-warning text-uppercase mb-1" style="position: absolute; top: 0; left: 0; z-index: 1000">
                                         Videos</div>
-                                    <div class="videos_list" data-simplebar>
+                                    <div class="videos_list" id="video_display_list" data-simplebar>
                                     {% for vid in videos %}
                                         <a href="/video/{{ vid.id }}"><img src="https://i.ytimg.com/vi/{{ vid.id }}/default.jpg" class="video_list_thumb"></a>
                                     {% endfor %}
