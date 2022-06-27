@@ -110,7 +110,7 @@ def category(cat):
     }
 
     return render_template("category.html",
-        categories=["gaming", "howto", "science", "autos", "blogs"],
+        categories=Topic._member_names_,
         channels=channels, 	    # list of dicts: all channels in the category, sorted by Subs
         category=category, 			# dict: info about the category
         category_display={
@@ -119,7 +119,7 @@ def category(cat):
             "Videos/Channel: ": category["avg_video_count"],
         },
         subview_mode=subview_mode,	# "thumbnail" or "title"
-        videos=videos[:20],			# list of dicts: all videos (or maybe top-n if computation requires it) in the category, sorted by views
+        videos=videos[:30],			# list of dicts: all videos (or maybe top-n if computation requires it) in the category, sorted by views
     )
 
 
