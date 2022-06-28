@@ -281,9 +281,12 @@ def get_token_effectiveness_data():
     views = token_data[f"token_views"]
     avg_views = np.array(list(views.values())).mean()
     counts = token_data[f"token_counts"]
-    eff = {t:v/counts[t] for t,v in views.items() if counts[t] > 100}
+    dump_lowest = int(0.0*len(counts))
+    eff = {t:views[t]/c
+        for t,c in sorted(counts.items(), key=lambda x:x[1])[dump_lowest:]
+        if c > 100}
     eff = [{"group":t, "value":e/avg_views}
-    for t,e in sorted(eff.items(), key=lambda x:x[1],reverse=True)[:30]]
+        for t,e in sorted(eff.items(), key=lambda x:x[1],reverse=True)]
 
     return json.dumps(eff)
 

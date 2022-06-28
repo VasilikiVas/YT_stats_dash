@@ -57,3 +57,7 @@
 #load_more_channels_button {
     text-align: center;
 }
+
+#effectivenessPlot {
+    height: 85vh;
+}
