@@ -24,9 +24,14 @@
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                        category: {{ category.name }}</div>
+                                        {% if view == "category" %}
+                                            category: {{ category.name }}
+                                        {% else %}
+                                            channel: {{ channel.name }}
+                                        {% endif %}
+                                    </div>
                                     <table>
-                                        {% for key, value in category_display.items() %}
+                                        {% for key, value in info_display.items() %}
                                         <tr>
                                             <td>{{ key }}</td>
                                             <td class="h5 mb-0 font-weight-bold text-gray-800 cat_info" value="{{ value }}"></td>
