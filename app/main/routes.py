@@ -370,13 +370,15 @@ def get_most_repr_thumbnail():
 
     if category:
         most_repr_thumbnail_path = os.path.join(DATA_DIR, "thumbnail-latents", "categories_best_repr.json")
+        view = category
     elif channel:
         most_repr_thumbnail_path = os.path.join(DATA_DIR, "thumbnail-averages", "channels_best_repr.json")
+        view = channel
 
     with open(most_repr_thumbnail_path, "r") as f:
         most_repr_thumbnail_file = json.load(f)
     
-    most_repr_thumbnail = most_repr_thumbnail_file[category]["vid_id"]
+    most_repr_thumbnail = most_repr_thumbnail_file[view]["vid_id"]
     
     url = "https://i.ytimg.com/vi/" + most_repr_thumbnail + "/hqdefault.jpg"
     img = Image.open(requests.get(url, stream=True).raw)
@@ -386,6 +388,27 @@ def get_most_repr_thumbnail():
     img.save(img_path)
 
     return send_file(os.path.join("static", "data", "temp_repr_thumbnail.jpg"), mimetype='image/jpg')
+
+
+# API for getting data for the most representative title
+@main.route('/get_most_repr_title', methods = ['GET'])
+def get_most_repr_title():
+    category = request.args.get("category")
+    channel = request.args.get("channel")
+
+    if category:
+        most_repr_title_path = os.path.join(DATA_DIR, "title-latents", "categories_best_repr.json")
+        view = category
+    elif channel:
+        most_repr_title_path = os.path.join(DATA_DIR, "title-averages", "channels_best_repr.json")
+        view = channel
+
+    with open(most_repr_title_path, "r") as f:
+        most_repr_thumbnail_file = json.load(f)
+    
+    most_repr_thumbnail = most_repr_thumbnail_file[view]
+
+    return most_repr_thumbnail
 
 
 # API for getting data for the title std plot
@@ -424,3 +447,32 @@ def get_thumbnail_std_plot_data():
         std_data = f.read()
 
     return std_data
+
+
+# API for getting data for the word cloud
+@main.route('/get_word_cloud_data', methods = ['GET'])
+def get_word_cloud_data():
+
+    category = request.args.get("category")
+    channel = request.args.get("channel")
+
+    if category:
+        token_count_path = os.path.join(DATA_DIR, "title-tokens", "categories", f"{category}.json")
+        token_tf_idf_path = os.path.join(DATA_DIR, "title-tokens", "categories_tf_idf", f"{category}.json")
+    elif channel:
+        token_count_path = os.path.join(DATA_DIR, "title-tokens", "channels", f"{channel}.json")
+        token_tf_idf_path = os.path.join(DATA_DIR, "title-tokens", "channels_tf_idf", f"{channel}.json")
+
+    with open(token_count_path, "r") as f:
+        token_count = json.load(f)
+
+    with open(token_tf_idf_path, "r") as f:
+        token_tf_idf = json.load(f)
+
+    counts = token_count["token_counts"]
+
+    word_cloud_dict = {}
+    for key in list(counts.keys())[:100]:
+        word_cloud_dict[key] = {"counts": counts[key], "tf-idf": token_tf_idf[key]}
+
+    return json.dumps(word_cloud_dict)

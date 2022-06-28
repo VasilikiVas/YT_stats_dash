@@ -18,4 +18,11 @@ window.addEventListener('load', (event) => {
         .then((data) => {
             document.getElementById("mostReprThumbnail").setAttribute("src", data.url)
     })
+
+    var fetch_url = `/get_most_repr_title?${view}=` + name
+    fetch(fetch_url)
+        .then(function(response) { return response.json() })
+        .then((data) => {
+            document.getElementById("mostReprTitle").innerHTML = data.repr
+    })
 })
