@@ -16,7 +16,7 @@
 	<link href="https://getbootstrap.com/docs/5.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
 	<!-- D3 package -->
-	<script src="https://d3js.org/d3.v6.min.js"></script>
+	<script src="https://d3js.org/d3.v3.min.js"></script>
 
     <!-- BOOTSTRAP TEMPLATE -->
     <!-- Custom fonts for this template-->
@@ -39,8 +39,6 @@
             var channels = {{channels | safe}}  
             var subview_mode = {{subview_mode | tojson | safe}}
         </script>
-
-        <div class="tooltip" id="tooltip"></div>
 
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
@@ -91,8 +89,7 @@
             </li>
 
             <!-- Nav Item - Channels -->
-            <li class="nav-item"><ul id="channel_display_list" class="channel_list" data-simplebar>
-            </ul></li>
+            <li class="nav-item"><ul id="channel_display_list" class="channel_list" data-simplebar></ul></li>
             <!-- Divider -->
             <hr class="sidebar-divider">
 

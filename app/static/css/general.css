@@ -66,3 +66,25 @@ body {
 #effectivenessPlot {
     height: 85vh;
 }
+
+/* Tooltips for effectiveness plot */
+#tooltip {
+    opacity: .9 !important;
+}
+.tooltip_vids {
+    height: 52vh;
+    overflow: auto;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+    padding-right: 10px;
+}
+.tooltip_vids .vid_entry {
+    padding: 5px !important;
+    display: flex !important;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+.tooltip_vids .thumbnail {
+    width: 80px;
+}

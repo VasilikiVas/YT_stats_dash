@@ -1,16 +1,37 @@
-// Colors to differentiate riders with and without doping allegations
-var colors = ["#27ae60"]
-
-// Create an invisible div for the tooltip
-const tooltip = d3.select("body")
-                  .append("div")
-                  .attr("id", "tooltip")
-                  .style("visibility", "hidden")
-
 // function to format tooltip data
 const formatter =  d3.format(',d')
 
+function construct_std_tooltip(info) {
+   return `
+   <div>
+      <a class="channel_entry nav-link">
+            <img src="${info["logo_url"]}" class="channel_logo">
+            <span class="ml-1 h5 font-weight-bold text-gray-800">${info["name"]}</span>
+      </a>
+      <table>
+            <tr>
+               <td>std: </td>
+               <td class="h5 mb-0 font-weight-bold text-gray-800">${info["x"]}</td>
+            </tr>
+            <tr>
+               <td>avg views: </td>
+               <td class="h5 mb-0 font-weight-bold text-gray-800">${formatter(info["y"])}</td>
+            </tr>
+      </table>
+   </div>`
+}
+
 function create_std_plot(subview){
+
+   // Colors to differentiate riders with and without doping allegations
+   var colors = ["#27ae60"]
+
+   // Create an invisible div for the tooltip
+   const tooltip = d3.select("body")
+                     .append("div")
+                     .attr("id", "tooltip")
+                     .style("visibility", "hidden")
+
    // 1. Load the data from external source
    var url = window.location.pathname
    var splitURL = url.toString().split("/")
@@ -46,7 +67,6 @@ function create_std_plot(subview){
                .attr("viewBox", [0, 0, width, height])
                //.attr("width", width)
                //.attr("height", height)
-            console.log(svg)
 
             // 3. Define scales to translate domains of the data to the range of the svg
             var xMin = d3.min(data, (d) => d["x"]);
@@ -100,23 +120,7 @@ function create_std_plot(subview){
                            .style("left", event.pageX+10+"px")
                            .style("top", event.pageY-80+"px")
                            .attr("data-std", info["x"])
-                           .html(`
-                  <div>
-                     <a class="channel_entry nav-link">
-                           <img src="${info["logo_url"]}" class="channel_logo">
-                           <span class="ml-1 h5 font-weight-bold text-gray-800">${info["name"]}</span>
-                     </a>
-                     <table>
-                           <tr>
-                              <td>std: </td>
-                              <td class="h5 mb-0 font-weight-bold text-gray-800">${info["x"]}</td>
-                           </tr>
-                           <tr>
-                              <td>avg views: </td>
-                              <td class="h5 mb-0 font-weight-bold text-gray-800">${formatter(info["y"])}</td>
-                           </tr>
-                     </table>
-                  </div>`)
+                           .html(construct_std_tooltip(info))
                })
                .on("mousemove", function(){
                   tooltip.style("left", event.pageX+10+"px")

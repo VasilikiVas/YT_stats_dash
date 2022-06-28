@@ -27,8 +27,20 @@ except:
     
     sys.path.remove(os.path.join(path ,"py/"))
 
-
 DATA_DIR = os.path.join("data")
+
+with open(os.path.join(DATA_DIR, "vid2channel.json"), "r") as f:
+    VID2CHANNEL = json.load(f)
+with open(os.path.join(DATA_DIR, "channel2category.json"), "r") as f:
+    CHANNEL2CAT = json.load(f)
+with open(os.path.join(DATA_DIR, "channel-name2id.json"), "r") as f:
+    CHANNEL2ID = json.load(f)
+
+VID_DICT = {}
+for cat in Topic._member_names_:
+    with open(os.path.join(DATA_DIR, "info_videos", f"videos-info_{cat}.json"), "r") as f:
+        VID_DICT.update({vid["id"]:vid for chan,vids in json.load(f).items() for vid in vids})
+
 
 @main.route('/', methods=['GET'])
 def base():
@@ -258,9 +270,13 @@ def get_dom_colour_data():
 def calc_effectiveness(views, counts, min_count):
     avg_views = np.array(list(views.values())).mean()
     eff = {t:views[t]/c
-        for t,c in counts.items() if c > min_count}
-    eff = [{"group":t, "value":e/avg_views}
-        for t,e in sorted(eff.items(), key=lambda x:x[1],reverse=True)]
+        for t,c in counts.items() if c > int(min_count)}
+    eff = [{
+            "group": t, 
+            "value": e/avg_views,
+            "count": counts[t],
+            "avg_views": int(e),
+        } for t,e in sorted(eff.items(), key=lambda x:x[1],reverse=True)]
     return eff
 
 
@@ -289,11 +305,12 @@ def get_token_effectiveness_data():
 
 
 # API for getting data for the tooltip in the token effectiveness plot
-@main.route('/get_token_tooltip_data', methods = ['GET'])
+@main.route('/get_title_tooltip_data', methods = ['GET'])
 def get_token_tooltip_data():
 
     category = request.args.get("category")
     channel = request.args.get("channel")
+    token = request.args.get("group")
 
     if category:
         token_data_path = os.path.join(DATA_DIR, "title-tokens", "categories_inv_index", f"{category}.json")
@@ -301,9 +318,15 @@ def get_token_tooltip_data():
         token_data_path = os.path.join(DATA_DIR, "title-tokens", "channels_inv_index", f"{channel}.json")
 
     with open(token_data_path, "r") as f:
-        token_data = f.read()
+        inv_idx = json.load(f)
 
-    return token_data
+    id_list = inv_idx[token] if token in inv_idx else []
+    if not id_list:
+        return "[]"
+
+    vid_list = [VID_DICT[id] for id in id_list]
+    vid_list = sorted(vid_list, key=lambda x:x["views"],reverse=True)[:5]
+    return json.dumps(vid_list)
 
 
 # API for getting data for the thumbnail effectiveness plot
@@ -335,6 +358,7 @@ def get_thumbnail_effectiveness_data():
 def get_thumbnail_tooltip_data():
     category = request.args.get("category")
     channel = request.args.get("channel")
+    object = request.args.get("group")
 
     if category:
         thumbnail_data_path = os.path.join(DATA_DIR, "thumbnail-objects", "categories_inv_index", f"{category}.json")
@@ -342,9 +366,15 @@ def get_thumbnail_tooltip_data():
         thumbnail_data_path = os.path.join(DATA_DIR, "thumbnail-objects", "channels_inv_index", f"{channel}.json")
 
     with open(thumbnail_data_path, "r") as f:
-        thumbnail_data = f.read()
+        inv_idx = json.load(f)
 
-    return thumbnail_data
+    id_list = inv_idx[object] if object in inv_idx else []
+    if not id_list:
+        return "[]"
+
+    vid_list = [VID_DICT[id] for id in id_list]
+    vid_list = sorted(vid_list, key=lambda x:x["views"],reverse=True)[:5]
+    return json.dumps(vid_list)
 
 
 # API for getting data for the thumbnail average image
