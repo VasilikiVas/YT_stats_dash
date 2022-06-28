@@ -17,7 +17,8 @@ var word2tfidf = { 'Hello': 1, 'there': 100, 'Good': 30, 'morning':40, 'to':50, 
 '2': 10, '4': 10, '7': 30, '64':40, 'sdewdeqix':50, 'ewdcw':60,
 'danai': 100, 'the': 10, 'sea': 30, 'cecs':40, 'sevrefvween':50, 'fewfeqw':60};
 
-import * as cloud from 'd3-cloud';
+console.log("hello")
+// import * as cloud from 'd3-cloud';
 
 // Encapsulate the word cloud functionality
 function wordCloud(selector) {
@@ -31,7 +32,7 @@ function wordCloud(selector) {
         .attr("transform", "translate(350,150)");
 
 
-    var color = d3.scaleLinear()
+    var color = d3.scale.linear()
         .domain([1, 50, 100])
         .range(["dodgerblue", "limegreen", "yellow"]);
 
@@ -70,8 +71,8 @@ function wordCloud(selector) {
         //The outside world will need to call this function, so make it part
         // of the wordCloud return value.
         update: function(words) {
-            // d3.layout
-                cloud()
+            d3.layout
+                .cloud()
                 .size([600, 200])
                 .words(words)
                 // .padding(1)
@@ -103,6 +104,6 @@ function showNewWords(vis, i) {
 
 //Create a new instance of the word cloud visualisation.
 var myWordCloud = wordCloud('myWordCloud');
-console.log("hello")
+console.log("hello2")
 
 showNewWords(myWordCloud);
