@@ -43,8 +43,7 @@ function create_std_plot(subview){
             const svg = d3.select(std_plot_id)
                            .append("svg")
                            .attr("id", "svg")
-                           .attr("width", width)
-                           .attr("height", height)
+                           .attr("viewBox", [0, 0, width, height])
             console.log(svg)
 
             // 3. Define scales to translate domains of the data to the range of the svg
