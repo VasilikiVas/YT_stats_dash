@@ -76,6 +76,15 @@ function updateDomColoursChart(data, pieChart) {
     }
     pieChart.update()
   }
+
+  let checkExist = setInterval(function() {
+    if (document.querySelector("#mostReprThumbnail").offsetHeight) {
+        clearInterval(checkExist);
+        document.getElementById("myPieChart").style.height = `${document.getElementById("mostReprThumbnail").offsetHeight}px`
+    }
+  }, 10); // check every 10ms
 }
 
 updateDomColoursPlot()
+
+

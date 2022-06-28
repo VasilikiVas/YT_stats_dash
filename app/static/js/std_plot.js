@@ -107,8 +107,6 @@ function create_std_plot(subview){
 
             var svg = d3.select(std_plot_id)
                .append("svg")
-               //   .attr("width", outerWidth)
-               //   .attr("height", outerHeight)
                  .attr("viewBox", [0, 0, outerWidth, outerHeight])
                .append("g")
                  .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
@@ -153,7 +151,7 @@ function create_std_plot(subview){
                .attr("y1", 0)
                .attr("x2", width)
                .attr("y2", 0)
-               .attr("transform", "translate(0," + height + ")");
+               .attr("transform", "translate(0," + height + ")")
          
             objects.append("svg:line")
                .classed("axisLine vAxisLine", true)
@@ -162,6 +160,14 @@ function create_std_plot(subview){
                .attr("x2", 0)
                .attr("y2", height);
 
+            svg.append("line")
+               .style("stroke-dasharray", ("4, 4"))
+               .attr("x1",x(mean))
+               .attr("y1",y(yMax - 0.5))
+               .attr("x2",x(mean))
+               .attr("y2",y(yMin))
+               .style("stroke", "black")
+
             objects.selectAll(".dot")
                .data(data)
                .enter().append("circle")
@@ -169,8 +175,8 @@ function create_std_plot(subview){
                .attr("r", function (d) { return 6})
                .attr("transform", transform)
                .style("fill", color)
-               .on("mouseover", tip.show)
-               .on("mouseout", tip.hide);
+               // .on("mouseover", tip.show)
+               // .on("mouseout", tip.hide);
 
             d3.select("input").on("click", change);
 
@@ -198,7 +204,9 @@ function create_std_plot(subview){
              function transform(d) {
                return "translate(" + x(d['x']) + "," + y(d['y']) + ")";
              }
-           })};
+           })
+}
+
 //             svg.append("g")
 //                .attr("transform", "translate(0, "+ (height - margin.bottom) + ")")
 //                .attr("id", "x-axis")
@@ -256,14 +264,6 @@ function create_std_plot(subview){
 //                .on("mouseout", function(){
 //                   tooltip.style("visibility", "hidden")
 //                })
-
-//             svg.append("line")
-//                .style("stroke-dasharray", ("4, 4"))
-//                .attr("x1",xScale(mean))
-//                .attr("y1",yScale(yMax - 0.5))
-//                .attr("x2",xScale(mean))
-//                .attr("y2",yScale(yMin))
-//                .style("stroke", "black")
 
 //             // 6. Finalize chart by adding title, axes labels and legend
 //             svg.append("text")

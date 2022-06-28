@@ -9,6 +9,7 @@ from decimal import Decimal
 
 import pandas as pd
 import numpy as np
+import math
 
 from . import main
 from flask import redirect, send_file
@@ -359,9 +360,13 @@ def get_title_std_plot_data():
         std_data_path = os.path.join(DATA_DIR, "title-latents", "channels_plot_data", f"{channel}.json")
 
     with open(std_data_path, "r") as f:
-        std_data = f.read()
+        std_data = json.load(f)
 
-    return std_data
+    if math.isnan(std_data["mean"]):
+        std_data["datapoints"] = [d for d in std_data["datapoints"] if not math.isnan(d["x"])]
+        std_data["mean"] = np.array([d["x"] for d in std_data["datapoints"] if not math.isnan(d["x"])]).mean()
+
+    return json.dumps(std_data)
 
 
 # API for getting data for the thumbnail std plot
@@ -378,9 +383,13 @@ def get_thumbnail_std_plot_data():
         std_data_path = os.path.join(DATA_DIR, "title-latents", "channels", f"{channel}.json")
 
     with open(std_data_path, "r") as f:
-        std_data = f.read()
+        std_data = json.load(f)
 
-    return std_data
+    if math.isnan(std_data["mean"]):
+        std_data["datapoints"] = [d for d in std_data["datapoints"] if not math.isnan(d["x"])]
+        std_data["mean"] = np.array([d["x"] for d in std_data["datapoints"] if not math.isnan(d["x"])]).mean()
+
+    return json.dumps(std_data)
 
 
 # API for getting data for the word cloud
