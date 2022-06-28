@@ -66,7 +66,7 @@ function create_effectiveness_plot(min_count) {
         console.log(data)
 
         // set the dimensions and margins of the graph
-        let plot_div = document.getElementById("effectivenessPlot")
+        let plot_div = document.querySelector("#effectivenessPlot .simplebar-content")
         let w = plot_div.offsetWidth
         // let h = document.body.offsetHeight
         let h = data.length * 30
@@ -177,4 +177,10 @@ function create_effectiveness_plot(min_count) {
     })
 }
 
-create_effectiveness_plot(100)
+let checkExist = setInterval(function() {
+    if (document.querySelector("#effectivenessPlot .simplebar-content")) {
+        console.log("Simplebar for effectiveness loaded!");
+        clearInterval(checkExist);
+    create_effectiveness_plot(100)
+    }
+}, 10); // check every 10ms
