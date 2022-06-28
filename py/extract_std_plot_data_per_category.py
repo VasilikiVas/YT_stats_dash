@@ -9,7 +9,7 @@ def get_name_using_regex(name):
 DATA_DIR = os.path.join("..", "data")
 
 for category in Topic._member_names_:
-    std_data_mean_path = os.path.join(DATA_DIR, "title-latents", "categories", f"{category}.json")
+    std_data_mean_path = os.path.join(DATA_DIR, "thumbnail-latents", "categories", f"{category}.json")
     with open(std_data_mean_path, "r") as f:
         std_data_mean_file = json.load(f)
     std_data_mean = std_data_mean_file["avg_std_of_channels"]
@@ -27,7 +27,7 @@ for category in Topic._member_names_:
     datapoints = []
     for name, vids in videos_dict.items():
         datapoint = {}
-        with open(os.path.join(DATA_DIR, "title-latents", "channels", f"{name}.json")) as f:
+        with open(os.path.join(DATA_DIR, "thumbnail-latents", "channels", f"{name}.json")) as f:
             channel_std_dict = json.load(f)
         channel_std = channel_std_dict["std"]
         channel_avg_view = np.int(np.mean([vid["views"] for vid in vids]))
@@ -41,6 +41,6 @@ for category in Topic._member_names_:
 
     final_std_data = {"mean" : std_data_mean, "datapoints": datapoints}
 
-    category_std_plot_data = os.path.join(DATA_DIR, "title-latents", "categories_plot_data", category + ".json")
+    category_std_plot_data = os.path.join(DATA_DIR, "thumbnail-latents", "categories_plot_data", category + ".json")
     with open(category_std_plot_data, "w") as f:
         json.dump(final_std_data, f)

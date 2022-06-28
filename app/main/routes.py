@@ -29,7 +29,7 @@ DATA_DIR = os.path.join("data")
 
 @main.route('/', methods=['GET'])
 def base():
-    return redirect('/category/gaming')
+    return redirect('/category/gaming?subview_mode=thumbnail')
 
 
 @main.route('/category/<cat>', methods=['GET'])
@@ -357,6 +357,7 @@ def get_title_std_plot_data():
 
     if category:
         std_data_path = os.path.join(DATA_DIR, "title-latents", "categories_plot_data", f"{category}.json")
+    #TODO same json for channels
     elif channel:
         std_data_path = os.path.join(DATA_DIR, "title-latents", "channels_plot_data", f"{channel}.json")
 
@@ -374,10 +375,9 @@ def get_thumbnail_std_plot_data():
     channel = request.args.get("channel")
 
     if category:
-        # Get category dom colours
-        std_data_path = os.path.join(DATA_DIR, "title-latents", "categories", f"{category}.json")
+        std_data_path = os.path.join(DATA_DIR, "thumbnail-latents", "categories_plot_data", f"{category}.json")
+    #TODO same json for channels
     elif channel:
-        # Get channel dom colours
         std_data_path = os.path.join(DATA_DIR, "title-latents", "channels", f"{channel}.json")
 
     with open(std_data_path, "r") as f:

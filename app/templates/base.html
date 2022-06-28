@@ -36,7 +36,8 @@
     <!-- Page Wrapper -->
     <div id="wrapper">
         <script type="text/javascript">
-            var channels = {{channels | safe}}
+            var channels = {{channels | safe}}  
+            var subview_mode = {{subview_mode | tojson | safe}}
         </script>
 
         <div class="tooltip" id="tooltip"></div>
