@@ -255,12 +255,24 @@ def get_dom_colour_data():
     return colour_data
 
 
+def calc_effectiveness(views, counts, min_count):
+    avg_views = np.array(list(views.values())).mean()
+    eff = {t:views[t]/c
+        for t,c in counts.items() if c > min_count}
+    eff = [{"group":t, "value":e/avg_views}
+        for t,e in sorted(eff.items(), key=lambda x:x[1],reverse=True)]
+    return eff
+
+
 # API for getting data for the token effectiveness plot
-@main.route('/get_token_effectiveness_data', methods = ['GET'])
+@main.route('/get_title_effectiveness_data', methods = ['GET'])
 def get_token_effectiveness_data():
 
     category = request.args.get("category")
     channel = request.args.get("channel")
+    min_count = request.args.get("min_count")
+    if not min_count:
+        min_count = 1000
 
     if category:
         token_data_path = os.path.join(DATA_DIR, "title-tokens", "categories", f"{category}.json")
@@ -271,16 +283,9 @@ def get_token_effectiveness_data():
         token_data = json.load(f)
 
     views = token_data[f"token_views"]
-    avg_views = np.array(list(views.values())).mean()
     counts = token_data[f"token_counts"]
-    dump_lowest = int(0.0*len(counts))
-    eff = {t:views[t]/c
-        for t,c in sorted(counts.items(), key=lambda x:x[1])[dump_lowest:]
-        if c > 100}
-    eff = [{"group":t, "value":e/avg_views}
-        for t,e in sorted(eff.items(), key=lambda x:x[1],reverse=True)]
 
-    return json.dumps(eff)
+    return json.dumps(calc_effectiveness(views, counts, min_count))
 
 
 # API for getting data for the tooltip in the token effectiveness plot
@@ -307,6 +312,9 @@ def get_thumbnail_effectiveness_data():
 
     category = request.args.get("category")
     channel = request.args.get("channel")
+    min_count = request.args.get("min_count")
+    if not min_count:
+        min_count = 100
 
     if category:
         thumbnail_data_path = os.path.join(DATA_DIR, "thumbnail-objects", "categories", f"{category}.json")
@@ -314,9 +322,12 @@ def get_thumbnail_effectiveness_data():
         thumbnail_data_path = os.path.join(DATA_DIR, "thumbnail-objects", "channels", f"{channel}.json")
 
     with open(thumbnail_data_path, "r") as f:
-        thumbnail_data = f.read()
+        thumbnail_data = json.load(f)
 
-    return thumbnail_data
+    views = thumbnail_data[f"object_views"]
+    counts = thumbnail_data[f"object_counts"]
+
+    return json.dumps(calc_effectiveness(views, counts, min_count))
 
 
 # API for getting data for the tooltip in the thumbnail effectiveness plot

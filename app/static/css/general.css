@@ -1,4 +1,9 @@
 
+body {
+    height: 100vh;
+    overflow: hidden;
+}
+
 .video_list_thumb {
     /* height: 70px */
 }

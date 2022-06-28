@@ -4,7 +4,7 @@ var splitURL = url.toString().split("/")
 var view = splitURL.at(-2)
 var cname = splitURL.at(-1)
 
-fetch_url = `/get_token_effectiveness_data?${view}=${cname}`
+fetch_url = `/get_${subview_mode}_effectiveness_data?${view}=${cname}`
 
 fetch(fetch_url)
     .then(function(response) { return response.json(); })
