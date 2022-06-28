@@ -276,9 +276,16 @@ def get_token_effectiveness_data():
         token_data_path = os.path.join(DATA_DIR, "title-tokens", "channels", f"{channel}.json")
 
     with open(token_data_path, "r") as f:
-        token_data = f.read()
+        token_data = json.load(f)
 
-    return token_data
+    views = token_data[f"token_views"]
+    avg_views = np.array(list(views.values())).mean()
+    counts = token_data[f"token_counts"]
+    eff = {t:v/counts[t] for t,v in views.items() if counts[t] > 100}
+    eff = [{"group":t, "value":e/avg_views}
+    for t,e in sorted(eff.items(), key=lambda x:x[1],reverse=True)[:30]]
+
+    return json.dumps(eff)
 
 
 # API for getting data for the tooltip in the token effectiveness plot
