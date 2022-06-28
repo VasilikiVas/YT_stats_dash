@@ -40,11 +40,17 @@ function create_std_plot(subview){
             var height = 400;
             var margin = {left: 90, top: 10, bottom: 50, right: 20};
             var axisOffset = 10   // How for the axes are moved away from each other
+            
+            // const zoom = d3.zoom()
+            //    .on('zoom', (event) => {
+            //    svg.attr('transform', event.transform);
+            //    })
+            //    .scaleExtent([1, 40]);
+            
             const svg = d3.select(std_plot_id)
                            .append("svg")
                            .attr("id", "svg")
                            .attr("viewBox", [0, 0, width, height])
-            console.log(svg)
 
             // 3. Define scales to translate domains of the data to the range of the svg
             var xMin = d3.min(data, (d) => d["x"]);
