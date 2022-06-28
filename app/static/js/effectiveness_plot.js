@@ -12,10 +12,13 @@ const svg = d3.select("#effectivenessPlot")
     .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
 // Parse the Data
+var url = window.location.pathname
+var splitURL = url.toString().split("/")
 var view = splitURL.at(-2)
 var cname = splitURL.at(-1)
 
 fetch_url = `/get_token_effectiveness_data?${view}=${cname}`
+
 fetch(fetch_url)
     .then(function(response) { return response.json(); })
     .then( function(data) {
