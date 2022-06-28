@@ -169,8 +169,8 @@ function create_std_plot(subview){
                .attr("r", function (d) { return 6})
                .attr("transform", transform)
                .style("fill", color)
-               .on("mouseover", tip.show)
-               .on("mouseout", tip.hide);
+               // .on("mouseover", tip.show)
+               // .on("mouseout", tip.hide);
 
             d3.select("input").on("click", change);
 

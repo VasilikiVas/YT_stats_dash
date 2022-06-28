@@ -63,6 +63,12 @@ body {
     text-align: center;
 }
 
+
+.pie_chart_body {
+    padding: 0 !important;
+}
+
+
 #effectivenessPlot {
     height: 85vh;
 }
