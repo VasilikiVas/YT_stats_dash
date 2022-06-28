@@ -1,5 +1,8 @@
 from flask import render_template, request, jsonify, send_from_directory
 import os, json, sys
+import re
+import requests
+from PIL import Image
 
 from decimal import Decimal
 
@@ -10,25 +13,26 @@ from . import main
 from flask import redirect, send_file
 
 try:
-	from ...py.get_channel_stats import *
-	from ...py.util.constants import Topic
+    from ...py.get_channel_stats import *
+    from ...py.util.constants import Topic
+    from ...py.crop_black_borders import crop_black_border_img
+
 except:
-	path = os.getcwd()
-	sys.path.append(os.path.join(path ,"py/"))
-	sys.path.append(os.path.join(path ,"py/util/"))
+    path = os.getcwd()
+    sys.path.append(os.path.join(path ,"py/"))
 
-	from get_channel_stats import *
-	from util.constants import Topic
-
-	sys.path.remove(os.path.join(path ,"py/"))
-	sys.path.remove(os.path.join(path ,"py/util/"))
+    from get_channel_stats import *
+    from util.constants import Topic
+    from crop_black_borders import crop_black_border_img
+    
+    sys.path.remove(os.path.join(path ,"py/"))
 
 
 DATA_DIR = os.path.join("data")
 
 @main.route('/', methods=['GET'])
 def base():
-    return redirect('/category/gaming')
+    return redirect('/category/gaming?subview_mode=thumbnail')
 
 
 @main.route('/category/<cat>', methods=['GET'])
@@ -64,7 +68,7 @@ def category(cat):
     channels = []
     for name, info in channels_dict.items():
         channels.append({
-            "name": name,
+            "name": re.sub(r"-?([A-z0-9]){8}-([A-z0-9]){4}-([A-z0-9]){4}-([A-z0-9]){4}-([A-z0-9]){12}", "", name),
             **info
         })
 
@@ -82,36 +86,23 @@ def category(cat):
 	# with open(most_repr_title_path, "r") as f:
 	# 	most_repr_title_data = json.load(f)
 
-    # # Get the most representative title and thumbnail for this category specifically
-    # title_repr_id = most_repr_title_data[f"Category_{cat}"]
-    # thumbnail_repr_id = most_repr_thumbnail_data[f"Category_{cat}"]
-
-    # most_repr_title = next(vid for vid in videos_dict[vid2channel[title_repr_id]] if vid["id"]==title_repr_id)["title"]
-    # most_repr_thumbnail_path = os.path.join(DATA_DIR, f"thumbnails/{thumbnail_repr_id}_high.jpg")
-
     category = {
         # TODO Actual code (WIP)
         "name": cat, 		  # str: name of category
         "avg_subs": cat_avg_subs,   # int: avg subs per channel in cat
         "avg_views": cat_avg_views, # int: avg views per video in cat
         "avg_video_count": cat_avg_vids, # int: avg amount of videos per channel in cat
-        # THUMBNAIL
-        # "repr_thumbnail": most_repr_thumbnail_path, # str: path to most representative thumbnail
         # # TITLE
         # "repr_title": most_repr_title, # str: most representative title
 
-        "name": cat, 		  # str: name of category
         # Hardcoded examples
-        # THUMBNAIL
-        # "avg_thumbnail": os.path.join("..", "static", "data", "thumbnail-averages", "channels", "a4.png"), # str: path to avg thumbnail TODO
-        "repr_thumbnail": os.path.join("..", "static", "data", "thumbnails", "___OSEsR5pk_high.jpg"), # str: path to most representative thumbnail TODO
         # TITLE
         "repr_title": "This is a title", # str: most representative title TODO
 
     }
 
     return render_template("category.html",
-        categories=["gaming", "howto", "science", "autos", "blogs"],
+        categories=Topic._member_names_,
         channels=channels, 	    # list of dicts: all channels in the category, sorted by Subs
         category=category, 			# dict: info about the category
         category_display={
@@ -120,25 +111,7 @@ def category(cat):
             "Videos/Channel: ": category["avg_video_count"],
         },
         subview_mode=subview_mode,	# "thumbnail" or "title"
-        videos=videos[:20],			# list of dicts: all videos (or maybe top-n if computation requires it) in the category, sorted by views
-    )
-
-
-@main.route('/video', methods=['GET'])
-def video():
-    vid_id = request.args.get("video")
-    subview_mode = request.args.get("subview_mode")
-
-    if not vid_id:
-        pass # TODO show error message and redirect
-    if not subview_mode:
-        subview_mode = "thumbnail"
-
-    video = {}
-
-    return render_template("video.html", 
-        video=video, 			    # dict: info about the video
-        subview_mode=subview_mode,	# "thumbnail" or "title"
+        videos=videos[:30],			# list of dicts: all videos (or maybe top-n if computation requires it) in the category, sorted by views
     )
 
 
@@ -282,12 +255,24 @@ def get_dom_colour_data():
     return colour_data
 
 
+def calc_effectiveness(views, counts, min_count):
+    avg_views = np.array(list(views.values())).mean()
+    eff = {t:views[t]/c
+        for t,c in counts.items() if c > min_count}
+    eff = [{"group":t, "value":e/avg_views}
+        for t,e in sorted(eff.items(), key=lambda x:x[1],reverse=True)]
+    return eff
+
+
 # API for getting data for the token effectiveness plot
-@main.route('/get_token_effectiveness_data', methods = ['GET'])
+@main.route('/get_title_effectiveness_data', methods = ['GET'])
 def get_token_effectiveness_data():
 
     category = request.args.get("category")
     channel = request.args.get("channel")
+    min_count = request.args.get("min_count")
+    if not min_count:
+        min_count = 1000
 
     if category:
         token_data_path = os.path.join(DATA_DIR, "title-tokens", "categories", f"{category}.json")
@@ -295,9 +280,12 @@ def get_token_effectiveness_data():
         token_data_path = os.path.join(DATA_DIR, "title-tokens", "channels", f"{channel}.json")
 
     with open(token_data_path, "r") as f:
-        token_data = f.read()
+        token_data = json.load(f)
 
-    return token_data
+    views = token_data[f"token_views"]
+    counts = token_data[f"token_counts"]
+
+    return json.dumps(calc_effectiveness(views, counts, min_count))
 
 
 # API for getting data for the tooltip in the token effectiveness plot
@@ -324,6 +312,9 @@ def get_thumbnail_effectiveness_data():
 
     category = request.args.get("category")
     channel = request.args.get("channel")
+    min_count = request.args.get("min_count")
+    if not min_count:
+        min_count = 100
 
     if category:
         thumbnail_data_path = os.path.join(DATA_DIR, "thumbnail-objects", "categories", f"{category}.json")
@@ -331,9 +322,12 @@ def get_thumbnail_effectiveness_data():
         thumbnail_data_path = os.path.join(DATA_DIR, "thumbnail-objects", "channels", f"{channel}.json")
 
     with open(thumbnail_data_path, "r") as f:
-        thumbnail_data = f.read()
+        thumbnail_data = json.load(f)
 
-    return thumbnail_data
+    views = thumbnail_data[f"object_views"]
+    counts = thumbnail_data[f"object_counts"]
+
+    return json.dumps(calc_effectiveness(views, counts, min_count))
 
 
 # API for getting data for the tooltip in the thumbnail effectiveness plot
@@ -365,3 +359,68 @@ def get_thumbnail_average_img():
         avg_img_data_path = os.path.join("..", "data", "thumbnail-averages", "channels", f"{channel}.png")
 
     return send_file(avg_img_data_path, mimetype='image/png')
+
+
+
+# API for getting data for the most representative thumbnail
+@main.route('/get_most_repr_thumbnail', methods = ['GET'])
+def get_most_repr_thumbnail():
+    category = request.args.get("category")
+    channel = request.args.get("channel")
+
+    if category:
+        most_repr_thumbnail_path = os.path.join(DATA_DIR, "thumbnail-latents", "categories_best_repr.json")
+    elif channel:
+        most_repr_thumbnail_path = os.path.join(DATA_DIR, "thumbnail-averages", "channels_best_repr.json")
+
+    with open(most_repr_thumbnail_path, "r") as f:
+        most_repr_thumbnail_file = json.load(f)
+    
+    most_repr_thumbnail = most_repr_thumbnail_file[category]["vid_id"]
+    
+    url = "https://i.ytimg.com/vi/" + most_repr_thumbnail + "/hqdefault.jpg"
+    img = Image.open(requests.get(url, stream=True).raw)
+    img = crop_black_border_img(np.array(img))
+    img = Image.fromarray(img)
+    img_path = os.path.join("app", "static", "data", "temp_repr_thumbnail.jpg")
+    img.save(img_path)
+
+    return send_file(os.path.join("static", "data", "temp_repr_thumbnail.jpg"), mimetype='image/jpg')
+
+
+# API for getting data for the title std plot
+@main.route('/get_title_std_plot_data', methods = ['GET'])
+def get_title_std_plot_data():
+
+    category = request.args.get("category")
+    channel = request.args.get("channel")
+
+    if category:
+        std_data_path = os.path.join(DATA_DIR, "title-latents", "categories_plot_data", f"{category}.json")
+    #TODO same json for channels
+    elif channel:
+        std_data_path = os.path.join(DATA_DIR, "title-latents", "channels_plot_data", f"{channel}.json")
+
+    with open(std_data_path, "r") as f:
+        std_data = f.read()
+
+    return std_data
+
+
+# API for getting data for the thumbnail std plot
+@main.route('/get_thumbnail_std_plot_data', methods = ['GET'])
+def get_thumbnail_std_plot_data():
+
+    category = request.args.get("category")
+    channel = request.args.get("channel")
+
+    if category:
+        std_data_path = os.path.join(DATA_DIR, "thumbnail-latents", "categories_plot_data", f"{category}.json")
+    #TODO same json for channels
+    elif channel:
+        std_data_path = os.path.join(DATA_DIR, "title-latents", "channels", f"{channel}.json")
+
+    with open(std_data_path, "r") as f:
+        std_data = f.read()
+
+    return std_data

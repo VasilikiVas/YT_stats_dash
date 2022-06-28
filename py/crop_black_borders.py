@@ -5,6 +5,29 @@ from PIL import Image
 from tqdm import tqdm
 from util.constants import THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT
 
+def crop_black_border_img(img):
+    y_nonzero, _, _ = np.nonzero(img)
+
+    # if y_nonzero is empty (all black image) return cropped img
+    if not np.any(y_nonzero):
+        return img[44:314]    
+    
+    min_y = y_nonzero.min()
+    max_y = y_nonzero.max()
+
+    h, w, _ = img.shape
+    if min_y == 0 and max_y == 359:
+        # this is a short so we don't want to crop
+        return False
+    elif h == THUMBNAIL_HEIGHT and w == THUMBNAIL_WIDTH:
+        # only crop the images with the original thumbnail shape 
+        return img[44:314]
+    elif h == 270 and w == 480:
+        return img
+    else:
+        return False
+
+
 def crop_black_border(img_dir, overwrite_img = False):
     """
      Function to crop_black_border of an image
@@ -14,7 +37,6 @@ def crop_black_border(img_dir, overwrite_img = False):
         - overwrite_img: flag to set wheather to overwrite the image
     """
     img =image.imread(img_dir)
-    h, w, _ = img.shape
 
     y_nonzero, _, _ = np.nonzero(img)
 
@@ -25,6 +47,7 @@ def crop_black_border(img_dir, overwrite_img = False):
     min_y = y_nonzero.min()
     max_y = y_nonzero.max()
 
+    h, w, _ = img.shape
     if min_y == 0 and max_y == 359:
         # this is a short so we don't want to crop
         return img

@@ -29,7 +29,7 @@
                                         {% for key, value in category_display.items() %}
                                         <tr>
                                             <td>{{ key }}</td>
-                                            <td class="h5 mb-0 font-weight-bold text-gray-800">{{ value }}</td>
+                                            <td class="h5 mb-0 font-weight-bold text-gray-800 cat_info" value="{{ value }}"></td>
                                         </tr>
                                         {% endfor %}
                                     </table>
@@ -49,7 +49,7 @@
                                         Videos</div>
                                     <div class="videos_list" id="video_display_list" data-simplebar>
                                     {% for vid in videos %}
-                                        <a href="/video/{{ vid.id }}"><img src="https://i.ytimg.com/vi/{{ vid.id }}/default.jpg" class="video_list_thumb"></a>
+                                        <a href="https://youtu.be/watch?v={{ vid.id }}"><img src="https://i.ytimg.com/vi/{{ vid.id }}/default.jpg" class="video_list_thumb"></a>
                                     {% endfor %}
                                     </div>
                                 </div>
@@ -78,8 +78,11 @@
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                        Average Views by Thumbnail Consistency</div>
+                                    {% if subview_mode == "thumbnail" %}
+                                    <h6 class="m-0 font-weight-bold text-primary">Average Views by Thumbnail Consistency</h6>
+                                    {% else %}
+                                    <h6 class="m-0 font-weight-bold text-primary">Average Views by Title     Consistency</h6>
+                                    {% endif %}
                                         <style>
                                         * {
                                             font-family: sans-serif;
@@ -118,7 +121,11 @@
                                             background-color: white;
                                         }
                                         </style>
-                                    <div class="h9 mb-0 text-gray-800" id=container></div>
+                                    {% if subview_mode == "thumbnail" %}
+                                    <div class="h9 mb-0 text-gray-800" id=thumbnail_std_plot></div>
+                                    {% else %}
+                                    <div class="h9 mb-0 text-gray-800" id=title_std_plot></div>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
@@ -131,23 +138,21 @@
 
         <!-- Content Right -->
         <div class="col-3">
-            <!-- Videos card -->
+            <!-- Effectiveness card -->
             <div class="card border-left-warning shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                Tokens in Titles</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">effectiveness plot</div>
+                                {{ subview_mode }} effectiveness</div>
+                            <div id="effectivenessPlotAxis"></div>
+                            <div id="effectivenessPlot" data-simplebar></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <!-- Content Right End -->
-
-
-
 
     </div>
     <!-- /.container-fluid -->

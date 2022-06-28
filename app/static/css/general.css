@@ -1,17 +1,51 @@
-.channel_logo {
-    width: 40px;
+
+body {
+    height: 100vh;
+    overflow: hidden;
 }
+
 .video_list_thumb {
     /* height: 70px */
 }
 
+#subview_mode_div {
+    padding: 5px;
+    justify-content: center;
+}
+#filters-div {
+    padding: 5px;
+}
+.toggled .btn {
+    border-radius: 5px !important;
+}
+#categories {
+    margin-bottom: 5px;
+}
+
 .channel_list {
-    height: 60vh;
+    height: 52vh;
     overflow: auto;
     padding-left: 0;
     margin-bottom: 0;
     list-style: none;
     padding-right: 10px;
+}
+.toggled .channel_list {
+    height: 45vh;
+}
+.channel_entry {
+    padding: 5px !important;
+}
+:not(.toggled)>*>*>*>*>*>*>*>*>.channel_entry { /* exactly 9 elements deep */
+    display: flex !important;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+.channel_logo {
+    width: 40px;
+}
+.toggled .channel_entry span {
+    margin: 0 !important;
 }
 
 .videos_list {
@@ -20,12 +54,15 @@
     overflow: auto;
     white-space: nowrap;
     padding-bottom: 10px;
-    /* position: absolute;
-    top: 0;
-    left: 0; */
-    /* z-index: 1000; */
 }
 
 .nav-link {
     width: 100% !important;
+}
+#load_more_channels_button {
+    text-align: center;
+}
+
+#effectivenessPlot {
+    height: 85vh;
 }

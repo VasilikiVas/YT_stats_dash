@@ -8,6 +8,7 @@ $(document).ready(function(){
     })
 })
 
+
 // $(document).ready(function(){
 //     $('#categories').change(function(){
 //         var url = window.location.pathname
