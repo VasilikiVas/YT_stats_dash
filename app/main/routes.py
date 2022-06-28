@@ -472,7 +472,12 @@ def get_word_cloud_data():
     counts = token_count["token_counts"]
 
     word_cloud_dict = {}
+    word_cloud_counts = {}; word_cloud_tfidf={}
     for key in list(counts.keys())[:100]:
-        word_cloud_dict[key] = {"counts": counts[key], "tf-idf": token_tf_idf[key]}
+        # word_cloud_dict[key] = {"counts": counts[key], "tf-idf": token_tf_idf[key]}
+        word_cloud_counts[key] = counts[key]
+        word_cloud_tfidf[key] = token_tf_idf[key]
+    word_cloud_dict["counts"] = word_cloud_counts
+    word_cloud_dict["tfidf"] = word_cloud_tfidf
 
     return json.dumps(word_cloud_dict)
