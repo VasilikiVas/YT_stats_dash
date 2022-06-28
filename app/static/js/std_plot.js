@@ -1,16 +1,37 @@
-// Colors to differentiate riders with and without doping allegations
-var colors = ["#27ae60"]
-
-// Create an invisible div for the tooltip
-const tooltip = d3.select("body")
-                  .append("div")
-                  .attr("id", "tooltip")
-                  .style("visibility", "hidden")
-
 // function to format tooltip data
 const formatter =  d3.format(',d')
 
+function construct_std_tooltip(info) {
+   return `
+   <div>
+      <a class="channel_entry nav-link">
+            <img src="${info["logo_url"]}" class="channel_logo">
+            <span class="ml-1 h5 font-weight-bold text-gray-800">${info["name"]}</span>
+      </a>
+      <table>
+            <tr>
+               <td>std: </td>
+               <td class="h5 mb-0 font-weight-bold text-gray-800">${info["x"]}</td>
+            </tr>
+            <tr>
+               <td>avg views: </td>
+               <td class="h5 mb-0 font-weight-bold text-gray-800">${formatter(info["y"])}</td>
+            </tr>
+      </table>
+   </div>`
+}
+
 function create_std_plot(subview){
+
+   // Colors to differentiate riders with and without doping allegations
+   var color = "#27ae60"
+
+   // Create an invisible div for the tooltip
+   const tooltip = d3.select("body")
+                     .append("div")
+                     .attr("id", "tooltip")
+                     .style("visibility", "hidden")
+
    // 1. Load the data from external source
    var url = window.location.pathname
    var splitURL = url.toString().split("/")
@@ -36,128 +57,234 @@ function create_std_plot(subview){
             data = dataset.datapoints
 
             // 2. Append svg-object for the bar chart to a div in your webpage
-            var width = 1100;
-            var height = 400;
-            var margin = {left: 90, top: 10, bottom: 50, right: 20};
-            var axisOffset = 10   // How for the axes are moved away from each other
+            var margin = { top: 10, right: 20, bottom: 50, left: 90 },
+               outerWidth = 800,
+               outerHeight = 300,
+               width = outerWidth - margin.left - margin.right,
+               height = outerHeight - margin.top - margin.bottom;
             
-            // const zoom = d3.zoom()
-            //    .on('zoom', (event) => {
-            //    svg.attr('transform', event.transform);
-            //    })
-            //    .scaleExtent([1, 40]);
+            var x = d3.scale.linear()
+               .range([0, width]).nice();
+
+            var y = d3.scale.linear()
+               .range([height, 0]).nice();
             
-            const svg = d3.select(std_plot_id)
-                           .append("svg")
-                           .attr("id", "svg")
-                           .attr("viewBox", [0, 0, width, height])
 
             // 3. Define scales to translate domains of the data to the range of the svg
-            var xMin = d3.min(data, (d) => d["x"]);
-            var xMax = d3.max(data, (d) => d["x"]);
+            var xMin = d3.min(data, function(d) { return d["x"];})
+            var xMax = d3.max(data, function(d) { return d["x"];})
 
-            var yMin = d3.min(data, (d) => d["y"]);
-            var yMax = d3.max(data, (d) => d["y"]);
+            var yMin = d3.min(data, function(d) { return d["y"];})
+            var yMax = d3.max(data, function(d) { return d["y"];})
 
-            var xScale = d3.scaleLinear()
-                           .domain([xMin, xMax])
-                           .range([margin.left + axisOffset, width- margin.right])
-
-            var yScale = d3.scaleLinear()
-                           .domain([yMin, yMax])
-                           .range([height- margin.bottom - axisOffset, margin.top])
+            x.domain([xMin, xMax]);
+            y.domain([yMin, yMax]);
 
             // 4. Draw and transform/translate horizontal and vertical axes
-            var xAxis = d3.axisBottom().scale(xScale).tickFormat(d3.format(".3f"))
-            var yAxis = d3.axisLeft().scale(yScale)
+            var xAxis = d3.svg.axis()
+               .scale(x)
+               .orient("bottom")
+               .tickSize(-height);
+
+            var yAxis = d3.svg.axis()
+               .scale(y)
+               .orient("left")
+               .tickSize(-width);
+
+            // var tip = d3.tip()
+            //    .attr("class", "d3-tip")
+            //    .offset([-10, 0])
+            //    .html(function(d) {
+            //      return "name : " + d['name'] + "<br>" + "std: " + d['x'];
+            //    });
+
+            var zoomBeh = d3.behavior.zoom()
+               .x(x)
+               .y(y)
+               .scaleExtent([0, 500])
+               .on("zoom", zoom);
+
+
+            var svg = d3.select(std_plot_id)
+               .append("svg")
+               //   .attr("width", outerWidth)
+               //   .attr("height", outerHeight)
+                 .attr("viewBox", [0, 0, outerWidth, outerHeight])
+               .append("g")
+                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+                 .call(zoomBeh);
+
+            // svg.call(tip);
+
+            svg.append("rect")
+               .attr("width", width)
+               .attr("height", height);
 
             svg.append("g")
-               .attr("transform", "translate(0, "+ (height - margin.bottom) + ")")
-               .attr("id", "x-axis")
+               .classed("x axis", true)
+               .attr("transform", "translate(0," + height + ")")
                .call(xAxis)
-
-            svg.append("g")
-               .attr("transform", "translate("+ (margin.left)+", 0)")
-               .attr("id", "y-axis")
-               .call(yAxis)
-
-            // 5. Draw individual scatter points and define mouse events for the tooltip
-            svg.selectAll("scatterPoints")
-               .data(data)
-               .enter()
-               .append("circle")
-               .style("opacity", 0.6)
-               .attr("cx", (d) => xScale(d["x"]))
-               .attr("cy", (d) => yScale(d["y"]))
-               .attr("r", 5)
-               .attr("fill", colors[0])
-               .attr("class", "dot")
-               .attr("data-xvalue", (d) => d["x"])
-               .attr("data-yvalue", (d) => d["y"])
-               .on("click", function(d) {
-                  let url = `/channel/${d.target.__data__.channel_id}`
-                  window.location.href = url
-               })
-               .on("mouseover", function(d){
-                  info = d.toElement.__data__
-                  tooltip.style("visibility", "visible")
-                           .style("left", event.pageX+10+"px")
-                           .style("top", event.pageY-80+"px")
-                           .attr("data-std", info["x"])
-                           .html(`
-                  <div>
-                     <a class="channel_entry nav-link">
-                           <img src="${info["logo_url"]}" class="channel_logo">
-                           <span class="ml-1 h5 font-weight-bold text-gray-800">${info["name"]}</span>
-                     </a>
-                     <table>
-                           <tr>
-                              <td>std: </td>
-                              <td class="h5 mb-0 font-weight-bold text-gray-800">${info["x"]}</td>
-                           </tr>
-                           <tr>
-                              <td>avg views: </td>
-                              <td class="h5 mb-0 font-weight-bold text-gray-800">${formatter(info["y"])}</td>
-                           </tr>
-                     </table>
-                  </div>`)
-               })
-               .on("mousemove", function(){
-                  tooltip.style("left", event.pageX+10+"px")
-               })
-               .on("mouseout", function(){
-                  tooltip.style("visibility", "hidden")
-               })
-
-            svg.append("line")
-               .style("stroke-dasharray", ("4, 4"))
-               .attr("x1",xScale(mean))
-               .attr("y1",yScale(yMax - 0.5))
-               .attr("x2",xScale(mean))
-               .attr("y2",yScale(yMin))
-               .style("stroke", "black")
-
-            // 6. Finalize chart by adding title, axes labels and legend
-            svg.append("text")
-               .attr("x", margin.left + (width - margin.left - margin.right) / 2)
-               .attr("y", height - margin.bottom / 5)
-               .attr("class", "label")
+             .append("text")
+               .classed("label", true)
+               .attr("x", width)
+               .attr("y", margin.bottom - 10)
+               .style("text-anchor", "end")
                .text("std");
 
-            svg.append("text")
-                  .attr("y", margin.left/2-20)
-                  .attr("x", -height/2)
-                  .attr("transform", "rotate(-90)")
-                  .attr("class", "label")
-                  .text("Views");
+            svg.append("g")
+               .classed("y axis", true)
+               .call(yAxis)
+             .append("text")
+               .classed("label", true)
+               .attr("transform", "rotate(-90)")
+               .attr("y", -margin.left)
+               .attr("dy", ".71em")
+               .style("text-anchor", "end")
+               .text("Views");
 
-            svg.append("text")
-               .attr("x", xScale(mean))
-               .attr("y", yScale(yMax+0.5))
-               .attr("class", "label")
-               .text("mean");
-            })
-}
+            var objects = svg.append("svg")
+               .classed("objects", true)
+               .attr("width", width)
+               .attr("height", height);
+         
+            objects.append("svg:line")
+               .classed("axisLine hAxisLine", true)
+               .attr("x1", 0)
+               .attr("y1", 0)
+               .attr("x2", width)
+               .attr("y2", 0)
+               .attr("transform", "translate(0," + height + ")");
+         
+            objects.append("svg:line")
+               .classed("axisLine vAxisLine", true)
+               .attr("x1", 0)
+               .attr("y1", 0)
+               .attr("x2", 0)
+               .attr("y2", height);
+
+            objects.selectAll(".dot")
+               .data(data)
+               .enter().append("circle")
+               .classed("dot", true)
+               .attr("r", function (d) { return 6})
+               .attr("transform", transform)
+               .style("fill", color)
+               .on("mouseover", tip.show)
+               .on("mouseout", tip.hide);
+
+            d3.select("input").on("click", change);
+
+            function change() {
+               xMax = d3.max(data, function(d) { return d["x"]; });
+               xMin = d3.min(data, function(d) { return d["x"]; });
+           
+               zoomBeh.x(x.domain([xMin, xMax])).y(y.domain([yMin, yMax]));
+           
+               var svg = d3.select(std_plot_id).transition();
+           
+               svg.select(".x.axis").duration(750).call(xAxis).select(".label").text('std');
+           
+               objects.selectAll(".dot").transition().duration(1000).attr("transform", transform);
+             }
+
+             function zoom() {
+               svg.select(".x.axis").call(xAxis);
+               svg.select(".y.axis").call(yAxis);
+           
+               svg.selectAll(".dot")
+                   .attr("transform", transform);
+             }
+           
+             function transform(d) {
+               return "translate(" + x(d['x']) + "," + y(d['y']) + ")";
+             }
+           })};
+//             svg.append("g")
+//                .attr("transform", "translate(0, "+ (height - margin.bottom) + ")")
+//                .attr("id", "x-axis")
+//                .call(xAxis)
+
+//             svg.append("g")
+//                .attr("transform", "translate("+ (margin.left)+", 0)")
+//                .attr("id", "y-axis")
+//                .call(yAxis)
+
+//             // 5. Draw individual scatter points and define mouse events for the tooltip
+//             svg.selectAll("scatterPoints")
+//                .data(data)
+//                .enter()
+//                .append("circle")
+//                .style("opacity", 0.6)
+//                .attr("cx", (d) => xScale(d["x"]))
+//                .attr("cy", (d) => yScale(d["y"]))
+//                .attr("r", 5)
+//                .attr("fill", colors[0])
+//                .attr("class", "dot")
+//                .attr("data-xvalue", (d) => d["x"])
+//                .attr("data-yvalue", (d) => d["y"])
+//                .on("click", function(d) {
+//                   let url = `/channel/${d.target.__data__.channel_id}`
+//                   window.location.href = url
+//                })
+//                .on("mouseover", function(d){
+//                   info = d.toElement.__data__
+//                   tooltip.style("visibility", "visible")
+//                            .style("left", event.pageX+10+"px")
+//                            .style("top", event.pageY-80+"px")
+//                            .attr("data-std", info["x"])
+//                            .html(`
+//                   <div>
+//                      <a +class="channel_entry nav-link">
+//                            <img src="${info["logo_url"]}" class="channel_logo">
+//                            <span class="ml-1 h5 font-weight-bold text-gray-800">${info["name"]}</span>
+//                      </a>
+//                      <table>
+//                            <tr>
+//                               <td>std: </td>
+//                               <td class="h5 mb-0 font-weight-bold text-gray-800">${info["x"]}</td>
+//                            </tr>
+//                            <tr>
+//                               <td>avg views: </td>
+//                               <td class="h5 mb-0 font-weight-bold text-gray-800">${formatter(info["y"])}</td>
+//                            </tr>
+//                      </table>
+//                   </div>`)
+//                })
+//                .on("mousemove", function(){
+//                   tooltip.style("left", event.pageX+10+"px")
+//                })
+//                .on("mouseout", function(){
+//                   tooltip.style("visibility", "hidden")
+//                })
+
+//             svg.append("line")
+//                .style("stroke-dasharray", ("4, 4"))
+//                .attr("x1",xScale(mean))
+//                .attr("y1",yScale(yMax - 0.5))
+//                .attr("x2",xScale(mean))
+//                .attr("y2",yScale(yMin))
+//                .style("stroke", "black")
+
+//             // 6. Finalize chart by adding title, axes labels and legend
+//             svg.append("text")
+//                .attr("x", margin.left + (width - margin.left - margin.right) / 2)
+//                .attr("y", height - margin.bottom / 5)
+//                .attr("class", "label")
+//                .text("std");
+
+//             svg.append("text")
+//                   .attr("y", margin.left/2-20)
+//                   .attr("x", -height/2)
+//                   .attr("transform", "rotate(-90)")
+//                   .attr("class", "label")
+//                   .text("Views");
+
+//             svg.append("text")
+//                .attr("x", xScale(mean))
+//                .attr("y", yScale(yMax+0.5))
+//                .attr("class", "label")
+//                .text("mean");
+//             })
+// }
 
 create_std_plot(subview_mode)
-

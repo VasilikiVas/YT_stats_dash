@@ -21,6 +21,9 @@
     <!-- For wordcloud -->
     <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script>
     
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+
     <!-- BOOTSTRAP TEMPLATE -->
     <!-- Custom fonts for this template-->
     <link href="../static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
@@ -32,7 +35,7 @@
     <link href="../static/css/sb-admin-2.css" rel="stylesheet">
     <link href="../static/css/sb-admin-custom.css" rel="stylesheet">
     <link href="../static/css/general.css" rel="stylesheet"> 
-
+    <link rel="stylesheet" href="../static/css/scatter.css" charset="utf-8">
 
 </head>
 <body id="page-top">
@@ -42,8 +45,6 @@
             var channels = {{channels | safe}}  
             var subview_mode = {{subview_mode | tojson | safe}}
         </script>
-
-        <div class="tooltip" id="tooltip"></div>
 
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
@@ -94,8 +95,7 @@
             </li>
 
             <!-- Nav Item - Channels -->
-            <li class="nav-item"><ul id="channel_display_list" class="channel_list" data-simplebar>
-            </ul></li>
+            <li class="nav-item"><ul id="channel_display_list" class="channel_list" data-simplebar></ul></li>
             <!-- Divider -->
             <hr class="sidebar-divider">
 
