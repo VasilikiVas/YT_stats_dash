@@ -69,7 +69,14 @@ body {
 
 /* Tooltips for effectiveness plot */
 #tooltip {
-    opacity: .9 !important;
+    visibility: hidden;
+    position: absolute;
+    opacity: 0.9;
+    padding: 10px;
+    vertical-align: middle;
+    border-radius: 5px;
+    background-color: #ecf0f1;
+    font-size: 14px;
 }
 .tooltip_vids {
     height: 52vh;
