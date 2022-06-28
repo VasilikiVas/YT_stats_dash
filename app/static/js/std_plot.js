@@ -38,7 +38,7 @@ function create_std_plot(subview){
             // 2. Append svg-object for the bar chart to a div in your webpage
             var width = 1100;
             var height = 400;
-            var margin = {left: 90, top: 80, bottom: 50, right: 20};
+            var margin = {left: 90, top: 10, bottom: 50, right: 20};
             var axisOffset = 10   // How for the axes are moved away from each other
             const svg = d3.select(std_plot_id)
                            .append("svg")
