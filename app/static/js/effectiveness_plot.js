@@ -177,10 +177,10 @@ function create_effectiveness_plot(min_count) {
     })
 }
 
-let checkExist = setInterval(function() {
+let checkExistEffectiveness = setInterval(function() {
     if (document.querySelector("#effectivenessPlot .simplebar-content")) {
         // console.log("Simplebar for effectiveness loaded!");
-        clearInterval(checkExist);
+        clearInterval(checkExistEffectiveness);
     create_effectiveness_plot(100)
     }
 }, 10); // check every 10ms
