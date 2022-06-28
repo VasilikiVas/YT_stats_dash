@@ -1,6 +1,8 @@
 from flask import render_template, request, jsonify, send_from_directory
 import os, json, sys
 import re
+import requests
+from PIL import Image
 
 from decimal import Decimal
 
@@ -11,18 +13,19 @@ from . import main
 from flask import redirect, send_file
 
 try:
-	from ...py.get_channel_stats import *
-	from ...py.util.constants import Topic
+    from ...py.get_channel_stats import *
+    from ...py.util.constants import Topic
+    from ...py.crop_black_borders import crop_black_border_img
+
 except:
-	path = os.getcwd()
-	sys.path.append(os.path.join(path ,"py/"))
-	sys.path.append(os.path.join(path ,"py/util/"))
+    path = os.getcwd()
+    sys.path.append(os.path.join(path ,"py/"))
 
-	from get_channel_stats import *
-	from util.constants import Topic
-
-	sys.path.remove(os.path.join(path ,"py/"))
-	sys.path.remove(os.path.join(path ,"py/util/"))
+    from get_channel_stats import *
+    from util.constants import Topic
+    from crop_black_borders import crop_black_border_img
+    
+    sys.path.remove(os.path.join(path ,"py/"))
 
 
 DATA_DIR = os.path.join("data")
@@ -83,27 +86,16 @@ def category(cat):
 	# with open(most_repr_title_path, "r") as f:
 	# 	most_repr_title_data = json.load(f)
 
-    # # Get the most representative title and thumbnail for this category specifically
-    # title_repr_id = most_repr_title_data[f"Category_{cat}"]
-    # thumbnail_repr_id = most_repr_thumbnail_data[f"Category_{cat}"]
-
-    # most_repr_title = next(vid for vid in videos_dict[vid2channel[title_repr_id]] if vid["id"]==title_repr_id)["title"]
-    # most_repr_thumbnail_path = os.path.join(DATA_DIR, f"thumbnails/{thumbnail_repr_id}_high.jpg")
-
     category = {
         # TODO Actual code (WIP)
         "name": cat, 		  # str: name of category
         "avg_subs": cat_avg_subs,   # int: avg subs per channel in cat
         "avg_views": cat_avg_views, # int: avg views per video in cat
         "avg_video_count": cat_avg_vids, # int: avg amount of videos per channel in cat
-        # THUMBNAIL
-        # "repr_thumbnail": most_repr_thumbnail_path, # str: path to most representative thumbnail
         # # TITLE
         # "repr_title": most_repr_title, # str: most representative title
 
         # Hardcoded examples
-        # THUMBNAIL
-        "repr_thumbnail": os.path.join("..", "static", "data", "thumbnails", "___OSEsR5pk_high.jpg"), # str: path to most representative thumbnail TODO
         # TITLE
         "repr_title": "This is a title", # str: most representative title TODO
 
@@ -356,6 +348,33 @@ def get_thumbnail_average_img():
         avg_img_data_path = os.path.join("..", "data", "thumbnail-averages", "channels", f"{channel}.png")
 
     return send_file(avg_img_data_path, mimetype='image/png')
+
+
+
+# API for getting data for the most representative thumbnail
+@main.route('/get_most_repr_thumbnail', methods = ['GET'])
+def get_most_repr_thumbnail():
+    category = request.args.get("category")
+    channel = request.args.get("channel")
+
+    if category:
+        most_repr_thumbnail_path = os.path.join(DATA_DIR, "thumbnail-latents", "categories_best_repr.json")
+    elif channel:
+        most_repr_thumbnail_path = os.path.join(DATA_DIR, "thumbnail-averages", "channels_best_repr.json")
+
+    with open(most_repr_thumbnail_path, "r") as f:
+        most_repr_thumbnail_file = json.load(f)
+    
+    most_repr_thumbnail = most_repr_thumbnail_file[category]["vid_id"]
+    
+    url = "https://i.ytimg.com/vi/" + most_repr_thumbnail + "/hqdefault.jpg"
+    img = Image.open(requests.get(url, stream=True).raw)
+    img = crop_black_border_img(np.array(img))
+    img = Image.fromarray(img)
+    img_path = os.path.join("app", "static", "data", "temp_repr_thumbnail.jpg")
+    img.save(img_path)
+
+    return send_file(os.path.join("static", "data", "temp_repr_thumbnail.jpg"), mimetype='image/jpg')
 
 
 # API for getting data for the title std plot

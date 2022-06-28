@@ -11,4 +11,11 @@ window.addEventListener('load', (event) => {
         .then((data) => {
             document.getElementById("avgThumbnail").setAttribute("src", data.url)
     })
+
+    var fetch_url = `/get_most_repr_thumbnail?${view}=` + name
+    fetch(fetch_url)
+        .then(function(response) { return response })
+        .then((data) => {
+            document.getElementById("mostReprThumbnail").setAttribute("src", data.url)
+    })
 })
