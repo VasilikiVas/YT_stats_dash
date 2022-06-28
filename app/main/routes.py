@@ -447,3 +447,32 @@ def get_thumbnail_std_plot_data():
         std_data = f.read()
 
     return std_data
+
+
+# API for getting data for the word cloud
+@main.route('/get_word_cloud_data', methods = ['GET'])
+def get_word_cloud_data():
+
+    category = request.args.get("category")
+    channel = request.args.get("channel")
+
+    if category:
+        token_count_path = os.path.join(DATA_DIR, "title-tokens", "categories", f"{category}.json")
+        token_tf_idf_path = os.path.join(DATA_DIR, "title-tokens", "categories_tf_idf", f"{category}.json")
+    elif channel:
+        token_count_path = os.path.join(DATA_DIR, "title-tokens", "channels", f"{channel}.json")
+        token_tf_idf_path = os.path.join(DATA_DIR, "title-tokens", "channels_tf_idf", f"{channel}.json")
+
+    with open(token_count_path, "r") as f:
+        token_count = json.load(f)
+
+    with open(token_tf_idf_path, "r") as f:
+        token_tf_idf = json.load(f)
+
+    counts = token_count["token_counts"]
+
+    word_cloud_dict = {}
+    for key in list(counts.keys())[:100]:
+        word_cloud_dict[key] = {"counts": counts[key], "tf-idf": token_tf_idf[key]}
+
+    return json.dumps(word_cloud_dict)
