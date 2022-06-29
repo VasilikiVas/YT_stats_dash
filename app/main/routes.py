@@ -439,8 +439,6 @@ def get_word_cloud_data():
     if channel:
         multiplier = 50
 
-    print("INFO", avg_count, median_tfidf, file=sys.stderr)
-
     word2size = {}; word2color = {}
     for key in [token for token,_ in sorted(token_tf_idf.items(), key=lambda x:x[1], reverse=True) if len(token) > 1][:100]:
         word2size[key] = token_tf_idf[key] /median_tfidf/3 * multiplier
