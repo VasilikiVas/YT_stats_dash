@@ -1,26 +1,6 @@
 // function to format tooltip data
 const formatter =  d3.format(',d')
 
-function construct_std_tooltip(info) {
-   return `
-   <div>
-      <a class="channel_entry nav-link">
-            <img src="${info["logo_url"]}" class="channel_logo">
-            <span class="ml-1 h5 font-weight-bold text-gray-800">${info["name"]}</span>
-      </a>
-      <table>
-            <tr>
-               <td>std: </td>
-               <td class="h5 mb-0 font-weight-bold text-gray-800">${info["x"]}</td>
-            </tr>
-            <tr>
-               <td>avg views: </td>
-               <td class="h5 mb-0 font-weight-bold text-gray-800">${formatter(info["y"])}</td>
-            </tr>
-      </table>
-   </div>`
-}
-
 function create_std_plot(subview){
 
    // Colors to differentiate riders with and without doping allegations
@@ -89,7 +69,11 @@ function create_std_plot(subview){
                .attr("class", "d3-tip")
                .offset([-10, 0])
                .html(function(d) {
-                  return construct_std_tooltip(d)})
+                  if (view == "category") {
+                     return construct_tooltip_channel({std:d.x, avg_views:d.y, name:d.name, subs:d.subs, logo_url:d.logo_url})
+                  } else if (view == "channel") {
+                     return construct_tooltip_video({deviation:d.x, views:d.y, title:d.title, channel:d.channel, thumbnail_url:d.thumbnail})
+                  }})
 
             var zoomBeh = d3.behavior.zoom()
                .x(x)
@@ -168,8 +152,10 @@ function create_std_plot(subview){
                .attr("transform", transform)
                .style("fill", color)
                .on("click", function(d) {
-                  let url = `/channel/${d.target.__data__.name_id}`
-                  window.location.href = url
+                  if (view == "category") {
+                     let url = `/channel/${d.name_id}`
+                     window.location.href = url
+                  }
                })
                .on("mouseover", tip.show)
                .on("mouseout", tip.hide);

@@ -45,7 +45,7 @@ VID_DICT = {}
 CHANNELS_INFO_BY_CAT = defaultdict(dict)
 for cat in Topic._member_names_:
     with open(os.path.join(DATA_DIR, "info_videos", f"videos-info_{cat}.json"), "r") as f:
-        VID_DICT.update({vid["id"]:vid for chan,vids in json.load(f).items() for vid in vids})
+        VID_DICT.update({vid["id"]:{"channel":chan, **vid} for chan,vids in json.load(f).items() for vid in vids})
     with open(os.path.join(DATA_DIR, "info_channels", f"channels-info_{cat}.json"), "r") as f:
         CHANNELS_INFO_BY_CAT[cat] = {k:{
             "name_id": k,
@@ -363,9 +363,8 @@ def get_title_std_plot_data():
         with open(std_data_path, "r") as f:
             std_data = json.load(f)
         std_data["datapoints"] = [{
-            "title": VID_DICT[d["id"]]["title"],
-            "views": VID_DICT[d["id"]]["views"],
             "thumbnail": f"https://i.ytimg.com/vi/{d['id']}/default.jpg",
+            **VID_DICT[d["id"]],
             **d
         } for d in std_data["datapoints"]]
 
@@ -392,9 +391,8 @@ def get_thumbnail_std_plot_data():
         with open(std_data_path, "r") as f:
             std_data = json.load(f)
         std_data["datapoints"] = [{
-            "title": VID_DICT[d["id"]]["title"],
-            "views": VID_DICT[d["id"]]["views"],
             "thumbnail": f"https://i.ytimg.com/vi/{d['id']}/default.jpg",
+            **VID_DICT[d["id"]],
             **d
         } for d in std_data["datapoints"]]
         

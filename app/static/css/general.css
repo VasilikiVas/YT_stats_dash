@@ -76,6 +76,30 @@ body {
     height: 85vh;
 }
 
+.d3-tip {
+    padding: 10px;
+    vertical-align: middle;
+    border-radius: 5px;
+    background-color: #ecf0f1ee;
+    font-size: 14px;
+}
+#video_tooltip {
+    width: 400px;
+}
+#video_tooltip .vid_entry {
+    padding: 5px !important;
+    display: flex !important;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+.video_title {
+    color: black;
+}
+.video_info_small {
+    font-size:.7rem; 
+    padding: 0;
+}
+
 /* Tooltips for effectiveness plot */
 #tooltip {
     visibility: hidden;

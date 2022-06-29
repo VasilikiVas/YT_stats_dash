@@ -1,46 +1,4 @@
 
-function construct_effectiveness_tooltip(d, subview_mode, view, cname) {
-    let url = `/get_${subview_mode}_tooltip_data?${view}=${cname}&group=${d.group}`
-    fetch(url)
-        .then(function(response) { return response.json() })
-        .then( function(vids) {
-            div = document.getElementById("tooltip_vids")
-            vids.forEach((vid)=>{
-                html = `
-                    <li class="vid_entry">
-                        <img class="thumbnail" src="https://i.ytimg.com/vi/${vid.id}/hqdefault.jpg">
-                        <span class="ml-1">${vid.title}</span>
-                    </li>
-                `
-                div.innerHTML += html
-            })
-    })
-    let html = `
-        <table>
-            <tr>
-                <td>count: </td>
-                <td class="h5 mb-0 font-weight-bold text-gray-800 cat_info">
-                    ${formatter(d.count)}
-                </td>
-            </tr>
-            <tr>
-                <td>avg views: </td>
-                <td class="h5 mb-0 font-weight-bold text-gray-800 cat_info">
-                    ${formatter(d.avg_views)}
-                </td>
-            </tr>
-            <tr>
-                <td>effectiveness: </td>
-                <td class="h5 mb-0 font-weight-bold text-gray-800 cat_info">
-                    ${d.value.toFixed(3)}
-                </td>
-            </tr>
-        </table>
-        <ul id="tooltip_vids" class="tooltip_vids"></ul>
-    `
-    return html
-}
-
 function create_effectiveness_plot(min_count) {
     // Colors to differentiate riders with and without doping allegations
     var colors = ["#27ae60"]

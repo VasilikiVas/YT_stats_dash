@@ -3,6 +3,7 @@ from util.constants import Topic
 import numpy as np
 import re
 import math
+from tqdm import tqdm
 
 def get_name_using_regex(name):
     return re.sub(r"-?([A-z0-9]){8}-([A-z0-9]){4}-([A-z0-9]){4}-([A-z0-9]){4}-([A-z0-9]){12}", "", name)
@@ -26,13 +27,13 @@ for category in Topic._member_names_:
         videos_dict = json.load(f)
 
     datapoints = []
-    for name, vids in videos_dict.items():
+    for name, vids in tqdm(videos_dict.items()):
         datapoint = {}
         with open(os.path.join(DATA_DIR, "thumbnail-latents", "channels", f"{name}.json")) as f:
             channel_std_dict = json.load(f)
         channel_std = channel_std_dict["std"]
         channel_avg_view = np.int(np.mean([vid["views"] for vid in vids]))
-        datapoint["x"] = np.round(channel_std, 3)
+        datapoint["x"] = channel_std
         datapoint["y"] = channel_avg_view
         datapoint["name"] = get_name_using_regex(name)
         datapoint["name_id"] = name
