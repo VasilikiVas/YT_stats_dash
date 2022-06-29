@@ -50,8 +50,11 @@ function create_std_plot(subview){
             var yMin = d3.min(data, function(d) { return d["y"];})
             var yMax = d3.max(data, function(d) { return d["y"];})
 
-            x.domain([xMin, xMax]);
-            y.domain([yMin, yMax]);
+
+            x.domain([xMin-0.03, xMax+0.03]);
+            // y.domain([yMin, yMax]);
+            y.domain([0, yMax*1.05]);
+            // console.log(yMin);
 
             // 4. Draw and transform/translate horizontal and vertical axes
             var xAxis = d3.svg.axis()
@@ -164,7 +167,7 @@ function create_std_plot(subview){
                   .append("svg:image")
                      .classed("dot", true)
                      .attr("xlink:href", function(d) {
-                        console.log(d.thumbnail)
+                        // console.log(d.thumbnail)
                         return d.thumbnail})
                      .attr("height", "40")
                      .attr("transform", transform)
@@ -198,8 +201,9 @@ function create_std_plot(subview){
                svg.selectAll(".dot")
                    .attr("transform", transform);
              }
-           
+            
              function transform(d) {
+               // console.log("translate(" + x(d['x']) + "," + y(d['y']) + ")");
                return "translate(" + x(d['x']) + "," + y(d['y']) + ")";
              }
            })
