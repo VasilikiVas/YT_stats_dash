@@ -30,8 +30,10 @@ function create_std_plot(subview){
             var mean = dataset.mean
             var data = dataset.datapoints
 
+            let plot_div = document.querySelector(std_plot_id)
+            let outerWidth = plot_div.offsetWidth
+
             var margin = { top: 10, right: 20, bottom: 50, left: 120 },
-               outerWidth = 800,
                outerHeight = 300,
                width = outerWidth - margin.left - margin.right,
                height = outerHeight - margin.top - margin.bottom;
@@ -69,9 +71,11 @@ function create_std_plot(subview){
                .offset([-10, 0])
                .html(function(d) {
                   if (view == "category") {
-                     return construct_tooltip_channel({std:d.x, avg_views:d.y, name:d.name, subs:d.subs, logo_url:d.logo_url})
+                     return construct_tooltip_channel({std:d.x, avg_views:d.y, name:d.name, subs:d.subs, logo_url:d.logo_url},
+                        incl_std = true)
                   } else if (view == "channel") {
-                     return construct_tooltip_video({deviation:d.x, views:d.y, title:d.title, channel:d.channel, thumbnail_url:d.thumbnail})
+                     return construct_tooltip_video({deviation:d.x, views:d.y, title:d.title, channel:d.channel, thumbnail_url:d.thumbnail},
+                        incl_dev = true)
                   }})
 
             var zoomBeh = d3.behavior.zoom()
@@ -93,8 +97,9 @@ function create_std_plot(subview){
             svg.append("rect")
                .attr("width", width)
                .attr("height", height)
-
+            
             svg.append("g")
+               .style("font-size","15px")
                .classed("x axis", true)
                .attr("transform", "translate(0," + height + ")")
                .call(xAxis)
@@ -102,9 +107,15 @@ function create_std_plot(subview){
                .attr("x", (width - margin.left- margin.right) / 2)
                .attr("y",  margin.bottom - 10)
                .attr("class", "label")
-               .text("Standard Deviation")
+               .text(function(d) {
+                  if (view == "category") {
+                     return "Standard Deviation"
+                  } else if (view == "channel"){
+                     return "Deviation"
+                  }})
 
             svg.append("g")
+               .style("font-size","15px")
                .classed("y axis", true)
                .call(yAxis)
              .append("text")
@@ -140,7 +151,6 @@ function create_std_plot(subview){
                .attr("x2", 0)
                .attr("y2", height);
 
-            //Create median lines:
             objects.append("svg:line")
                .attr("class", "medianLine vMedianLine")
                .attr("y1",y(yMax - 0.5))
@@ -148,22 +158,40 @@ function create_std_plot(subview){
                .style("stroke", "black")
                .style("stroke-dasharray", ("4, 4"))
                .attr("transform", "translate("+ x(mean) +",0)")
+            
+            let im_w = 40
 
-            objects.selectAll(".dot")
-               .data(data)
-               .enter().append("circle")
-               .classed("dot", true)
-               .attr("r", 6)
-               .attr("transform", transform)
-               .style("fill", color)
-               .on("click", function(d) {
-                  if (view == "category") {
-                     let url = `/channel/${d.name_id}`
-                     window.location.href = url
-                  }
-               })
-               .on("mouseover", tip.show)
-               .on("mouseout", tip.hide)
+            if (view == "channel"){
+               objects.selectAll(".dot")
+                  .data(data)
+                  .enter()
+                  .append("svg:image")
+                     .classed("dot", true)
+                     .attr("xlink:href", function(d) {
+                        return d.thumbnail})
+                     .attr("x", (-im_w/2).toString())
+                     .attr("y", (-im_w/8*3).toString())
+                     .attr("width", im_w.toString())
+                     .attr("transform", transform)
+                  .on("mouseover", tip.show)
+                  .on("mouseout", tip.hide)
+                  
+            } else if (view=="category"){
+               objects.selectAll(".dot")
+                  .data(data)
+                  .enter()
+                  .append("circle")
+                     .classed("dot", true)
+                     .attr("r", 6)
+                     .attr("transform", transform)
+                     .style("fill", color)
+                  .on("click", function(d) {
+                           let url = `/channel/${d.name_id}`
+                           window.location.href = url
+                     })
+                  .on("mouseover", tip.show)
+                  .on("mouseout", tip.hide)
+            }
 
              function zoom() {
                svg.select(".x.axis").call(xAxis);
