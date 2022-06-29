@@ -26,12 +26,6 @@ function create_std_plot(subview){
    // Colors to differentiate riders with and without doping allegations
    var color = "#27ae60"
 
-   // Create an invisible div for the tooltip
-   const tooltip = d3.select("body")
-                     .append("div")
-                     .attr("id", "tooltip")
-                     .style("visibility", "hidden")
-
    // 1. Load the data from external source
    var url = window.location.pathname
    var splitURL = url.toString().split("/")
@@ -91,19 +85,17 @@ function create_std_plot(subview){
                .orient("left")
                .tickSize(-width);
 
-            // var tip = d3.tip()
-            //    .attr("class", "d3-tip")
-            //    .offset([-10, 0])
-            //    .html(function(d) {
-            //      return "name : " + d['name'] + "<br>" + "std: " + d['x'];
-            //    });
+            var tip = d3.tip()
+               .attr("class", "d3-tip")
+               .offset([-10, 0])
+               .html(function(d) {
+                  return construct_std_tooltip(d)})
 
             var zoomBeh = d3.behavior.zoom()
                .x(x)
                .y(y)
                .scaleExtent([0, 500])
                .on("zoom", zoom);
-
 
             var svg = d3.select(std_plot_id)
                .append("svg")
@@ -112,7 +104,7 @@ function create_std_plot(subview){
                  .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
                  .call(zoomBeh);
 
-            // svg.call(tip);
+            svg.call(tip);
 
             svg.append("rect")
                .attr("width", width)
@@ -172,15 +164,15 @@ function create_std_plot(subview){
                .data(data)
                .enter().append("circle")
                .classed("dot", true)
-               .attr("r", function (d) { return 6})
+               .attr("r", 4)
                .attr("transform", transform)
                .style("fill", color)
                .on("click", function(d) {
                   let url = `/channel/${d.target.__data__.name_id}`
                   window.location.href = url
                })
-               // .on("mouseover", tip.show)
-               // .on("mouseout", tip.hide);
+               .on("mouseover", tip.show)
+               .on("mouseout", tip.hide);
 
             d3.select("input").on("click", change);
 
