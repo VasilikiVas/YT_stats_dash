@@ -78,10 +78,12 @@ body {
 
 
 #effectivenessPlot {
-    height: 85vh;
+    /* height: 85vh; */
+    height: 85%;
 }
 
 .d3-tip {
+    top: 0;
     padding: 10px;
     vertical-align: middle;
     border-radius: 5px;
@@ -107,6 +109,7 @@ body {
 
 /* Tooltips for effectiveness plot */
 #tooltip {
+    top: 0;
     visibility: hidden;
     position: absolute;
     opacity: 0.9;

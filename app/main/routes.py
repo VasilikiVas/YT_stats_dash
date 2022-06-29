@@ -173,7 +173,7 @@ def get_dom_colour_data():
 
 
 def calc_effectiveness(views, counts, min_count):
-    avg_views = np.array(list(views.values())).mean()
+    avg_views = np.mean(list(views.values()))
     eff = {t:views[t]/c
         for t,c in counts.items() if c > int(min_count)}
     eff = [{

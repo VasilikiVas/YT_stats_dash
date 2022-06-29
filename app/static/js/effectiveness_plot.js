@@ -35,7 +35,7 @@ function create_effectiveness_plot(min_count) {
         // let h = document.body.offsetHeight
         let h = data.length * 30
 
-        const margin = {top: 30, right: 10, bottom: 30, left: 5},
+        const margin = {top: 30, right: 10, bottom: 30, left: 10},
             width = w - margin.left - margin.right,
             height = h - margin.top - margin.bottom;
 
@@ -138,6 +138,18 @@ function create_effectiveness_plot(min_count) {
                 })
               
     })
+
+    function resizeEffPlot() {
+        // Set effectiveness plot to the same height as left
+        let eff_col = document.getElementById("eff_col")
+        let center_col = document.getElementById("center_content_col")
+
+        eff_col.style.height = `${center_col.offsetHeight-20}px`
+    }
+
+    resizeEffPlot()
+
+    setTimeout(resizeEffPlot, 500)
 }
 
 let checkExistEffectiveness = setInterval(function() {
