@@ -42,8 +42,7 @@ function create_effectiveness_plot(min_count) {
         // append the svg object to the body of the page
         const svg_axis = d3.select("#effectivenessPlotAxis")
             .append("svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", margin.top)
+                .attr("viewBox", [0, 0,  width + margin.left + margin.right, margin.top])
             .append("g")
                 .attr("transform", `translate(${margin.left}, ${margin.top})`);
         const svg = d3.select("#effectivenessPlot .simplebar-content")
