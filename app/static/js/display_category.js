@@ -16,11 +16,23 @@ function removeAllChildNodes(parent) {
     }
 }
 
+var load_more_button = document.createElement("a");
+    load_more_button.innerText = "Load more...";
+    load_more_button.className = "nav-link";
+    load_more_button.setAttribute("id", "load_more_channels_button");
+    load_more_button.setAttribute("onclick", "increaseDisplayedChannels()");
+
 function increaseDisplayedChannels(){
     num_channels_display += 10;
     channels_to_display = selected_channels.slice(0,num_channels_display);
+    // if channels_to_display.length != num_channels_display:
+    // if (channels_to_display.length == num_channels_display) {
+    //     console.log(load_more_button)
+    //     load_more_button.hide();
+    // }
     displayChannels(channels_to_display);
 };
+
 
 function displayChannels(channels_to_display){
 
@@ -58,11 +70,14 @@ function displayChannels(channels_to_display){
     var button_div = document.createElement("li")
     button_div.className = "nav-item";
 
-    var load_more_button = document.createElement("a");
-    load_more_button.innerText = "Load more...";
-    load_more_button.className = "nav-link";
-    load_more_button.setAttribute("id", "load_more_channels_button");
-    load_more_button.setAttribute("onclick", "increaseDisplayedChannels()");
+    if (channels_to_display.length != selected_channels.length) {
+
+        var load_more_button = document.createElement("a");
+        load_more_button.innerText = "Load more...";
+        load_more_button.className = "nav-link";
+        load_more_button.setAttribute("id", "load_more_channels_button");
+        load_more_button.setAttribute("onclick", "increaseDisplayedChannels()");
+    }
 
     button_div.appendChild(load_more_button)
     channelsDisplay.appendChild(button_div)
@@ -77,6 +92,7 @@ function increaseDisplayedVideos(){
     num_videos_display += 10;
     videos_to_display = videos.slice(0,num_videos_display);
     displayVideos(videos_to_display);
+
 };
 
 function displayVideos(videos_to_display){
@@ -102,6 +118,7 @@ function displayVideos(videos_to_display){
 
     };
     if (displayLoadMore){
+        // console.log(displayLoadMore)
         var load_more_button = document.createElement("button");
         load_more_button.innerText = "Load more...";
         load_more_button.setAttribute("id", "load_more_vids_button");
