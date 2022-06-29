@@ -27,11 +27,10 @@ function create_std_plot(subview){
          .then(function(response) { return response.json(); })
          .then((dataset) => {
             
-            mean = dataset.mean
-            data = dataset.datapoints
+            var mean = dataset.mean
+            var data = dataset.datapoints
 
-            // 2. Append svg-object for the bar chart to a div in your webpage
-            var margin = { top: 10, right: 20, bottom: 50, left: 90 },
+            var margin = { top: 10, right: 20, bottom: 50, left: 120 },
                outerWidth = 800,
                outerHeight = 300,
                width = outerWidth - margin.left - margin.right,
@@ -81,6 +80,7 @@ function create_std_plot(subview){
                .scaleExtent([0, 500])
                .on("zoom", zoom);
 
+            // 2. Append svg-object to div
             var svg = d3.select(std_plot_id)
                .append("svg")
                  .attr("viewBox", [0, 0, outerWidth, outerHeight])
@@ -92,29 +92,33 @@ function create_std_plot(subview){
 
             svg.append("rect")
                .attr("width", width)
-               .attr("height", height);
+               .attr("height", height)
 
             svg.append("g")
                .classed("x axis", true)
                .attr("transform", "translate(0," + height + ")")
                .call(xAxis)
              .append("text")
-               .classed("label", true)
-               .attr("x", width)
-               .attr("y", margin.bottom - 10)
-               .style("text-anchor", "end")
-               .text("std");
+               .attr("x", (width - margin.left- margin.right) / 2)
+               .attr("y",  margin.bottom - 10)
+               .attr("class", "label")
+               .text("Standard Deviation")
 
             svg.append("g")
                .classed("y axis", true)
                .call(yAxis)
              .append("text")
-               .classed("label", true)
+               .attr("y", -0.9*margin.left)
+               .attr("x", -(height)/2)
                .attr("transform", "rotate(-90)")
-               .attr("y", -margin.left)
-               .attr("dy", ".71em")
-               .style("text-anchor", "end")
-               .text("Views");
+               .attr("class", "label")
+               .text("Views")    
+
+            svg.append("text")
+               .attr("class", "meanLabel")
+               .attr("y", y(yMax+0.5))
+               .text("mean")
+               .attr("transform", "translate("+ (parseFloat(x(mean))-20).toString() +",0)")
 
             var objects = svg.append("svg")
                .classed("objects", true)
@@ -136,19 +140,20 @@ function create_std_plot(subview){
                .attr("x2", 0)
                .attr("y2", height);
 
-            svg.append("line")
-               .style("stroke-dasharray", ("4, 4"))
-               .attr("x1",x(mean))
+            //Create median lines:
+            objects.append("svg:line")
+               .attr("class", "medianLine vMedianLine")
                .attr("y1",y(yMax - 0.5))
-               .attr("x2",x(mean))
                .attr("y2",y(yMin))
                .style("stroke", "black")
+               .style("stroke-dasharray", ("4, 4"))
+               .attr("transform", "translate("+ x(mean) +",0)")
 
             objects.selectAll(".dot")
                .data(data)
                .enter().append("circle")
                .classed("dot", true)
-               .attr("r", 4)
+               .attr("r", 6)
                .attr("transform", transform)
                .style("fill", color)
                .on("click", function(d) {
@@ -158,26 +163,14 @@ function create_std_plot(subview){
                   }
                })
                .on("mouseover", tip.show)
-               .on("mouseout", tip.hide);
-
-            d3.select("input").on("click", change);
-
-            function change() {
-               xMax = d3.max(data, function(d) { return d["x"]; });
-               xMin = d3.min(data, function(d) { return d["x"]; });
-           
-               zoomBeh.x(x.domain([xMin, xMax])).y(y.domain([yMin, yMax]));
-           
-               var svg = d3.select(std_plot_id).transition();
-           
-               svg.select(".x.axis").duration(750).call(xAxis).select(".label").text('std');
-           
-               objects.selectAll(".dot").transition().duration(1000).attr("transform", transform);
-             }
+               .on("mouseout", tip.hide)
 
              function zoom() {
                svg.select(".x.axis").call(xAxis);
                svg.select(".y.axis").call(yAxis);
+               svg.select(".meanLabel").attr("transform", "translate("+ (parseFloat(x(mean))-20).toString() +",0)") 
+
+               objects.select(".vMedianLine").attr("transform", "translate("+x(mean)+",0)");
            
                svg.selectAll(".dot")
                    .attr("transform", transform);
@@ -188,85 +181,5 @@ function create_std_plot(subview){
              }
            })
 }
-
-//             svg.append("g")
-//                .attr("transform", "translate(0, "+ (height - margin.bottom) + ")")
-//                .attr("id", "x-axis")
-//                .call(xAxis)
-
-//             svg.append("g")
-//                .attr("transform", "translate("+ (margin.left)+", 0)")
-//                .attr("id", "y-axis")
-//                .call(yAxis)
-
-//             // 5. Draw individual scatter points and define mouse events for the tooltip
-//             svg.selectAll("scatterPoints")
-//                .data(data)
-//                .enter()
-//                .append("circle")
-//                .style("opacity", 0.6)
-//                .attr("cx", (d) => xScale(d["x"]))
-//                .attr("cy", (d) => yScale(d["y"]))
-//                .attr("r", 5)
-//                .attr("fill", colors[0])
-//                .attr("class", "dot")
-//                .attr("data-xvalue", (d) => d["x"])
-//                .attr("data-yvalue", (d) => d["y"])
-//                .on("click", function(d) {
-//                   let url = `/channel/${d.target.__data__.channel_id}`
-//                   window.location.href = url
-//                })
-//                .on("mouseover", function(d){
-//                   info = d.toElement.__data__
-//                   tooltip.style("visibility", "visible")
-//                            .style("left", event.pageX+10+"px")
-//                            .style("top", event.pageY-80+"px")
-//                            .attr("data-std", info["x"])
-//                            .html(`
-//                   <div>
-//                      <a +class="channel_entry nav-link">
-//                            <img src="${info["logo_url"]}" class="channel_logo">
-//                            <span class="ml-1 h5 font-weight-bold text-gray-800">${info["name"]}</span>
-//                      </a>
-//                      <table>
-//                            <tr>
-//                               <td>std: </td>
-//                               <td class="h5 mb-0 font-weight-bold text-gray-800">${info["x"]}</td>
-//                            </tr>
-//                            <tr>
-//                               <td>avg views: </td>
-//                               <td class="h5 mb-0 font-weight-bold text-gray-800">${formatter(info["y"])}</td>
-//                            </tr>
-//                      </table>
-//                   </div>`)
-//                })
-//                .on("mousemove", function(){
-//                   tooltip.style("left", event.pageX+10+"px")
-//                })
-//                .on("mouseout", function(){
-//                   tooltip.style("visibility", "hidden")
-//                })
-
-//             // 6. Finalize chart by adding title, axes labels and legend
-//             svg.append("text")
-//                .attr("x", margin.left + (width - margin.left - margin.right) / 2)
-//                .attr("y", height - margin.bottom / 5)
-//                .attr("class", "label")
-//                .text("std");
-
-//             svg.append("text")
-//                   .attr("y", margin.left/2-20)
-//                   .attr("x", -height/2)
-//                   .attr("transform", "rotate(-90)")
-//                   .attr("class", "label")
-//                   .text("Views");
-
-//             svg.append("text")
-//                .attr("x", xScale(mean))
-//                .attr("y", yScale(yMax+0.5))
-//                .attr("class", "label")
-//                .text("mean");
-//             })
-// }
 
 create_std_plot(subview_mode)
