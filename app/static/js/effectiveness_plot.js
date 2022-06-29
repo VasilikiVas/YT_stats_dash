@@ -33,7 +33,7 @@ function create_effectiveness_plot(min_count) {
         let plot_div = document.querySelector("#effectivenessPlot .simplebar-content")
         let w = plot_div.offsetWidth
         // let h = document.body.offsetHeight
-        let h = data.length * 30
+        let h = data.length * 30 + 50
 
         const margin = {top: 30, right: 10, bottom: 30, left: 10},
             width = w - margin.left - margin.right,
