@@ -426,13 +426,21 @@ def get_word_cloud_data():
 
     counts = token_count["token_counts"]
 
+    avg_count = np.mean(list(counts.values()))
+    median_tfidf = np.mean(list(token_tf_idf.values()))
+
+    multiplier = 1
+    if channel:
+        multiplier = 100
+
+    print("INFO", avg_count, median_tfidf, file=sys.stderr)
+
     word_cloud_dict = {}
-    word_cloud_counts = {}; word_cloud_tfidf={}
-    for key in list(counts.keys())[:100]:
-        # word_cloud_dict[key] = {"counts": counts[key], "tf-idf": token_tf_idf[key]}
-        word_cloud_counts[key] = counts[key]
-        word_cloud_tfidf[key] = token_tf_idf[key]
-    word_cloud_dict["counts"] = word_cloud_counts
-    word_cloud_dict["tfidf"] = word_cloud_tfidf
+    word2size = {}; word2color = {}
+    for key in [token for token,_ in sorted(token_tf_idf.items(), key=lambda x:x[1], reverse=True) if len(token) > 1][:100]:
+        word2size[key] = token_tf_idf[key] /median_tfidf/3 * multiplier
+        word2color[key] = counts[key] /avg_count/10 * multiplier
+    word_cloud_dict["size"] = word2size
+    word_cloud_dict["color"] = word2color
 
     return json.dumps(word_cloud_dict)
