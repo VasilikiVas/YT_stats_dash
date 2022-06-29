@@ -27,21 +27,8 @@ function create_effectiveness_plot(min_count) {
         .then(function(response) { return response.json(); })
         .then( function(data) {
 
-        document.querySelector("svg").innerHTML += `
-        <defs>
-            <marker
-                id="arrow"
-                markerUnits="strokeWidth"
-                markerWidth="12"
-                markerHeight="12"
-                viewBox="0 0 12 12"
-                refX="6"
-                refY="6"
-                orient="auto">
-                <path d="M2,2 L10,6 L2,10 L6,6 L2,2" style="fill: #000;"></path>
-            </marker>
-        </defs>
-        `
+        // console.log(data)
+
         // set the dimensions and margins of the graph
         let plot_div = document.querySelector("#effectivenessPlot .simplebar-content")
         let w = plot_div.offsetWidth
@@ -59,7 +46,21 @@ function create_effectiveness_plot(min_count) {
             .append("g")
                 .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-
+        document.querySelector("#effectivenessPlotAxis svg g").innerHTML += `
+        <defs>
+            <marker
+                id="arrow"
+                markerUnits="strokeWidth"
+                markerWidth="12"
+                markerHeight="12"
+                viewBox="0 0 12 12"
+                refX="6"
+                refY="6"
+                orient="auto">
+                <path d="M2,2 L10,6 L2,10 L6,6 L2,2" style="fill: #000;"></path>
+            </marker>
+        </defs>
+        `
 
         const svg = d3.select("#effectivenessPlot .simplebar-content")
         .append("svg")

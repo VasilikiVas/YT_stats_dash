@@ -13,7 +13,7 @@ var cname = splitURL.at(-1)
 
 fetch_url = `/get_word_cloud_data?${view}=${cname}`
 
-var div = document.getElementById("myWordCloud")
+var wordcloud_div = document.getElementById("myWordCloud")
 
 fetch(fetch_url)
     .then(function(response) { return response.json(); })
@@ -27,7 +27,7 @@ fetch(fetch_url)
         var svg = d3.select(selector).append("svg")
             // .attr("width", 800)
             // .attr("height", 300)
-            .attr("viewBox", [0,0, div.offsetWidth, 300])
+            .attr("viewBox", [0,0, wordcloud_div.offsetWidth, 300])
             .append("g")
             .attr("class", "wordcloud")
             .attr("transform", "translate(460,160)");
@@ -168,7 +168,7 @@ fetch(fetch_url)
         update: function(words) {
             d3.layout
                 .cloud()
-                .size([div.offsetWidth*.9, 300])
+                .size([wordcloud_div.offsetWidth*.9, 300])
                 .words(words)
                 // .padding(1)
                 .rotate(function() { return ~~(Math.random() * 2) * 90; })
