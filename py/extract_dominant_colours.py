@@ -1,13 +1,16 @@
 import numpy as np
 from matplotlib import image
 from sklearn.cluster import KMeans
-from turtle import shape
-from util.constants import Topic, THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH, THUMBNAIL_PATH
+from util.constants import Topic, THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH
 from tqdm import tqdm
 from PIL import Image
 import numpy as np
 import json
 import os
+
+THUMBNAIL_PATH = os.path.join("..","..","thumbnails")
+
+from crop_black_borders import crop_black_border_img
 
 def rgb_to_hex(rgb):
     return '#%02x%02x%02x' % rgb
@@ -45,7 +48,9 @@ def extract_dom_colours(img, clusters):
     img = np.resize(img,(100, 200, C))
 
     # remove dark colours from image
-    img = img[img[:,:,0] + img[:,:,1] + img[:,:,2] > 50]
+    filtered_img = img[img[:,:,0] + img[:,:,1] + img[:,:,2] > 50]
+    if len(filtered_img) > 100:
+        img = filtered_img
 
     flat_img = np.reshape(img,(-1,3))
 
@@ -80,42 +85,41 @@ def extract_category_dom_colours(category: Topic, clusters):
     print("Calculating dominant colours for all channels in category: " + category + "\n")
     all_category_thumbnails = []
     for creator in tqdm(list(videos_info.keys())):
-        all_creator_thumbnails = []
+
+        if os.path.isfile(os.path.join(CHANNELS_PATH, creator + ".json")):
+            continue
         
-        try:
-            creator_thumbnails = []
-            for vid_dict in videos_info[creator]:
-                img = Image.open(os.path.join(THUMBNAIL_PATH, vid_dict['id'] + "_high.jpg"))
-                w, h = img.size
-                if h == THUMBNAIL_HEIGHT and w == THUMBNAIL_WIDTH:
-                    # we exclude shorts by skipping the videos that were not cropped
-                    continue
-                creator_thumbnails.append(img)
-            if len(creator_thumbnails) < 5:
+        creator_thumbnails = []
+        for vid_dict in videos_info[creator]:
+            try:
+                img = image.imread(os.path.join(THUMBNAIL_PATH, vid_dict['id'] + "_high.jpg"))
+            except FileNotFoundError:
                 continue
-
-            all_creator_thumbnails.extend(creator_thumbnails)
-
-            all_category_thumbnails.extend(all_creator_thumbnails)
-
-        except FileNotFoundError:
+            img = crop_black_border_img(img)
+            if type(img) == bool and not img:
+                continue
+            creator_thumbnails.append(Image.fromarray(img))
+        if len(creator_thumbnails) < 5:
+            print(f"not enough thumbnails for {creator}")
             continue
 
-        img_grid = make_image_grid_1_row(all_creator_thumbnails)
+        all_category_thumbnails.extend(creator_thumbnails)
+
+        img_grid = make_image_grid_1_row(creator_thumbnails)
         dom_colours = extract_dom_colours(img_grid, clusters)
 
         with open(os.path.join(CHANNELS_PATH, creator + ".json"), 'w') as f:
             json.dump(dom_colours, f)
         
-    print("Calculating dominant colours for category: " + category + "\n")
+    # print("Calculating dominant colours for category: " + category + "\n")
 
-    img_grid = make_image_grid_1_row(all_category_thumbnails)
-    dom_colours = extract_dom_colours(img_grid, clusters)
+    # img_grid = make_image_grid_1_row(all_category_thumbnails)
+    # dom_colours = extract_dom_colours(img_grid, clusters)
 
-    with open(os.path.join(CATEGORY_PATH, category + ".json"), 'w') as f:
-        json.dump(dom_colours, f)
+    # with open(os.path.join(CATEGORY_PATH, category + ".json"), 'w') as f:
+    #     json.dump(dom_colours, f)
 
-    print("Finished calculating dominant colours per creator and for category\n")
+    print("Finished calculating dominant colours per creator\n")
 
 
 if __name__ == '__main__':
@@ -132,7 +136,5 @@ if __name__ == '__main__':
     # choose how many colours to extract
     clusters = 5
 
-    for category in Topic:
-        extract_category_dom_colours(category.value, clusters)
-        # only do gaming for now
-        break
+    for category in Topic._member_names_[1:]:
+        extract_category_dom_colours(category, clusters)
