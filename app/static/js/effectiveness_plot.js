@@ -74,19 +74,20 @@ function create_effectiveness_plot(min_count) {
             .domain(data.map(function(d) { return d.group; }))
             // .padding(1)
 
+        // // yScale for vertical line
+        // // const yScale = d3.scale.linear()
         // const yScale = d3.scale.linear()
-        const yScale = d3.scale.linear()
-            .domain([0,1])
-            .range([0, height])
+        //     .domain([0,1])
+        //     .range([0, height])
     
 
-        svg.append("line")
-            .style("stroke-dasharray", ("4, 4"))
-            .attr("x1",x(1))
-            .attr("y1",yScale(1))
-            .attr("x2",x(1))
-            .attr("y2",yScale(0))
-            .style("stroke", "black")
+        // svg.append("line")
+        //     .style("stroke-dasharray", ("4, 4"))
+        //     .attr("x1",x(1))
+        //     .attr("y1",yScale(1))
+        //     .attr("x2",x(1))
+        //     .attr("y2",yScale(0))
+        //     .style("stroke", "black")
 
 
         // let yAxisGenerator = d3.axisRight(y)
