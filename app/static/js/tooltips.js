@@ -88,7 +88,7 @@ function construct_effectiveness_tooltip(d, subview_mode, view, cname) {
                </td>
            </tr>
            <tr>
-               <td>count: </td>
+               <td>occurences: </td>
                <td class="h5 mb-0 font-weight-bold text-gray-800 cat_info">
                    ${formatter(d.count)}
                </td>

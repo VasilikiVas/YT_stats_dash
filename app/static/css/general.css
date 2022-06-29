@@ -2,6 +2,7 @@
 body {
     height: 100vh;
     /* overflow: hidden; */
+    overflow-x: hidden;
 }
 
 #page_logo {
@@ -26,6 +27,7 @@ body {
 #categories {
     margin-bottom: 5px;
 }
+
 
 .channel_list {
     height: 52vh;
