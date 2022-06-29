@@ -45,7 +45,7 @@ VID_DICT = {}
 CHANNELS_INFO_BY_CAT = defaultdict(dict)
 for cat in Topic._member_names_:
     with open(os.path.join(DATA_DIR, "info_videos", f"videos-info_{cat}.json"), "r") as f:
-        VID_DICT.update({vid["id"]:vid for chan,vids in json.load(f).items() for vid in vids})
+        VID_DICT.update({vid["id"]:{"channel":chan, **vid} for chan,vids in json.load(f).items() for vid in vids})
     with open(os.path.join(DATA_DIR, "info_channels", f"channels-info_{cat}.json"), "r") as f:
         CHANNELS_INFO_BY_CAT[cat] = {k:{
             "name_id": k,
@@ -56,7 +56,7 @@ for cat in Topic._member_names_:
 
 @main.route('/', methods=['GET'])
 def base():
-    return redirect('/category/gaming?subview_mode=thumbnail')
+    return redirect('/category/gaming?subview_mode=title')
 
 
 @main.route('/category/<cat>', methods=['GET'])
@@ -66,7 +66,7 @@ def category(cat):
     if not cat:
         cat = "gaming"
     if not subview_mode:
-        subview_mode = "thumbnail"
+        subview_mode = "title"
 
     channels_dict = CHANNELS_INFO_BY_CAT[cat]
 
@@ -96,7 +96,7 @@ def category(cat):
     return render_template("category.html",
         view="category",
         categories=Topic._member_names_,
-        channels=list(channels_dict.values()), 	    # list of dicts: all channels in the category, sorted by Subs
+        channels=[c for c in channels_dict.values() if c["name_id"] in videos_dict], 	    # list of dicts: all channels in the category, sorted by Subs
         category=category, 			# dict: info about the category
         info_display={
             "Subs/Channel: ": category["avg_subs"],
@@ -114,7 +114,7 @@ def channel(chan):
     subview_mode = request.args.get("subview_mode")
 
     if not subview_mode:
-        subview_mode = "thumbnail"
+        subview_mode = "title"
 
     channels_dict = CHANNELS_INFO_BY_CAT[cat]
 
@@ -123,7 +123,7 @@ def channel(chan):
     with open(videos_info_path, "r") as f:
         videos_dict = json.load(f)
 
-    videos = videos_dict[chan]
+    videos = videos_dict[chan] if chan in videos_dict else []
     videos.sort(key=lambda x: x["views"], reverse=True)
 
     channel_info = channels_dict[chan]
@@ -136,14 +136,14 @@ def channel(chan):
         categories=Topic._member_names_,
         category={"name": cat},
         channel=channel_info,
-        channels=list(channels_dict.values()), 			# list of dicts: all channels in the category, sorted by Subs
+        channels=[c for c in channels_dict.values() if c["name_id"] in videos_dict], 			# list of dicts: all channels in the category, sorted by Subs
         info_display={
             "Subscribers: ": channel_info["Subscribers"],
             "Views/Video: ": channel_info["avg_views"],
             "Num Videos: ": channel_info["Video count"],
         },
         subview_mode=subview_mode,	# "thumbnail" or "title"
-        videos=videos[:20],			# list of dicts: all videos (or maybe top-n if computation requires it) in the category, sorted by views
+        videos=videos,			# list of dicts: all videos (or maybe top-n if computation requires it) in the category, sorted by views
     )
 
 
@@ -182,6 +182,7 @@ def calc_effectiveness(views, counts, min_count):
             "count": counts[t],
             "avg_views": int(e),
         } for t,e in sorted(eff.items(), key=lambda x:x[1],reverse=True)]
+
     return eff
 
 
@@ -355,12 +356,17 @@ def get_title_std_plot_data():
 
     if category:
         std_data_path = os.path.join(DATA_DIR, "title-latents", "categories_plot_data", f"{category}.json")
-    #TODO same json for channels
+        with open(std_data_path, "r") as f:
+            std_data = json.load(f)
     elif channel:
-        std_data_path = os.path.join(DATA_DIR, "title-latents", "channels_plot_data", f"{channel}.json")
-
-    with open(std_data_path, "r") as f:
-        std_data = json.load(f)
+        std_data_path = os.path.join(DATA_DIR, "title-latents", "video_deviation", f"{channel}.json")
+        with open(std_data_path, "r") as f:
+            std_data = json.load(f)
+        std_data["datapoints"] = [{
+            "thumbnail": f"https://i.ytimg.com/vi/{d['id']}/default.jpg",
+            **VID_DICT[d["id"]],
+            **d
+        } for d in std_data["datapoints"]]
 
     if math.isnan(std_data["mean"]):
         std_data["datapoints"] = [d for d in std_data["datapoints"] if not math.isnan(d["x"])]
@@ -378,12 +384,18 @@ def get_thumbnail_std_plot_data():
 
     if category:
         std_data_path = os.path.join(DATA_DIR, "thumbnail-latents", "categories_plot_data", f"{category}.json")
-    #TODO same json for channels
+        with open(std_data_path, "r") as f:
+            std_data = json.load(f)
     elif channel:
-        std_data_path = os.path.join(DATA_DIR, "title-latents", "channels", f"{channel}.json")
-
-    with open(std_data_path, "r") as f:
-        std_data = json.load(f)
+        std_data_path = os.path.join(DATA_DIR, "thumbnail-latents", "video_deviation", f"{channel}.json")
+        with open(std_data_path, "r") as f:
+            std_data = json.load(f)
+        std_data["datapoints"] = [{
+            "thumbnail": f"https://i.ytimg.com/vi/{d['id']}/default.jpg",
+            **VID_DICT[d["id"]],
+            **d
+        } for d in std_data["datapoints"]]
+        
 
     if math.isnan(std_data["mean"]):
         std_data["datapoints"] = [d for d in std_data["datapoints"] if not math.isnan(d["x"])]
@@ -414,13 +426,21 @@ def get_word_cloud_data():
 
     counts = token_count["token_counts"]
 
+    avg_count = np.mean(list(counts.values()))
+    median_tfidf = np.mean(list(token_tf_idf.values()))
+
+    multiplier = 1
+    if channel:
+        multiplier = 100
+
+    print("INFO", avg_count, median_tfidf, file=sys.stderr)
+
     word_cloud_dict = {}
-    word_cloud_counts = {}; word_cloud_tfidf={}
-    for key in list(counts.keys())[:100]:
-        # word_cloud_dict[key] = {"counts": counts[key], "tf-idf": token_tf_idf[key]}
-        word_cloud_counts[key] = counts[key]
-        word_cloud_tfidf[key] = token_tf_idf[key]
-    word_cloud_dict["counts"] = word_cloud_counts
-    word_cloud_dict["tfidf"] = word_cloud_tfidf
+    word2size = {}; word2color = {}
+    for key in [token for token,_ in sorted(token_tf_idf.items(), key=lambda x:x[1], reverse=True) if len(token) > 1][:100]:
+        word2size[key] = token_tf_idf[key] /median_tfidf/3 * multiplier
+        word2color[key] = counts[key] /avg_count/10 * multiplier
+    word_cloud_dict["size"] = word2size
+    word_cloud_dict["color"] = word2color
 
     return json.dumps(word_cloud_dict)

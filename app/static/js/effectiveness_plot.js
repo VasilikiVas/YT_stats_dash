@@ -1,46 +1,4 @@
 
-function construct_effectiveness_tooltip(d, subview_mode, view, cname) {
-    let url = `/get_${subview_mode}_tooltip_data?${view}=${cname}&group=${d.group}`
-    fetch(url)
-        .then(function(response) { return response.json() })
-        .then( function(vids) {
-            div = document.getElementById("tooltip_vids")
-            vids.forEach((vid)=>{
-                html = `
-                    <li class="vid_entry">
-                        <img class="thumbnail" src="https://i.ytimg.com/vi/${vid.id}/hqdefault.jpg">
-                        <span class="ml-1">${vid.title}</span>
-                    </li>
-                `
-                div.innerHTML += html
-            })
-    })
-    let html = `
-        <table>
-            <tr>
-                <td>count: </td>
-                <td class="h5 mb-0 font-weight-bold text-gray-800 cat_info">
-                    ${formatter(d.count)}
-                </td>
-            </tr>
-            <tr>
-                <td>avg views: </td>
-                <td class="h5 mb-0 font-weight-bold text-gray-800 cat_info">
-                    ${formatter(d.avg_views)}
-                </td>
-            </tr>
-            <tr>
-                <td>effectiveness: </td>
-                <td class="h5 mb-0 font-weight-bold text-gray-800 cat_info">
-                    ${d.value.toFixed(3)}
-                </td>
-            </tr>
-        </table>
-        <ul id="tooltip_vids" class="tooltip_vids"></ul>
-    `
-    return html
-}
-
 function create_effectiveness_plot(min_count) {
     // Colors to differentiate riders with and without doping allegations
     var colors = ["#27ae60"]
@@ -57,6 +15,12 @@ function create_effectiveness_plot(min_count) {
     var splitURL = url.toString().split("/")
     var view = splitURL.at(-2)
     var cname = splitURL.at(-1)
+
+    if (!min_count) {
+        min_count = 1000
+        if (subview_mode == "thumbnail") { min_count /= 10 }
+        if (view == "channel") { min_count = 2 }
+    }
 
     fetch_url = `/get_${subview_mode}_effectiveness_data?${view}=${cname}&min_count=${min_count}`
     fetch(fetch_url)
@@ -181,6 +145,6 @@ let checkExistEffectiveness = setInterval(function() {
     if (document.querySelector("#effectivenessPlot .simplebar-content")) {
         // console.log("Simplebar for effectiveness loaded!");
         clearInterval(checkExistEffectiveness);
-    create_effectiveness_plot(100)
+        create_effectiveness_plot(null)
     }
 }, 10); // check every 10ms
