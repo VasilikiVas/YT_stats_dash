@@ -1,4 +1,12 @@
-function construct_tooltip_video(info) {
+function construct_tooltip_video(info, incl_dev=false) {
+    if (incl_dev) {
+        deviation = `
+           <tr>
+              <td>deviation: </td>
+              <td class="h5 mb-0 font-weight-bold text-gray-800">${info["deviation"].toFixed(3)}</td>
+           </tr>
+        `
+    } else {deviation = '' }
    return `
    <div id="video_tooltip">
 
@@ -7,6 +15,7 @@ function construct_tooltip_video(info) {
          <span class="ml-1 video_title">${info["title"]}</span>
       </div>
       <table>
+            ${deviation}
             <tr>
                <td>views: </td>
                <td class="h5 mb-0 font-weight-bold text-gray-800">${formatter(info["views"])}</td>
