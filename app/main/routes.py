@@ -96,7 +96,7 @@ def category(cat):
     return render_template("category.html",
         view="category",
         categories=Topic._member_names_,
-        channels=list(channels_dict.values()), 	    # list of dicts: all channels in the category, sorted by Subs
+        channels=[c for c in channels_dict.values() if c["name_id"] in videos_dict], 	    # list of dicts: all channels in the category, sorted by Subs
         category=category, 			# dict: info about the category
         info_display={
             "Subs/Channel: ": category["avg_subs"],
@@ -136,7 +136,7 @@ def channel(chan):
         categories=Topic._member_names_,
         category={"name": cat},
         channel=channel_info,
-        channels=list(channels_dict.values()), 			# list of dicts: all channels in the category, sorted by Subs
+        channels=[c for c in channels_dict.values() if c["name_id"] in videos_dict], 			# list of dicts: all channels in the category, sorted by Subs
         info_display={
             "Subscribers: ": channel_info["Subscribers"],
             "Views/Video: ": channel_info["avg_views"],
