@@ -30,8 +30,10 @@ function create_std_plot(subview){
             var mean = dataset.mean
             var data = dataset.datapoints
 
+            let plot_div = document.querySelector(std_plot_id)
+            let outerWidth = plot_div.offsetWidth
+
             var margin = { top: 10, right: 20, bottom: 50, left: 120 },
-               outerWidth = 800,
                outerHeight = 300,
                width = outerWidth - margin.left - margin.right,
                height = outerHeight - margin.top - margin.bottom;
