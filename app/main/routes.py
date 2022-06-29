@@ -56,7 +56,7 @@ for cat in Topic._member_names_:
 
 @main.route('/', methods=['GET'])
 def base():
-    return redirect('/category/gaming?subview_mode=thumbnail')
+    return redirect('/category/gaming?subview_mode=title')
 
 
 @main.route('/category/<cat>', methods=['GET'])
@@ -66,7 +66,7 @@ def category(cat):
     if not cat:
         cat = "gaming"
     if not subview_mode:
-        subview_mode = "thumbnail"
+        subview_mode = "title"
 
     channels_dict = CHANNELS_INFO_BY_CAT[cat]
 
@@ -114,7 +114,7 @@ def channel(chan):
     subview_mode = request.args.get("subview_mode")
 
     if not subview_mode:
-        subview_mode = "thumbnail"
+        subview_mode = "title"
 
     channels_dict = CHANNELS_INFO_BY_CAT[cat]
 
