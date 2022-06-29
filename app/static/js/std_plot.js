@@ -111,7 +111,7 @@ function create_std_plot(subview){
                   if (view == "category") {
                      return "Standard Deviation"
                   } else if (view == "channel"){
-                     return "Deviation"
+                     return "Deviation from Channel Mean"
                   }})
 
             svg.append("g")
@@ -128,8 +128,13 @@ function create_std_plot(subview){
             svg.append("text")
                .attr("class", "meanLabel")
                .attr("y", y(yMax+0.5))
-               .text("mean")
-               .attr("transform", "translate("+ (parseFloat(x(mean))-20).toString() +",0)")
+               .text(function(d) {
+                  if (view == "category") {
+                     return "mean"
+                  } else if (view == "channel"){
+                     return "std"
+                  }})
+               .attr("transform", "translate("+ (parseFloat(x(mean))-10).toString() +",0)")
 
             var objects = svg.append("svg")
                .classed("objects", true)
@@ -196,7 +201,7 @@ function create_std_plot(subview){
              function zoom() {
                svg.select(".x.axis").call(xAxis);
                svg.select(".y.axis").call(yAxis);
-               svg.select(".meanLabel").attr("transform", "translate("+ (parseFloat(x(mean))-20).toString() +",0)") 
+               svg.select(".meanLabel").attr("transform", "translate("+ (parseFloat(x(mean))-10).toString() +",0)") 
 
                objects.select(".vMedianLine").attr("transform", "translate("+x(mean)+",0)");
            

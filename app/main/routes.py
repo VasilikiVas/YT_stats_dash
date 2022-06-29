@@ -45,7 +45,7 @@ VID_DICT = {}
 CHANNELS_INFO_BY_CAT = defaultdict(dict)
 for cat in Topic._member_names_:
     with open(os.path.join(DATA_DIR, "info_videos", f"videos-info_{cat}.json"), "r") as f:
-        VID_DICT.update({vid["id"]:{"channel":chan, **vid} for chan,vids in json.load(f).items() for vid in vids})
+        VID_DICT.update({vid["id"]:{"channel": chan, "channel_name": format_channel_name(chan), **vid} for chan,vids in json.load(f).items() for vid in vids})
     with open(os.path.join(DATA_DIR, "info_channels", f"channels-info_{cat}.json"), "r") as f:
         CHANNELS_INFO_BY_CAT[cat] = {k:{
             "name_id": k,
@@ -428,21 +428,25 @@ def get_word_cloud_data():
 
     word_cloud_dict = {}
 
-    count_array = np.array(list(counts.values()))
-    tfidf_array = np.array(list(token_tf_idf.values()))
-    avg_count = count_array.mean()
-    median_tfidf = tfidf_array.mean()
-    word_cloud_dict["count_range"] = [float(count_array.min()), float(count_array.max())]
-    word_cloud_dict["tfidf_range"] = [float(tfidf_array.min()), float(tfidf_array.max())]
 
     multiplier = 1
     if channel:
-        multiplier = 50
+        # multiplier = 50
+        multiplier = 1
 
     word2size = {}; word2color = {}
-    for key in [token for token,_ in sorted(token_tf_idf.items(), key=lambda x:x[1], reverse=True) if len(token) > 1][:100]:
-        word2size[key] = token_tf_idf[key] /median_tfidf/3 * multiplier
-        word2color[key] = counts[key] /avg_count/7 * multiplier
+    use_tokens = [token for token,_ in sorted(token_tf_idf.items(), key=lambda x:x[1], reverse=True) if len(token) > 1][:100]
+
+    count_array = np.array([counts[t] for t in use_tokens])
+    tfidf_array = np.array([token_tf_idf[t] for t in use_tokens])
+    max_count = float(count_array.max())
+    max_tfidf = float(tfidf_array.max())
+    word_cloud_dict["count_range"] = [float(count_array.min()), max_count]
+    word_cloud_dict["tfidf_range"] = [float(tfidf_array.min()), max_tfidf]
+
+    for key in use_tokens:
+        word2size[key] = token_tf_idf[key] /max_tfidf*150 * multiplier
+        word2color[key] = counts[key] /max_count*100 * multiplier
     word_cloud_dict["size"] = word2size
     word_cloud_dict["color"] = word2color
 

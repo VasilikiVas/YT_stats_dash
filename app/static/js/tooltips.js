@@ -71,7 +71,7 @@ function construct_effectiveness_tooltip(d, subview_mode, view, cname) {
                            <table>
                                <tr><td class="video_title">${vid.title}</td></tr>
                                <tr><td class="video_info_small">views: ${formatter(vid.views)}</td></tr>
-                               <tr><td class="video_info_small">channel: ${vid.channel}</td></tr>
+                               <tr><td class="video_info_small">channel: ${vid.channel_name}</td></tr>
                            </table>
                        </span>
                    </li>
