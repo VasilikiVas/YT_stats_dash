@@ -58,6 +58,12 @@ function create_effectiveness_plot(min_count) {
     var view = splitURL.at(-2)
     var cname = splitURL.at(-1)
 
+    if (!min_count) {
+        min_count = 1000
+        if (subview_mode == "thumbnail") { min_count /= 10 }
+        if (view == "channel") { min_count = 2 }
+    }
+
     fetch_url = `/get_${subview_mode}_effectiveness_data?${view}=${cname}&min_count=${min_count}`
     fetch(fetch_url)
         .then(function(response) { return response.json(); })
@@ -181,6 +187,6 @@ let checkExistEffectiveness = setInterval(function() {
     if (document.querySelector("#effectivenessPlot .simplebar-content")) {
         // console.log("Simplebar for effectiveness loaded!");
         clearInterval(checkExistEffectiveness);
-    create_effectiveness_plot(100)
+        create_effectiveness_plot(null)
     }
 }, 10); // check every 10ms

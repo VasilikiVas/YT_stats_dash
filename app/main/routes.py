@@ -182,6 +182,7 @@ def calc_effectiveness(views, counts, min_count):
             "count": counts[t],
             "avg_views": int(e),
         } for t,e in sorted(eff.items(), key=lambda x:x[1],reverse=True)]
+
     return eff
 
 
