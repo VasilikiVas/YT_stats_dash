@@ -85,6 +85,8 @@ function updateDomColoursChart(data, pieChart) {
   }, 10); // check every 10ms
 }
 
-updateDomColoursPlot()
+if (subview_mode == "thumbnail") {
+  updateDomColoursPlot()
+}
 
 
