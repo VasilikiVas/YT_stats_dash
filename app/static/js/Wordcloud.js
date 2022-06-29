@@ -1,6 +1,5 @@
 
 
-if (subview_mode == "title") 
 
 
 function create_wordcloud() {
@@ -14,22 +13,24 @@ var cname = splitURL.at(-1)
 
 fetch_url = `/get_word_cloud_data?${view}=${cname}`
 
+var div = document.getElementById("myWordCloud")
+
 fetch(fetch_url)
     .then(function(response) { return response.json(); })
     .then( function(data) {
 
-
     // Encapsulate the word cloud functionality
     function wordCloud(selector) {
+
 
         //Construct the word cloud's SVG element
         var svg = d3.select(selector).append("svg")
             // .attr("width", 800)
             // .attr("height", 300)
-            .attr("viewBox", [0,0, 800, 300])
+            .attr("viewBox", [0,0, div.offsetWidth, 300])
             .append("g")
             .attr("class", "wordcloud")
-            .attr("transform", "translate(440,160)");
+            .attr("transform", "translate(460,160)");
 
         var word2color = data['color']
         var word2size = data['size']
@@ -102,25 +103,26 @@ fetch(fetch_url)
                     .attr("x",x1 + 10)
                     .attr("y",textY)
                     .attr("dy",-150)
-                    .text("max");
+                    .text(data.count_range[1]);
                 
             svg.append("text")
                 .attr("class","legendText")
                 .attr("text-anchor", "middle")
-                .attr("x",x1 + 100)
+                // .attr("x",x1 + 100)
+                .attr("x",x1)
                 .attr("y",textY)
                 .attr("dy", 0)
-                .attr('transform', 'rotate(270,250,250)')
-                .text("specificity");
+                .attr('transform', 'translate( -450 , -440) rotate(270)')
+                .text("word occurrences");
                 
             svg.append("text")
                 .attr("class","legendText")
                 .attr("text-anchor", "left")
                 // .attr("x",x1 + barWidth + 15)
-                .attr("x",x1 -2)
+                .attr("x",x1 +5)
                 .attr("y",textY)
                 .attr("dy",130)
-                .text("min");
+                .text(data.count_range[0]);
                 
                 
             var opacityStart = 100.0
@@ -166,7 +168,7 @@ fetch(fetch_url)
         update: function(words) {
             d3.layout
                 .cloud()
-                .size([1000, 300])
+                .size([div.offsetWidth*.9, 300])
                 .words(words)
                 // .padding(1)
                 .rotate(function() { return ~~(Math.random() * 2) * 90; })

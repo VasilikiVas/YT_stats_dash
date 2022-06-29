@@ -82,6 +82,12 @@ function construct_effectiveness_tooltip(d, subview_mode, view, cname) {
    let html = `
        <table>
            <tr>
+               <td>effectiveness: </td>
+               <td class="h5 mb-0 font-weight-bold text-gray-800 cat_info">
+                   ${d.value.toFixed(3)}
+               </td>
+           </tr>
+           <tr>
                <td>count: </td>
                <td class="h5 mb-0 font-weight-bold text-gray-800 cat_info">
                    ${formatter(d.count)}
@@ -91,12 +97,6 @@ function construct_effectiveness_tooltip(d, subview_mode, view, cname) {
                <td>avg views: </td>
                <td class="h5 mb-0 font-weight-bold text-gray-800 cat_info">
                    ${formatter(d.avg_views)}
-               </td>
-           </tr>
-           <tr>
-               <td>effectiveness: </td>
-               <td class="h5 mb-0 font-weight-bold text-gray-800 cat_info">
-                   ${d.value.toFixed(3)}
                </td>
            </tr>
        </table>

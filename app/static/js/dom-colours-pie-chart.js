@@ -78,13 +78,15 @@ function updateDomColoursChart(data, pieChart) {
   }
 
   let checkExist = setInterval(function() {
-    if (document.querySelector("#mostReprThumbnail").offsetHeight) {
+    if (document.querySelector("#avgThumbnail").offsetHeight) {
         clearInterval(checkExist);
-        document.getElementById("myPieChart").style.height = `${document.getElementById("mostReprThumbnail").offsetHeight}px`
+        document.getElementById("myPieChart").style.height = `${document.getElementById("avgThumbnail").offsetHeight}px`
     }
   }, 10); // check every 10ms
 }
 
-updateDomColoursPlot()
+if (subview_mode == "thumbnail") {
+  updateDomColoursPlot()
+}
 
 

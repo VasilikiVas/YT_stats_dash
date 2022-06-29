@@ -426,20 +426,23 @@ def get_word_cloud_data():
 
     counts = token_count["token_counts"]
 
-    avg_count = np.mean(list(counts.values()))
-    median_tfidf = np.mean(list(token_tf_idf.values()))
+    word_cloud_dict = {}
+
+    count_array = np.array(list(counts.values()))
+    tfidf_array = np.array(list(token_tf_idf.values()))
+    avg_count = count_array.mean()
+    median_tfidf = tfidf_array.mean()
+    word_cloud_dict["count_range"] = [float(count_array.min()), float(count_array.max())]
+    word_cloud_dict["tfidf_range"] = [float(tfidf_array.min()), float(tfidf_array.max())]
 
     multiplier = 1
     if channel:
-        multiplier = 100
+        multiplier = 50
 
-    print("INFO", avg_count, median_tfidf, file=sys.stderr)
-
-    word_cloud_dict = {}
     word2size = {}; word2color = {}
     for key in [token for token,_ in sorted(token_tf_idf.items(), key=lambda x:x[1], reverse=True) if len(token) > 1][:100]:
         word2size[key] = token_tf_idf[key] /median_tfidf/3 * multiplier
-        word2color[key] = counts[key] /avg_count/10 * multiplier
+        word2color[key] = counts[key] /avg_count/7 * multiplier
     word_cloud_dict["size"] = word2size
     word_cloud_dict["color"] = word2color
 
