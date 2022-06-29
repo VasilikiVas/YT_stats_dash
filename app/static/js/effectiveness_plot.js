@@ -42,7 +42,7 @@ function create_effectiveness_plot(min_count) {
         // append the svg object to the body of the page
         const svg_axis = d3.select("#effectivenessPlotAxis")
             .append("svg")
-                .attr("viewBox", [0, 0,  width + margin.left + margin.right, margin.top])
+                .attr("viewBox", [0, 0,  width + margin.left + margin.right, 1.1*margin.top])
             .append("g")
                 .attr("transform", `translate(${margin.left}, ${margin.top})`);
         const svg = d3.select("#effectivenessPlot .simplebar-content")
@@ -53,33 +53,34 @@ function create_effectiveness_plot(min_count) {
             .attr("transform", `translate(${margin.left}, ${0})`);
 
         // Add X axis
-        // const x = d3.scaleLinear()
         const x = d3.scale.linear()
             .domain(d3.extent(data, d => d.value))
             .range([ 0, width])
-        let xAxisGenerator = d3.svg.axis()
-            .scale(x.copy())
-            .orient("top")
-            // .ticks(5)
-        let xAxis = svg_axis.append("g")
-            .attr("transform", `translate(0, ${0})`)
-            // .call(d3.axisTop(x).ticks(5)).select(".domain").remove()
-            .call(xAxisGenerator)
+
+        var line = svg_axis.append("line")
+            .attr("x1", width + margin.left)
+            .attr("y1", margin.top - 1.16*margin.bottom)  
+            .attr("x2", margin.left+margin.right)
+            .attr("y2", margin.top - 1.16*margin.bottom)  
+            .attr("stroke","black")  
+            .attr("stroke-width",1)  
+            .attr("marker-end","url(#arrow)");
+        
+        var efect_text = svg_axis.append("text")
+            .attr("x", (margin.left + width/3))
+            .attr("y",  margin.top - 1.24*margin.bottom)
+            .attr("class", "label")
+            .text("less effective")
 
         // Y axis
-        // const y = d3.scaleBand()
         const y = d3.scale.ordinal()
-            // .range([ 0, height ])
             .rangeBands([ 0, height ])
             .domain(data.map(function(d) { return d.group; }))
-            // .padding(1)
 
-        // const yScale = d3.scale.linear()
         const yScale = d3.scale.linear()
             .domain([0,1])
             .range([0, height])
     
-
         svg.append("line")
             .style("stroke-dasharray", ("4, 4"))
             .attr("x1",x(1))
@@ -87,7 +88,6 @@ function create_effectiveness_plot(min_count) {
             .attr("x2",x(1))
             .attr("y2",yScale(0))
             .style("stroke", "black")
-
 
         // let yAxisGenerator = d3.axisRight(y)
         let yAxisGenerator = d3.svg.axis()
@@ -103,11 +103,6 @@ function create_effectiveness_plot(min_count) {
             .attr("font-size","20")
             .attr("color","black")
 
-        xAxis.select(".domain").remove()
-        xAxis.selectAll(".tick text")
-            .attr("font-size","10")
-            .attr("color","black")  
-
         // Circles of variable
         svg.selectAll("mycircle")
             .data(data)
@@ -117,7 +112,7 @@ function create_effectiveness_plot(min_count) {
                 .attr("cy", function(d) { return y(d.group)+15; })
                 .attr("r", "6")
                 .style("fill", "#69b3a2")
-                .style("opacity", ".5")
+                .style("opacity", ".7")
                 .on("mouseover", function(d){
                     // info = d.toElement.__data__
                     info = d
