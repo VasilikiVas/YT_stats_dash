@@ -27,7 +27,6 @@ function create_effectiveness_plot(min_count) {
         .then(function(response) { return response.json(); })
         .then( function(data) {
 
-        // console.log(data)
         document.querySelector("svg").innerHTML += `
         <defs>
             <marker
@@ -74,6 +73,7 @@ function create_effectiveness_plot(min_count) {
             .domain(d3.extent(data, d => d.value))
             .range([ 0, width])
 
+        // X axis arrow
         var line = svg_axis.append("line")
             .attr("x1", width + margin.left)
             .attr("y1", margin.top - 1.16*margin.bottom)  
@@ -94,17 +94,18 @@ function create_effectiveness_plot(min_count) {
             .rangeBands([ 0, height ])
             .domain(data.map(function(d) { return d.group; }))
 
-        const yScale = d3.scale.linear()
-            .domain([0,1])
-            .range([0, height])
+        // // yScale for vertical line
+        // const yScale = d3.scale.linear()
+        //     .domain([0,1])
+        //     .range([0, height])
     
-        svg.append("line")
-            .style("stroke-dasharray", ("4, 4"))
-            .attr("x1",x(1))
-            .attr("y1",yScale(1))
-            .attr("x2",x(1))
-            .attr("y2",yScale(0))
-            .style("stroke", "black")
+        // svg.append("line")
+        //     .style("stroke-dasharray", ("4, 4"))
+        //     .attr("x1",x(1))
+        //     .attr("y1",yScale(1))
+        //     .attr("x2",x(1))
+        //     .attr("y2",yScale(0))
+        //     .style("stroke", "black")
 
         // let yAxisGenerator = d3.axisRight(y)
         let yAxisGenerator = d3.svg.axis()
