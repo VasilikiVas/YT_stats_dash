@@ -97,6 +97,7 @@ function create_std_plot(subview){
                .attr("height", height)
             
             svg.append("g")
+               .style("font-size","15px")
                .classed("x axis", true)
                .attr("transform", "translate(0," + height + ")")
                .call(xAxis)
@@ -112,6 +113,7 @@ function create_std_plot(subview){
                   }})
 
             svg.append("g")
+               .style("font-size","15px")
                .classed("y axis", true)
                .call(yAxis)
              .append("text")
