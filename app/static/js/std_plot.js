@@ -175,6 +175,10 @@ function create_std_plot(subview){
                .attr("r", function (d) { return 6})
                .attr("transform", transform)
                .style("fill", color)
+               .on("click", function(d) {
+                  let url = `/channel/${d.target.__data__.name_id}`
+                  window.location.href = url
+               })
                // .on("mouseover", tip.show)
                // .on("mouseout", tip.hide);
 

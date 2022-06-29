@@ -48,6 +48,9 @@ body {
     margin: 0 !important;
 }
 
+#top_content_row {
+    flex-wrap: nowrap;
+}
 .videos_list {
     display: flex;
     width: 100%;

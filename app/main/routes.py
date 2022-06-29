@@ -123,7 +123,7 @@ def channel(chan):
     with open(videos_info_path, "r") as f:
         videos_dict = json.load(f)
 
-    videos = videos_dict[chan]
+    videos = videos_dict[chan] if chan in videos_dict else []
     videos.sort(key=lambda x: x["views"], reverse=True)
 
     channel_info = channels_dict[chan]
@@ -143,7 +143,7 @@ def channel(chan):
             "Num Videos: ": channel_info["Video count"],
         },
         subview_mode=subview_mode,	# "thumbnail" or "title"
-        videos=videos[:20],			# list of dicts: all videos (or maybe top-n if computation requires it) in the category, sorted by views
+        videos=videos,			# list of dicts: all videos (or maybe top-n if computation requires it) in the category, sorted by views
     )
 
 
@@ -355,12 +355,18 @@ def get_title_std_plot_data():
 
     if category:
         std_data_path = os.path.join(DATA_DIR, "title-latents", "categories_plot_data", f"{category}.json")
-    #TODO same json for channels
+        with open(std_data_path, "r") as f:
+            std_data = json.load(f)
     elif channel:
-        std_data_path = os.path.join(DATA_DIR, "title-latents", "channels_plot_data", f"{channel}.json")
-
-    with open(std_data_path, "r") as f:
-        std_data = json.load(f)
+        std_data_path = os.path.join(DATA_DIR, "title-latents", "video_deviation", f"{channel}.json")
+        with open(std_data_path, "r") as f:
+            std_data = json.load(f)
+        std_data["datapoints"] = [{
+            "title": VID_DICT[d["id"]]["title"],
+            "views": VID_DICT[d["id"]]["views"],
+            "thumbnail": f"https://i.ytimg.com/vi/{d['id']}/default.jpg",
+            **d
+        } for d in std_data["datapoints"]]
 
     if math.isnan(std_data["mean"]):
         std_data["datapoints"] = [d for d in std_data["datapoints"] if not math.isnan(d["x"])]
@@ -378,12 +384,19 @@ def get_thumbnail_std_plot_data():
 
     if category:
         std_data_path = os.path.join(DATA_DIR, "thumbnail-latents", "categories_plot_data", f"{category}.json")
-    #TODO same json for channels
+        with open(std_data_path, "r") as f:
+            std_data = json.load(f)
     elif channel:
-        std_data_path = os.path.join(DATA_DIR, "title-latents", "channels", f"{channel}.json")
-
-    with open(std_data_path, "r") as f:
-        std_data = json.load(f)
+        std_data_path = os.path.join(DATA_DIR, "thumbnail-latents", "video_deviation", f"{channel}.json")
+        with open(std_data_path, "r") as f:
+            std_data = json.load(f)
+        std_data["datapoints"] = [{
+            "title": VID_DICT[d["id"]]["title"],
+            "views": VID_DICT[d["id"]]["views"],
+            "thumbnail": f"https://i.ytimg.com/vi/{d['id']}/default.jpg",
+            **d
+        } for d in std_data["datapoints"]]
+        
 
     if math.isnan(std_data["mean"]):
         std_data["datapoints"] = [d for d in std_data["datapoints"] if not math.isnan(d["x"])]

@@ -2,6 +2,7 @@ import os, json
 from util.constants import Topic
 import numpy as np
 import re
+import math
 
 def get_name_using_regex(name):
     return re.sub(r"-?([A-z0-9]){8}-([A-z0-9]){4}-([A-z0-9]){4}-([A-z0-9]){4}-([A-z0-9]){12}", "", name)
@@ -34,12 +35,17 @@ for category in Topic._member_names_:
         datapoint["x"] = np.round(channel_std, 3)
         datapoint["y"] = channel_avg_view
         datapoint["name"] = get_name_using_regex(name)
-        datapoint["channel_id"] = name
+        datapoint["name_id"] = name
         datapoint["subs"] = channels_dict[name]["Subscribers"]
         datapoint["logo_url"] = channels_dict[name]["logo_url"]
         datapoints.append(datapoint)
 
     final_std_data = {"mean" : std_data_mean, "datapoints": datapoints}
+
+    if math.isnan(final_std_data["mean"]):
+        final_std_data["datapoints"] = [d for d in final_std_data["datapoints"] if not math.isnan(d["x"])]
+        final_std_data["mean"] = np.array([d["x"] for d in final_std_data["datapoints"] if not math.isnan(d["x"])]).mean()
+
 
     category_std_plot_data = os.path.join(DATA_DIR, "thumbnail-latents", "categories_plot_data", category + ".json")
     with open(category_std_plot_data, "w") as f:
