@@ -1,27 +1,27 @@
-rect {
+.std_plot rect {
   fill: transparent;
   shape-rendering: crispEdges;
 }
 
-.axis path,
-.axis line {
+.std_plot .axis path,
+.std_plot .axis line {
   fill: none;
   stroke: rgba(0, 0, 0, 0.1);
   shape-rendering: crispEdges;
 }
 
-.axisLine {
+.std_plot .axisLine {
   fill: none;
   shape-rendering: crispEdges;
   stroke: rgba(0, 0, 0, 0.5);
   stroke-width: 2px;
 }
 
-.dot {
+.std_plot .dot {
   fill-opacity: .5;
 }
 
-.d3-tip {
+.std_plot .d3-tip {
   line-height: 1;
   font-weight: bold;
   padding: 12px;
@@ -31,7 +31,7 @@ rect {
 }
 
 /* Creates a small triangle extender for the tooltip */
-.d3-tip:after {
+.std_plot .d3-tip:after {
   box-sizing: border-box;
   display: inline;
   font-size: 10px;
@@ -44,7 +44,7 @@ rect {
 }
 
 /* Style northward tooltips differently */
-.d3-tip.n:after {
+.std_plot .d3-tip.n:after {
   margin: -1px 0 0 0;
   top: 100%;
   left: 0;

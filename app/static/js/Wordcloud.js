@@ -1,50 +1,39 @@
-// Tokens should be given in such a format, where values are the counts of tokens (or tfidf values
-// var word2count = { 'Hello': 100, 'there': 100, 'Good': 30, 'morning':40, 'to':50, 'you':60,
-// 'my': 10, 'what': 100, 'weather': 30, 'mood':40, 'four':50, 'eight':60,
-// 'name': 10, 'about': 100, 'cloud': 30, 'one':40, 'fine':50, 'nine':60,
-// 'is': 10, 'yours': 98, 'sun': 30, 'two':40, 'six':50, 'ten':60,
-// '100': 10, '20': 10, '5': 30, '8':40, 'fec':50, 'tgvrwveween':60,
-// '1': 10, '3': 10, '6': 30, '9':40, 'vevd':50, 'tewfceqen':60,
-// '2': 10, '4': 10, '7': 30, '64':40, 'sdewdeqix':50, 'ewdcw':60,
-// 'danai': 100, 'the': 10, 'sea': 30, 'cecs':40, 'sevrefvween':50, 'fewfeqw':60};
 
-// var word2tfidf = { 'Hello': 1, 'there': 100, 'Good': 30, 'morning':40, 'to':50, 'you':60,
-// 'my': 10, 'what': 100, 'weather': 30, 'mood':40, 'four':50, 'eight':60,
-// 'name': 10, 'about': 100, 'cloud': 30, 'one':40, 'fine':50, 'nine':60,
-// 'is': 10, 'yours': 98, 'sun': 30, 'two':40, 'six':50, 'ten':60,
-// '100': 10, '20': 10, '5': 30, '8':40, 'fec':50, 'tgvrwveween':60,
-// '1': 10, '3': 10, '6': 30, '9':40, 'vevd':50, 'tewfceqen':60,
-// '2': 10, '4': 10, '7': 30, '64':40, 'sdewdeqix':50, 'ewdcw':60,
-// 'danai': 100, 'the': 10, 'sea': 30, 'cecs':40, 'sevrefvween':50, 'fewfeqw':60};
 
+
+
+function create_wordcloud() {
+    
+}
 // http://127.0.0.1:5000/get_word_cloud_data?category=gaming
 var url = window.location.pathname
 var splitURL = url.toString().split("/")
 var view = splitURL.at(-2)
 var cname = splitURL.at(-1)
 
-// fetch_url = `/get_${subview_mode}_effectiveness_data?${view}=${cname}`
 fetch_url = `/get_word_cloud_data?${view}=${cname}`
+
+var div = document.getElementById("myWordCloud")
 
 fetch(fetch_url)
     .then(function(response) { return response.json(); })
     .then( function(data) {
 
-
     // Encapsulate the word cloud functionality
     function wordCloud(selector) {
+
 
         //Construct the word cloud's SVG element
         var svg = d3.select(selector).append("svg")
             // .attr("width", 800)
             // .attr("height", 300)
-            .attr("viewBox", [0,0, 800, 300])
+            .attr("viewBox", [0,0, div.offsetWidth, 300])
             .append("g")
             .attr("class", "wordcloud")
             .attr("transform", "translate(440,160)");
 
-        var word2tfidf = data['tfidf']
-        var word2count = data['counts']
+        var word2color = data['color']
+        var word2size = data['size']
 
         //Draw the word cloud
         function draw(words) {
@@ -54,7 +43,7 @@ fetch(fetch_url)
                             })
 
             var color = d3.scale.linear()
-                .domain([1, 50, 100])
+                .domain([0,50,100])
                 .range(["dodgerblue", "limegreen", "yellow"]);
 
 
@@ -63,7 +52,7 @@ fetch(fetch_url)
                 .append("text")
                 .style("font-family", "Impact")
                 .style("fill", function(d, i) {
-                    return color(word2tfidf[d['text']]/300);
+                    return color(word2color[d['text']]);
                 })
                 .attr("text-anchor", "middle")
                 .attr('font-size', 1)
@@ -114,7 +103,7 @@ fetch(fetch_url)
                     .attr("x",x1 + 10)
                     .attr("y",textY)
                     .attr("dy",-150)
-                    .text("max");
+                    .text(data.count_range[1]);
                 
             svg.append("text")
                 .attr("class","legendText")
@@ -132,7 +121,7 @@ fetch(fetch_url)
                 .attr("x",x1 -2)
                 .attr("y",textY)
                 .attr("dy",130)
-                .text("min");
+                .text(data.count_range[0]);
                 
                 
             var opacityStart = 100.0
@@ -178,13 +167,13 @@ fetch(fetch_url)
         update: function(words) {
             d3.layout
                 .cloud()
-                .size([1000, 300])
+                .size([div.offsetWidth*.9, 300])
                 .words(words)
                 // .padding(1)
                 .rotate(function() { return ~~(Math.random() * 2) * 90; })
                 .font("Impact")
                 .fontSize(function(d) { 
-                    return word2count[d['text']]/100; 
+                    return word2size[d['text']]; 
                 })
                 .on("end", draw)
                 .start();
@@ -193,9 +182,9 @@ fetch(fetch_url)
 }
 
 function getWords(i) {
-    return Object.keys(data['counts'])
+    return Object.keys(data['size'])
             .map(function(key) {
-                return {text: key, size: data['counts'][key] *60 }; //TODO: we have to adjust the ratio
+                return {text: key, size: data['size'][key] *60 }; //TODO: we have to adjust the ratio
             })
 }
 
@@ -203,7 +192,7 @@ function getWords(i) {
 function showNewWords(vis, i) {
     i = i || 0;
 
-    vis.update(getWords(i ++ % Object.keys(data['counts']).length))
+    vis.update(getWords(i ++ % Object.keys(data['size']).length))
     // vis.update(getWords(Object.keys(word2count).length))
 }
 
@@ -212,3 +201,5 @@ var myWordCloud = wordCloud('#myWordCloud');
 
 showNewWords(myWordCloud);
 })
+
+// document.getElementById("wordcloud_btn").on("click", showNewWords(myWordCloud))
