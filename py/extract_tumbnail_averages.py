@@ -62,6 +62,49 @@ def generate_thumbnail_averages(category: Topic):
     print("Finished saving thumbnail averages per channel and for category\n")
 
 
+def generate_thumbnail_averages_by_category(category: Topic):
+    """
+    Function to generate a thumbnail average for the given category.
+
+    args:
+        - category: the given category
+    """
+
+    if os.path.isfile(os.path.join(CATEGORY_PATH, category + '.png')):
+        return
+
+    with open(os.path.join("..", "data", "info_videos", f"videos-info_{category}.json"), "r") as f:
+        print("Loading channel's videos")
+        channel_videos_dict = json.load(f)
+    print("Finished loading channel's videos\n")
+
+    print("Calculating thumbnail average: " + category + "\n")
+    channel_averages = []
+    channels_avg_views = []
+    for channel, videos in tqdm(channel_videos_dict.items()):
+
+        try:
+            img = np.array(Image.open(os.path.join(CHANNELS_PATH, channel + '.png')))
+        except FileNotFoundError:
+            # print(f"couldn't open {channel}")
+            continue
+
+        avg_views = np.array([vid["views"] for vid in videos]).mean()
+        channels_avg_views.append(avg_views)
+        channel_averages.append(img)
+
+    if len(channel_averages) < 1:
+        print(f"no images for {category}")
+        return
+    
+    category_avg_thumbnail = np.average(np.array(channel_averages), weights = channels_avg_views, axis=0)
+
+    im = Image.fromarray(category_avg_thumbnail.astype('uint8'))
+    im.save(os.path.join(CATEGORY_PATH, category + '.png'))
+
+    print("Finished category\n")
+
+
 if __name__ == '__main__':
 
     CATEGORY_PATH = "../data/thumbnail-averages/categories"
@@ -73,5 +116,6 @@ if __name__ == '__main__':
     if not os.path.exists(CHANNELS_PATH):
         os.makedirs(CHANNELS_PATH)
 
-    for cat in Topic._member_names_[1:]:
-        generate_thumbnail_averages(cat)
+    for cat in Topic._member_names_:
+        # generate_thumbnail_averages(cat)
+        generate_thumbnail_averages_by_category(cat)
