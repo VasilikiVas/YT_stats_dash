@@ -159,6 +159,8 @@ function create_std_plot(subview){
                .style("stroke-dasharray", ("4, 4"))
                .attr("transform", "translate("+ x(mean) +",0)")
             
+            let im_w = 40
+
             if (view == "channel"){
                objects.selectAll(".dot")
                   .data(data)
@@ -166,9 +168,10 @@ function create_std_plot(subview){
                   .append("svg:image")
                      .classed("dot", true)
                      .attr("xlink:href", function(d) {
-                        console.log(d.thumbnail)
                         return d.thumbnail})
-                     .attr("height", "40")
+                     .attr("x", (-im_w/2).toString())
+                     .attr("y", (-im_w/8*3).toString())
+                     .attr("width", im_w.toString())
                      .attr("transform", transform)
                   .on("mouseover", tip.show)
                   .on("mouseout", tip.hide)
