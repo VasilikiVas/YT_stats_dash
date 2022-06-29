@@ -30,7 +30,7 @@ fetch(fetch_url)
             .attr("viewBox", [0,0, div.offsetWidth, 300])
             .append("g")
             .attr("class", "wordcloud")
-            .attr("transform", "translate(440,160)");
+            .attr("transform", "translate(460,160)");
 
         var word2color = data['color']
         var word2size = data['size']
@@ -108,17 +108,18 @@ fetch(fetch_url)
             svg.append("text")
                 .attr("class","legendText")
                 .attr("text-anchor", "middle")
-                .attr("x",x1 + 100)
+                // .attr("x",x1 + 100)
+                .attr("x",x1)
                 .attr("y",textY)
                 .attr("dy", 0)
-                .attr('transform', 'rotate(270,250,250)')
-                .text("specificity");
+                .attr('transform', 'translate( -450 , -440) rotate(270)')
+                .text("word occurrences");
                 
             svg.append("text")
                 .attr("class","legendText")
                 .attr("text-anchor", "left")
                 // .attr("x",x1 + barWidth + 15)
-                .attr("x",x1 -2)
+                .attr("x",x1 +5)
                 .attr("y",textY)
                 .attr("dy",130)
                 .text(data.count_range[0]);
