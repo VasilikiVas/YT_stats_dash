@@ -7,8 +7,14 @@ function search_channels(){
 
     for (let i=0; i<channels.length; i++){
         var channel = channels[i];
-        if (channel.name.substring(0, input_str.length) == input_str){
-            selected_channels.push(channel);
+        // if (channel.name.substring(0, input_str.length) == input_str){
+        //     selected_channels.push(channel);
+        // }
+        for (part of channel.name.split('-')) {
+            if (part.substring(0, input_str.length) == input_str){
+                selected_channels.push(channel);
+                break
+            }
         }
     };
     // Display the first selected N channels 
