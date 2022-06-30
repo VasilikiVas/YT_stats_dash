@@ -82,10 +82,12 @@
             <!-- TODO CSS and proper formatting -->
             <li id="filters-div">
                 <select class="custom-select" id="categories" onchange="window.location.href=this.options[this.selectedIndex].value">
-                <option selected>{{ category.name }}</option>
+                <option selected style="font-weight: bold; display: none;">{{ category.name }}</option>
                 {% for cat in categories %}
                     {% if cat != category.name %}
-                        <option value="/category/{{ cat }}?subview_mode={{ subview_mode }}">{{ cat }}</option>  
+                        <option value="/category/{{ cat }}?subview_mode={{ subview_mode }}">{{ cat }}</option>
+                    {% else %}
+                        <option value="/category/{{ cat }}?subview_mode={{ subview_mode }}" style="font-weight: bolder;">{{ cat }}</option>
                     {% endif %}
                 {% endfor %}
                 </select>
