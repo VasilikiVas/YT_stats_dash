@@ -51,7 +51,7 @@ function displayChannels(channels_to_display){
         var channel_link = document.createElement("a");
         // channel_link.className = "nav-link";
         channel_link.className = "channel_entry nav-link";
-        channel_link.setAttribute("href", `/channel/${channel.name_id}`);
+        channel_link.setAttribute("href", `/channel/${channel.name_id}?subview_mode=${subview_mode}`);
 
         var channel_name = document.createElement("span")
         channel_name.className = "ml-1";

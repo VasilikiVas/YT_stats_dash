@@ -52,11 +52,14 @@ function create_std_plot(subview){
             var yMin = d3.min(data, function(d) { return d["y"];})
             var yMax = d3.max(data, function(d) { return d["y"];})
 
-
-            x.domain([xMin-0.03, xMax+0.03]);
-            // y.domain([yMin, yMax]);
-            y.domain([0, yMax*1.05]);
-            // console.log(yMin);
+            xMin -= 0.03
+            xMax += 0.03
+            yMin = 0
+            yMax *= 1.05
+            x.domain([xMin, xMax]);
+            // x.domain([xMin-0.03, xMax+0.03]);
+            y.domain([yMin, yMax]);
+            // y.domain([0, yMax*1.05]);
 
             // 4. Draw and transform/translate horizontal and vertical axes
             var xAxis = d3.svg.axis()
@@ -126,18 +129,19 @@ function create_std_plot(subview){
                .attr("x", -(height)/2)
                .attr("transform", "rotate(-90)")
                .attr("class", "label")
-               .text("Views")    
+               .text("Views")
 
             svg.append("text")
                .attr("class", "meanLabel")
                .attr("y", y(yMax+0.5))
+               .attr("text-anchor", "middle")
                .text(function(d) {
                   if (view == "category") {
                      return "mean"
                   } else if (view == "channel"){
                      return "std"
                   }})
-               .attr("transform", "translate("+ (parseFloat(x(mean))-10).toString() +",0)")
+               .attr("transform", "translate("+ (parseFloat(x(mean))).toString() +",0)")
 
             var objects = svg.append("svg")
                .classed("objects", true)
@@ -194,7 +198,7 @@ function create_std_plot(subview){
                      .attr("transform", transform)
                      .style("fill", color)
                   .on("click", function(d) {
-                           let url = `/channel/${d.name_id}`
+                           let url = `/channel/${d.name_id}?subview_mode=${subview_mode}`
                            window.location.href = url
                      })
                   .on("mouseover", tip.show)
@@ -204,7 +208,7 @@ function create_std_plot(subview){
              function zoom() {
                svg.select(".x.axis").call(xAxis);
                svg.select(".y.axis").call(yAxis);
-               svg.select(".meanLabel").attr("transform", "translate("+ (parseFloat(x(mean))-10).toString() +",0)") 
+               svg.select(".meanLabel").attr("transform", "translate("+ (parseFloat(x(mean))).toString() +",0)") 
 
                objects.select(".vMedianLine").attr("transform", "translate("+x(mean)+",0)");
            

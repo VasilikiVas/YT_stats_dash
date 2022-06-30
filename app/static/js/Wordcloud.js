@@ -119,7 +119,7 @@ fetch(fetch_url)
                 .attr("class","legendText")
                 .attr("text-anchor", "left")
                 // .attr("x",x1 + barWidth + 15)
-                .attr("x",x1 +5)
+                .attr("x",x1 +10)
                 .attr("y",textY)
                 .attr("dy",130)
                 .text(data.count_range[0]);

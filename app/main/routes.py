@@ -306,15 +306,15 @@ def get_most_repr_thumbnail():
 
     if category:
         most_repr_thumbnail_path = os.path.join(DATA_DIR, "thumbnail-latents", "categories_best_repr.json")
-        view = category
+        group = category
     elif channel:
         most_repr_thumbnail_path = os.path.join(DATA_DIR, "thumbnail-latents", "channels_best_repr.json")
-        view = channel
+        group = channel
 
     with open(most_repr_thumbnail_path, "r") as f:
         most_repr_thumbnail_file = json.load(f)
     
-    most_repr_thumbnail = most_repr_thumbnail_file[view]["vid_id"]
+    most_repr_thumbnail = most_repr_thumbnail_file[group]["vid_id"]
     
     url = "https://i.ytimg.com/vi/" + most_repr_thumbnail + "/hqdefault.jpg"
     img = Image.open(requests.get(url, stream=True).raw)
@@ -334,15 +334,15 @@ def get_most_repr_title():
 
     if category:
         most_repr_title_path = os.path.join(DATA_DIR, "title-latents", "categories_best_repr.json")
-        view = category
+        group = category
     elif channel:
         most_repr_title_path = os.path.join(DATA_DIR, "title-latents", "channels_best_repr.json")
-        view = channel
+        group = channel
 
     with open(most_repr_title_path, "r") as f:
         most_repr_thumbnail_file = json.load(f)
     
-    most_repr_thumbnail = most_repr_thumbnail_file[view]
+    most_repr_thumbnail = most_repr_thumbnail_file[group]
 
     return most_repr_thumbnail
 

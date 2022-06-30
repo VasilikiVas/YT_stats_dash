@@ -81,11 +81,11 @@
 
             <!-- TODO CSS and proper formatting -->
             <li id="filters-div">
-                <select class="custom-select" id="categories" onchange="window.location.href=window.location.origin + this.options[this.selectedIndex].value"                        >
+                <select class="custom-select" id="categories" onchange="window.location.href=this.options[this.selectedIndex].value">
                 <option selected>{{ category.name }}</option>
                 {% for cat in categories %}
                     {% if cat != category.name %}
-                        <option value="/category/{{ cat }}">{{ cat }}</option>  
+                        <option value="/category/{{ cat }}?subview_mode={{ subview_mode }}">{{ cat }}</option>  
                     {% endif %}
                 {% endfor %}
                 </select>
