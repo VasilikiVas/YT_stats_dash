@@ -153,17 +153,17 @@ function create_effectiveness_plot(min_count) {
               
     })
 
-    function resizeEffPlot() {
-        // Set effectiveness plot to the same height as left
-        let eff_col = document.getElementById("eff_col")
-        let center_col = document.getElementById("center_content_col")
+    // function resizeEffPlot() {
+    //     // Set effectiveness plot to the same height as left
+    //     let eff_col = document.getElementById("eff_col")
+    //     let center_col = document.getElementById("center_content_col")
 
-        eff_col.style.height = `${center_col.offsetHeight-20}px`
-    }
+    //     eff_col.style.height = `${center_col.offsetHeight-20}px`
+    // }
 
-    resizeEffPlot()
+    // resizeEffPlot()
 
-    setTimeout(resizeEffPlot, 500)
+    // setTimeout(resizeEffPlot, 500)
 }
 
 let checkExistEffectiveness = setInterval(function() {

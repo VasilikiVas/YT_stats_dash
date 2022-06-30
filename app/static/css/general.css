@@ -6,7 +6,7 @@ body {
 }
 
 #page_logo {
-    max-width: 90%;
+    max-width: 140px;
     padding: 20px;
 }
 
@@ -30,7 +30,7 @@ body {
 
 
 .channel_list {
-    height: 52vh;
+    height: 60vh;
     overflow: auto;
     padding-left: 0;
     margin-bottom: 0;
@@ -38,7 +38,7 @@ body {
     padding-right: 10px;
 }
 .toggled .channel_list {
-    height: 45vh;
+    height: 53vh;
 }
 .channel_entry {
     padding: 5px !important;
@@ -79,9 +79,11 @@ body {
 }
 
 
-#effectivenessPlot {
-    /* height: 85vh; */
-    height: 85%;
+.thumbnail_body #effectivenessPlot {
+    height: 31vh;
+}
+.title_body #effectivenessPlot {
+    height: 61vh;
 }
 
 .d3-tip {

@@ -34,7 +34,7 @@ function create_std_plot(subview){
             let outerWidth = plot_div.offsetWidth
 
             var margin = { top: 10, right: 20, bottom: 50, left: 120 },
-               outerHeight = 300,
+               outerHeight = 370,
                width = outerWidth - margin.left - margin.right,
                height = outerHeight - margin.top - margin.bottom;
             
