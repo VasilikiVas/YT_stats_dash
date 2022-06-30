@@ -86,6 +86,9 @@ body {
     height: 61vh;
 }
 
+.dot {
+    cursor: pointer;
+}
 .d3-tip {
     top: 0;
     padding: 10px;

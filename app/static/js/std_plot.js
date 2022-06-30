@@ -185,6 +185,10 @@ function create_std_plot(subview){
                      .attr("y", (-im_w/8*3).toString())
                      .attr("width", im_w.toString())
                      .attr("transform", transform)
+                  .on("click", function(d) {
+                           let url = `https://youtu.be/watch?v=${d.id}`
+                           window.location.href = url
+                     })
                   .on("mouseover", tip.show)
                   .on("mouseout", tip.hide)
                   
