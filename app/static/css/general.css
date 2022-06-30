@@ -124,8 +124,8 @@ body {
     font-size: 14px;
 }
 .tooltip_vids {
-    height: 52vh;
-    overflow: auto;
+    /* max-height: 45vh; */
+    /* overflow: hidden; */
     padding-left: 0;
     margin-bottom: 0;
     list-style: none;

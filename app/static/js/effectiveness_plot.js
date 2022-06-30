@@ -137,7 +137,7 @@ function create_effectiveness_plot(min_count) {
                     info = d
                     tooltip.style("visibility", "visible")
                             .style("right", window.innerWidth-event.pageX+10+"px")
-                            .style("top", event.pageY+"px")
+                            .style("top", event.pageY-50+"px")
                             .attr("data-std", info["x"])
                             .html(construct_effectiveness_tooltip(
                                     info,

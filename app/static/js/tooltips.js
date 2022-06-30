@@ -63,6 +63,7 @@ function construct_effectiveness_tooltip(d, subview_mode, view, cname) {
        .then(function(response) { return response.json() })
        .then( function(vids) {
            div = document.getElementById("tooltip_vids")
+           if (div.children.length >= 5) {return}
            vids.forEach((vid)=>{
                html = `
                    <li class="vid_entry">
