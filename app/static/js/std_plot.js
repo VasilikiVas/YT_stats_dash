@@ -137,7 +137,7 @@ function create_std_plot(subview){
                .attr("text-anchor", "middle")
                .text(function(d) {
                   if (view == "category") {
-                     return "mean"
+                     return "avg std"
                   } else if (view == "channel"){
                      return "std"
                   }})
