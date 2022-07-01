@@ -43,17 +43,15 @@ def extract_dom_colours(img, clusters):
     """
     Function to extract dominant colours of given image.
     """
-    _, _, C = img.shape
-        
-    # resize so kmeans is faster
-    img = np.resize(img,(100, 200, C))
-
+    # print(img.shape)
     # remove dark colours from image
-    filtered_img = img[img[:,:,0] + img[:,:,1] + img[:,:,2] > 50]
+    filtered_img = img[img[:,:,0] + img[:,:,1] + img[:,:,2] > 100]
     if len(filtered_img) > 100:
         img = filtered_img
 
     flat_img = np.reshape(img,(-1,3))
+
+    flat_img = np.resize(flat_img,(200*100, 3))
 
     kmeans = KMeans(n_clusters=clusters, random_state=0)
     kmeans.fit(flat_img)
@@ -86,7 +84,6 @@ def extract_category_dom_colours(category: Topic, clusters):
     print("Calculating dominant colours for all channels in category: " + category + "\n")
     all_category_thumbnails = []
     for creator in tqdm(list(videos_info.keys())):
-
         if os.path.isfile(os.path.join(CHANNELS_PATH, creator + ".json")):
             continue
         
@@ -97,14 +94,20 @@ def extract_category_dom_colours(category: Topic, clusters):
             except FileNotFoundError:
                 continue
             img = crop_black_border_img(img)
+            
             if type(img) == bool and not img:
                 continue
+                        
+            # resize so kmeans is faster
+            _, _, C = img.shape
+            img = np.resize(img,(100, 200, C))
+
             creator_thumbnails.append(Image.fromarray(img))
         if len(creator_thumbnails) < 5:
             print(f"not enough thumbnails for {creator}")
             continue
 
-        all_category_thumbnails.extend(creator_thumbnails)
+        # all_category_thumbnails.extend(creator_thumbnails)
 
         img_grid = make_image_grid_1_row(creator_thumbnails)
         dom_colours = extract_dom_colours(img_grid, clusters)
@@ -118,7 +121,7 @@ def extract_category_dom_colours(category: Topic, clusters):
     # dom_colours = extract_dom_colours(img_grid, clusters)
 
     # with open(os.path.join(CATEGORY_PATH, category + ".json"), 'w') as f:
-    #     json.dump(dom_colours, f)
+        # json.dump(dom_colours, f)
 
     print("Finished calculating dominant colours per creator\n")
 
@@ -137,5 +140,5 @@ if __name__ == '__main__':
     # choose how many colours to extract
     clusters = 5
 
-    for category in Topic._member_names_[1:]:
+    for category in Topic._member_names_:
         extract_category_dom_colours(category, clusters)

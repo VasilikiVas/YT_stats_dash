@@ -18,13 +18,17 @@ def crop_black_border_img(img):
     h, w, _ = img.shape
     if min_y == 0 and max_y == 359:
         # this is a short so we don't want to crop
+        # print("short")
         return False
     elif h == THUMBNAIL_HEIGHT and w == THUMBNAIL_WIDTH:
         # only crop the images with the original thumbnail shape 
+        # print("cropping")
         return img[44:314]
     elif h == 270 and w == 480:
+        # print("image already cropped")
         return img
     else:
+        # print("something else")
         return False
 
 
