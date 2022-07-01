@@ -1,111 +1,126 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
 {% block body %}
+
+<script type="text/javascript">
+    var videos = {{videos | safe}};
+</script>
 <!-- Main Content -->
 <div id="content">
 
     <!-- Begin Page Content -->
-    <div class="container-fluid row">
+    <div class="container-fluid">
+        <!-- Not std plot row -->
+        <div class="row">
 
-        <!-- Content Middle -->
-        <div class="col-9">
+            <!-- Content Middle -->
+            <div class="col-9" id="center_content_col">
 
-            <!-- Content Row -->
-            <div class="row">
+                <!-- Content Row -->
+                <div class="row" id="top_content_row">
 
-                <!-- Channel info card -->
-                <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-left-primary shadow h-100">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                        category: {{ category.name }}</div>
-                                    <table>
-                                        {% for key, value in category_display.items() %}
-                                        <tr>
-                                            <td>{{ key }}</td>
-                                            <td class="h5 mb-0 font-weight-bold text-gray-800">{{ value }}</td>
-                                        </tr>
-                                        {% endfor %}
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Videos card -->
-                <div class="col-xl-9 col-md-6 mb-4">
-                    <div class="card border-left-warning shadow h-100">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1" style="position: absolute; top: 0; left: 0; z-index: 1000">
-                                        Videos</div>
-                                    <div class="videos_list" data-simplebar>
-                                    {% for vid in videos %}
-                                        <a href="/video/{{ vid.id }}"><img src="https://i.ytimg.com/vi/{{ vid.id }}/default.jpg" class="video_list_thumb"></a>
-                                    {% endfor %}
+                    <!-- Channel info card -->
+                    <div class="col-auto mb-4">
+                        <div class="card border-left-primary shadow h-100">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                            {% if view == "category" %}
+                                                category: {{ category.name }}
+                                            {% else %}
+                                                channel: {{ channel.name }}
+                                            {% endif %}
+                                        </div>
+                                        <table>
+                                            {% for key, value in info_display.items() %}
+                                            <tr>
+                                                <td>{{ key }}</td>
+                                                <td class="h5 mb-0 font-weight-bold text-gray-800 cat_info" value="{{ value }}"></td>
+                                            </tr>
+                                            {% endfor %}
+                                        </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                
-            </div>
 
-            <!-- Subview Content Row -->
-            <div class="row">
-            {% if subview_mode == "thumbnail" %}
-                {% include 'thumbnail_subview.html' %}
-            {% else %}
-                {% include 'title_subview.html' %}
-            {% endif %}
-            </div>
-
-            <!-- Content Row -->
-            <div class="row">
-
-                <!-- deviation plot card -->
-                <div class="col-12">
-                    <div class="card border-left-primary shadow h-100">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                        Average Views by Thumbnail Consistency</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">Std plot</div>
+                    <!-- Videos card -->
+                    <div class="col mb-4">
+                        <div class="card border-left-success shadow h-100">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1" style="position: absolute; top: 0; left: 0; z-index: 1000">
+                                            Videos</div>
+                                        <div class="videos_list" id="video_display_list" data-simplebar>
+                                        {% for vid in videos %}
+                                            <a href="https://youtu.be/watch?v={{ vid.id }}"><img src="https://i.ytimg.com/vi/{{ vid.id }}/default.jpg" class="video_list_thumb"></a>
+                                        {% endfor %}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    
+                </div>
+
+                <!-- Subview Content Row -->
+                <div class="row">
+                {% if subview_mode == "thumbnail" %}
+                    {% include 'thumbnail_subview.html' %}
+                {% else %}
+                    {% include 'title_subview.html' %}
+                {% endif %}
                 </div>
 
             </div>
-        </div>
-        <!-- Content Middle End -->
+            <!-- Content Middle End -->
 
-        <!-- Content Right -->
-        <div class="col-3">
-            <!-- Videos card -->
-            <div class="card border-left-warning shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                Tokens in Titles</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">effectiveness plot</div>
+            <!-- Content Right -->
+            <div class="col-3 mb-4" id="eff_col">
+                <!-- Effectiveness card -->
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            {{ subview_mode }} effectiveness</div>
+                        <div id="effectivenessPlotAxis"></div>
+                        <div id="effectivenessPlot" data-simplebar></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Content Right End -->
+            
+        </div>
+
+        <!-- Std plot row -->
+        <div class="row">
+
+            <!-- deviation plot card -->
+            <div class="col-12">
+                <div class="card border-left-primary shadow h-100">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                {% if subview_mode == "thumbnail" %}
+                                <h6 class="m-0 font-weight-bold text-primary">Average Views by Thumbnail Consistency</h6>
+                                {% else %}
+                                <h6 class="m-0 font-weight-bold text-primary">Average Views by Title     Consistency</h6>
+                                {% endif %}
+                                {% if subview_mode == "thumbnail" %}
+                                <div class="std_plot" id=thumbnail_std_plot></div>
+                                {% else %}
+                                <div class="std_plot" id=title_std_plot></div>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
-        <!-- Content Right End -->
-
-
-
 
     </div>
     <!-- /.container-fluid -->

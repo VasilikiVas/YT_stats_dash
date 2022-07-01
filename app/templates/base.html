@@ -13,10 +13,16 @@
 
     <!-- ASSIGNMENT TEMPLATE -->
 	<!-- Bootstrap core CSS -->
-	<link href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="https://getbootstrap.com/docs/5.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
 	<!-- D3 package -->
-	<script src="https://d3js.org/d3.v5.min.js"></script>
+	<script src="https://d3js.org/d3.v3.min.js"></script>
+    
+    <!-- For wordcloud -->
+    <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script>
+    
+    <!-- For tooltip -->
+    <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 
     <!-- BOOTSTRAP TEMPLATE -->
     <!-- Custom fonts for this template-->
@@ -29,57 +35,68 @@
     <link href="../static/css/sb-admin-2.css" rel="stylesheet">
     <link href="../static/css/sb-admin-custom.css" rel="stylesheet">
     <link href="../static/css/general.css" rel="stylesheet"> 
-    
+    <link rel="stylesheet" href="../static/css/scatter.css" charset="utf-8">
 
 </head>
-<body id="page-top">
-
+<body id="page-top" class="{{ subview_mode }}_body {{ view }}_body">
     <!-- Page Wrapper -->
     <div id="wrapper">
-
-        <div class="tooltip" id="tooltip"></div>
+        <script type="text/javascript">
+            var channels = {{channels | safe}}  
+            var subview_mode = {{subview_mode | tojson | safe}}
+        </script>
 
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-                <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
+            <a class="sidebar-brand d-flex align-items-center justify-content-center">
+                <div class="sidebar-brand-icon">
+                    <img src="../static/img/YourTube.png" alt="logo" id="page_logo">
                 </div>
-                <div class="sidebar-brand-text mx-3">LOGO</div>
             </a>
             <!-- Divider -->
             <hr class="sidebar-divider">
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Channels
+                show stats for
             </div>
 
             <li class="nav-item">
-                <div class="nav-link">
-                    <select class="custom-select">
-                        <option selected>all categories</option>
-                    {% for cat in categories %}
-                        <option>{{ cat }}</option>
-                    {% endfor %}
-                    </select>
-                </div>
+                <div class="input-group" id="subview_mode_div">
+                    <button id="thumbnailBtn" type="button" class="btn btn-light" value="thumbnail" {{ "disabled" if subview_mode == "thumbnail" else "" }}>
+                        thumbnail
+                    </button>
+                    <button id="titleBtn" type="button" class="btn btn-light" value="title" {{ "disabled" if subview_mode == "title" else "" }}>
+                        title
+                    </button>
+                </div>                
+            </li>
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Channels
+            </div>
+
+            <!-- TODO CSS and proper formatting -->
+            <li id="filters-div">
+                <select class="custom-select" id="categories" onchange="window.location.href=this.options[this.selectedIndex].value">
+                <option selected style="font-weight: bold; display: none;">{{ category.name }}</option>
+                {% for cat in categories %}
+                    {% if cat != category.name %}
+                        <option value="/category/{{ cat }}?subview_mode={{ subview_mode }}">{{ cat }}</option>
+                    {% else %}
+                        <option value="/category/{{ cat }}?subview_mode={{ subview_mode }}" style="font-weight: bolder;">{{ cat }}</option>
+                    {% endif %}
+                {% endfor %}
+                </select>
+                <input id="channel_searchbar" class="form-control" onkeyup="search_channels()" type="text"
+                    name="search" placeholder="Search channels..">
             </li>
 
             <!-- Nav Item - Channels -->
-            <li class="nav-item"><ul class="channel_list" data-simplebar>
-                {% for channel in channels %}
-                <li class="nav-item">
-                    <a class="nav-link" href="/channel/{{ channel.name }}">
-                        <img src="{{ channel.logo_url }}" class="channel_logo">
-                        <span>{{ channel.name }}</span>
-                    </a>
-                </li>
-                {% endfor %}
-            </ul></li>
-
+            <li class="nav-item"><ul id="channel_display_list" class="channel_list" data-simplebar></ul></li>
             <!-- Divider -->
             <hr class="sidebar-divider">
 
@@ -114,12 +131,40 @@
 
     <!-- Page level plugins -->
     <script src="../static/vendor/chart.js/Chart.min.js"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="../static/js/demo/chart-pie-demo.js"></script>
     
+    <!-- Load avg thumbnail script -->
+    <script src="../static/js/load-reprs.js"></script>
+
+    <!-- Piechart script -->
+    <script src="../static/js/dom-colours-pie-chart.js"></script>
+
+    <!-- Scatterplot -->
+    <script src="../static/js/std_plot.js"></script>
+
+    <!-- Effectiveness Plot -->
+    <script src="../static/js/effectiveness_plot.js"></script>
+
+    <!-- Wordcloud -->
+    <script src="../static/js/wordcloud.js"></script>
+
+    <!-- Tooltips -->
+    <script src="../static/js/tooltips.js"></script>
+
+    <!-- Navigation buttons -->
+    <script src="../static/js/navigation.js"></script>
+
+    <!-- Load more scripts -->
+    <script src="../static/js/display_category.js"></script>
+
+    <!-- Script for adding search functionality -->
+    <script src="../static/js/search_channel.js"></script>
+    
+
+    <!-- Load general script -->
+    <script src="../static/js/general.js"></script>
+
     <!-- For simple scroll bar (NEEDS TO BE HERE, AFTER THE JINJA2) -->
     <link href="https://unpkg.com/simplebar@latest/dist/simplebar.css" rel="stylesheet" type="text/css">
-    <script src="https://unpkg.com/simplebar@latest/dist/simplebar.js"></script> 
+    <script src="https://unpkg.com/simplebar@latest/dist/simplebar.js"></script>
 </body>
 </html>

@@ -7,7 +7,6 @@ from PIL import Image
 import numpy as np
 import json
 import os
-import matplotlib.pyplot as plt
 
 THUMBNAIL_PATH = os.path.join("..","..","thumbnails")
 

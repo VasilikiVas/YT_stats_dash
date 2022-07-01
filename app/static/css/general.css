@@ -1,9 +1,33 @@
-.channel_logo {
-    width: 40px;
+
+body {
+    height: 100vh;
+    /* overflow: hidden; */
+    overflow-x: hidden;
 }
+
+#page_logo {
+    max-width: 140px;
+    padding: 20px;
+}
+
 .video_list_thumb {
     /* height: 70px */
 }
+
+#subview_mode_div {
+    padding: 5px;
+    justify-content: center;
+}
+#filters-div {
+    padding: 5px;
+}
+.toggled .btn {
+    border-radius: 5px !important;
+}
+#categories {
+    margin-bottom: 5px;
+}
+
 
 .channel_list {
     height: 60vh;
@@ -13,19 +37,109 @@
     list-style: none;
     padding-right: 10px;
 }
+.toggled .channel_list {
+    height: 53vh;
+}
+.channel_entry {
+    padding: 5px !important;
+}
+:not(.toggled)>*>*>*>*>*>*>*>*>.channel_entry { /* exactly 9 elements deep */
+    display: flex !important;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+.channel_logo {
+    width: 40px;
+}
+.toggled .channel_entry span {
+    margin: 0 !important;
+}
 
+#top_content_row {
+    flex-wrap: nowrap;
+}
 .videos_list {
     display: flex;
     width: 100%;
     overflow: auto;
     white-space: nowrap;
     padding-bottom: 10px;
-    /* position: absolute;
-    top: 0;
-    left: 0; */
-    /* z-index: 1000; */
 }
 
 .nav-link {
     width: 100% !important;
+}
+#load_more_channels_button {
+    text-align: center;
+}
+
+
+.pie_chart_body {
+    padding: 0 !important;
+}
+
+
+.thumbnail_body #effectivenessPlot {
+    height: 31vh;
+}
+.title_body #effectivenessPlot {
+    height: 61vh;
+}
+
+.dot {
+    cursor: pointer;
+}
+.d3-tip {
+    top: 0;
+    padding: 10px;
+    vertical-align: middle;
+    border-radius: 5px;
+    background-color: #ecf0f1ee;
+    font-size: 14px;
+}
+#video_tooltip {
+    width: 400px;
+}
+#video_tooltip .vid_entry {
+    padding: 5px !important;
+    display: flex !important;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+.video_title {
+    color: black;
+}
+.video_info_small {
+    font-size:.7rem; 
+    padding: 0;
+}
+
+/* Tooltips for effectiveness plot */
+#tooltip {
+    top: 0;
+    visibility: hidden;
+    position: absolute;
+    opacity: 0.9;
+    padding: 10px;
+    vertical-align: middle;
+    border-radius: 5px;
+    background-color: #ecf0f1;
+    font-size: 14px;
+}
+.tooltip_vids {
+    /* max-height: 45vh; */
+    /* overflow: hidden; */
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+    padding-right: 10px;
+}
+.tooltip_vids .vid_entry {
+    padding: 5px !important;
+    display: flex !important;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+.tooltip_vids .thumbnail {
+    width: 80px;
 }
